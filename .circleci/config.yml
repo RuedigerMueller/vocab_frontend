@@ -7,10 +7,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: vocab_ts-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: vocab_frontend-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run: npm install
       - save_cache:
-          key: vocab_ts-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: vocab_frontend{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
       - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
