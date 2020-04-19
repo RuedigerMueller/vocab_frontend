@@ -8,9 +8,9 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display Vocab TS', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('frontend app is running!');
+    expect(page.getTitleText()).toEqual('Vocab TS');
   });
 
   afterEach(async () => {
