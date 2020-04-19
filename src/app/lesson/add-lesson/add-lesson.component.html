@@ -1,0 +1,17 @@
+<!-- Form -->
+<h3>Add Lesson</h3>
+<form [formGroup]="lessonForm" (ngSubmit)="submitForm()" novalidate>
+    <div fd-form-item>
+        <label fd-form-label for="input-1">Title</label>
+        <input fd-form-control type="text" id="input-1" formControlName="title" maxlength="20">
+    </div>
+    <div fd-form-item>
+        <label fd-form-label for="input-2">Learned language</label>
+        <input fd-form-control type="text" id="input-2" formControlName="language_a" maxlength="20">
+    </div>
+    <div fd-form-item>
+        <label fd-form-label for="input-3">Known language</label>
+        <input fd-form-control type="text" id="input-3" formControlName="language_b" maxlength="20">
+    </div>
+    <button fd-button type="submit">Create</button>
+</form>

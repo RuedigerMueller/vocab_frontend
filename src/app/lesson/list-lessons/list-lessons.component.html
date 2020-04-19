@@ -1,0 +1,27 @@
+<button fd-button (click)='onCreate()'>Create</button>
+
+<table fd-table>
+    <thead fd-table-header>
+        <tr fd-table-row>
+        <th fd-table-cell>Title</th>
+        <th fd-table-cell>Language</th>
+        <th fd-table-cell>Language</th>
+        <th fd-table-cell>#Vocabluaries</th>
+        <th fd-table-cell>#Due Vocabluaries</th>
+        <th fd-table-cell>Action</th>
+        <tr>
+    </thead>
+    <tbody fd-table-body>
+        <tr *ngFor="let lesson of lessons" fd-table-row>
+            <td fd-table-cell> {{ lesson.title }}</td>
+            <td fd-table-cell> {{ lesson.language_a }}</td>
+            <td fd-table-cell> {{ lesson.language_b }}</td>
+            <td fd-table-cell> {{ lesson.numberVocables}}</td>
+            <td fd-table-cell> {{ lesson.numberDueVocables }}</td>
+            <td fd-table-cell> 
+                <button fd-button (click)="editLesson(lesson.id)">Edit</button>
+                <button fd-button (click)="deleteLesson(lesson.id)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
