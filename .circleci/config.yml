@@ -23,7 +23,7 @@ jobs:
 workflows:
   heroku_deploy:
     jobs:
-      - build
+      #- build
       - heroku/deploy-via-git:
            requires:
              - build # only run deploy-via-git job if the build job has completed
