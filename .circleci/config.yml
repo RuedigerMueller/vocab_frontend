@@ -1,4 +1,8 @@
-version: 2
+version: 2.1
+
+orbs:
+   heroku: circleci/heroku@1.0.1 
+
 jobs:
   build:
     working_directory: ~/vocab_frontend
@@ -15,3 +19,14 @@ jobs:
             - "node_modules"
       - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       #- run: npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js
+
+workflows:
+  heroku_deploy:
+    jobs:
+      - build
+      - heroku/deploy-via-git:
+           requires:
+             - build # only run deploy-via-git job if the build job has completed
+           filters:
+             branches:
+               only: master # only run deploy-via-git job on master branch

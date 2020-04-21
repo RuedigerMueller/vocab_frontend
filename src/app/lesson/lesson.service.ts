@@ -3,13 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Lesson } from './lesson.service.interface';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LessonService {
-  // Todo: get this from coniguration
-  baseURL = 'http://localhost:3000/';
+  baseURL = environment.backendUrl;
   lessonURI = 'lessons/';
   lessons: Lesson[];
   httpOptions = {
