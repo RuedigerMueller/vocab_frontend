@@ -1,4 +1,4 @@
-// server.js
+// server.js - required to launch on Heroku; make sure that npm install express is executed :-)
 const express = require('express');
 const path = require('path');
 
