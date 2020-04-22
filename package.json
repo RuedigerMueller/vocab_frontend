@@ -5,13 +5,11 @@
     "ng": "ng",
     "start-local": "ng serve",
     "start": "node server.js",
-    "build": "ng build",
+    "build": "ng build --prod --aot",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "postinstall": "ng build --prod --aot"
+    "e2e": "ng e2e"
   },
-  "heroku-run-build-script": false,
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.1.1",
