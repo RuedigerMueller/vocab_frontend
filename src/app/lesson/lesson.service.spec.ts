@@ -3,6 +3,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClient } from '@angular/common/http';
 
 import { LessonService } from './lesson.service';
+import { TileTextDirective } from '@fundamental-ngx/core/lib/tile/tile-text/tile-text.directive';
+import { i18nMetaToDocStmt } from '@angular/compiler/src/render3/view/i18n/meta';
+import { IterableDiffers } from '@angular/core';
 
 describe('LessonService', () => {
   let httpClient: HttpClient;
@@ -23,4 +26,9 @@ describe('LessonService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should get lessons');
+  it('should create a lesson');
+  it('should delete a lesson');
+  it('should update a lesson');
 });

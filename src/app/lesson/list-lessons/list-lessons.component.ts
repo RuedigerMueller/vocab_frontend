@@ -33,7 +33,7 @@ export class ListLessonsComponent implements OnInit {
     });
   }
 
-  onCreate() {
+  createLesson() {
     this.router.navigate(['/createLesson']);
   }
 }

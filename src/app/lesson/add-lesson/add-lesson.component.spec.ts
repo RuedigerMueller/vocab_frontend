@@ -37,4 +37,16 @@ describe('AddLessonComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have "Title" label');
+  it('should have "Learned Language" label');
+  it('should have "Known Language" label');
+
+  it('should have input field for "Title"');
+  it('should have input field for "Learned Language"');
+  it('should have input field for "Known Language"');
+
+  it('should have button "Create"');
+
+  it('should navigate to list-lessons component when clicking "Create"');
 });

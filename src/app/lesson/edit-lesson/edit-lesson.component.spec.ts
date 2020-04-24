@@ -38,4 +38,16 @@ describe('EditLessonComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have "Title" label');
+  it('should have "Learned Language" label');
+  it('should have "Known Language" label');
+
+  it('should have "Title" input field filled');
+  it('should have "Learned Language" input field filled');
+  it('should have "Known Language" input field filled');
+
+  it('should have button "Save"');
+
+  it('should navigate to list-lessons component when clicking "Save"');
 });
