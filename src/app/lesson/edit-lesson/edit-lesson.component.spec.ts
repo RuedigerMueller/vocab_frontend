@@ -39,9 +39,29 @@ describe('EditLessonComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have "Title" label');
-  it('should have "Learned Language" label');
-  it('should have "Known Language" label');
+  xit('should have the required labels', () => {
+    let success = true;
+
+    const expectedLabels = ['Title', 'Learned language', 'Known language'];
+
+    const appElement: HTMLElement = fixture.nativeElement;
+    const labels = appElement.querySelectorAll('label');
+
+    for (const expectedLabel of expectedLabels) {
+      let found = false;
+      labels.forEach((label) => {
+        if (label.textContent === expectedLabel) {
+          found = true;
+        }
+      });
+
+      if (found === false) {
+        success = false;
+        expect(found).toBeTruthy(`Label ${expectedLabel} not found`);
+      }
+    }
+    expect(success).toBeTruthy('All expected labels rendered');
+  });
 
   it('should have "Title" input field filled');
   it('should have "Learned Language" input field filled');
