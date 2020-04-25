@@ -1,6 +1,8 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -26,13 +28,15 @@ describe('AppComponent', () => {
     expect(app.title).toEqual(app.title);
   });
 
-  /*
-  it('should render title', () => {
+  it('should render title', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
+
     fixture.detectChanges();
-    const compiled: HTMLElement = fixture.nativeElement;
-    expect(compiled.querySelector('.fd-shellbar__title').textContent).toContain(app.title);
+
+    const appElement: HTMLElement = fixture.nativeElement;
+    const titleElement = appElement.querySelector('fd-shellbar-title');
+
+    expect(titleElement.textContent).toContain(app.title);
   });
-  */
 });

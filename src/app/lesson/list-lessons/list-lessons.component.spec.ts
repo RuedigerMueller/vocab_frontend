@@ -38,80 +38,60 @@ describe('ListLessonsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have "Title" column heading', async () => {
-    await fixture.whenStable();
-    let success = false;
-    const debugElements: ReadonlyArray<DebugElement> = fixture.debugElement.queryAll(By.css('th'));
-    debugElements.forEach((de: DebugElement) => {
-      const element: HTMLElement = de.nativeElement;
-      if (element.textContent === 'Title'){
-        success = true;
+  it('should have the required column heading', () => {
+    let success = true;
+
+    const expectedColumns = ['Title', 'Language', '#Vocabularies', '#Due Vocabularies', 'Actions'];
+
+    const appElement: HTMLElement = fixture.nativeElement;
+    const tableHeaders = appElement.querySelectorAll('th');
+
+    for (const column of expectedColumns) {
+      let found = false;
+      tableHeaders.forEach((header) => {
+        if (header.textContent === column) {
+          found = true;
+        }
+      });
+
+      if (found === false) {
+        success = false;
+        expect(found).toBeTruthy(`Column ${column} not found`);
       }
-    });
-    expect(success).toBeTruthy();
+    }
+    expect(success).toBeTruthy('All expected columns rendered');
   });
 
-  it('should have 2 "Language " column  headinga', async() => {
-    await fixture.whenStable();
-    let count = 0;
-    const debugElements: ReadonlyArray<DebugElement> = fixture.debugElement.queryAll(By.css('th'));
-    debugElements.forEach((de: DebugElement) => {
-      const element: HTMLElement = de.nativeElement;
-      if (element.textContent === 'Language'){
-        count++;
-      }
-    });
-    expect(count).toBe(2);
-  });
+  it('should have required buttons', () => {
+    let success = true;
 
-  it('should have "#Vocabluaries" column heading', async() => {
-    await fixture.whenStable();
-    let success = false;
-    const debugElements: ReadonlyArray<DebugElement> = fixture.debugElement.queryAll(By.css('th'));
-    debugElements.forEach((de: DebugElement) => {
-      const element: HTMLElement = de.nativeElement;
-      if (element.textContent === '#Vocabluaries'){
-        success = true;
-      }
-    });
-    expect(success).toBeTruthy();
-  });
+    //const expectedButtons = ['Create', 'Edit', 'Delete'];
+    const expectedButtons = ['Create'];
 
-  it('should have "#Due Vocabluaries" column heading', async() => {
-    await fixture.whenStable();
-    let success = false;
-    const debugElements: ReadonlyArray<DebugElement> = fixture.debugElement.queryAll(By.css('th'));
-    debugElements.forEach((de: DebugElement) => {
-      const element: HTMLElement = de.nativeElement;
-      if (element.textContent === '#Due Vocabluaries'){
-        success = true;
-      }
-    });
-    expect(success).toBeTruthy();
-  });
+    const appElement: HTMLElement = fixture.nativeElement;
+    const buttons = appElement.querySelectorAll('button');
 
-  it('should have "Actions" column heading', async() => {
-    await fixture.whenStable();
-    let success = false;
-    const debugElements: ReadonlyArray<DebugElement> = fixture.debugElement.queryAll(By.css('th'));
-    debugElements.forEach((de: DebugElement) => {
-      const element: HTMLElement = de.nativeElement;
-      if (element.textContent === 'Actions'){
-        success = true;
+    for (const expectedButton of expectedButtons) {
+      let found = false;
+      buttons.forEach((button) => {
+        if (button.textContent === expectedButton) {
+          found = true;
+        }
+      });
+
+      if (found === false) {
+        success = false;
+        expect(found).toBeTruthy(`Button ${expectedButton} not found`);
       }
-    });
-    expect(success).toBeTruthy();
+    }
+    expect(success).toBeTruthy('All expected buttons rendered');
   });
 
   it('should display lessons "Title"');
   it('should display first lessons "Language"');
   it('should display second lessons "Language"');
   it('should display lessons "#Vocabularies"');
-  it('should display lessons "Due Vocabularies"');
-
-  it('should have button "Create"');
-  it('should have button "Edit"');
-  it('should have button "Delete"');
+  it('should display lessons "#Due Vocabularies"');
 
   it('should navigate to add-lesson component when clicking "Create"');
   it('should navigate to edit-lesson component when clicking "Edit"');
