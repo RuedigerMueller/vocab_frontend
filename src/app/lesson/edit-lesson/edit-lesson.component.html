@@ -2,16 +2,16 @@
 <h3>Edit Lesson</h3>
 <form *ngIf="editLessonForm" [formGroup]="editLessonForm" (ngSubmit)="submitForm()" novalidate>
     <div fd-form-item>
-        <label fd-form-label for="input-1">Title</label>
-        <input fd-form-control type="text" id="input-1" formControlName="title" maxlength="20" value="{{ lesson.title }}">
+        <label fd-form-label for="edit-lesson-title">Title</label>
+        <input fd-form-control type="text" formControlName="title" maxlength="20" value="{{ lesson.title }}" id="edit-lesson-title">
     </div>
     <div fd-form-item>
-        <label fd-form-label for="input-2">Learned language</label>
-        <input fd-form-control type="text" id="input-2" formControlName="language_a" maxlength="20">
+        <label fd-form-label for="edit-lesson-language_a">Learned language</label>
+        <input fd-form-control type="text" formControlName="language_a" maxlength="20" id="edit-lesson-language_a">
     </div>
     <div fd-form-item>
-        <label fd-form-label for="input-3">Known language</label>
-        <input fd-form-control type="text" id="input-3" formControlName="language_b" maxlength="20">
+        <label fd-form-label for="edit-lesson-language_b">Known language</label>
+        <input fd-form-control type="text" formControlName="language_b" maxlength="20" id="edit-lesson-language_b">
     </div>
     <button fd-button type="submit">Save</button>
 </form>

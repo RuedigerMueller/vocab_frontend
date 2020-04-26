@@ -12,12 +12,12 @@
         <tr>
     </thead>
     <tbody fd-table-body>
-        <tr *ngFor="let lesson of lessons" fd-table-row>
-            <td fd-table-cell> {{ lesson.title }}</td>
-            <td fd-table-cell> {{ lesson.language_a }}</td>
-            <td fd-table-cell> {{ lesson.language_b }}</td>
-            <td fd-table-cell> {{ lesson.numberVocables}}</td>
-            <td fd-table-cell> {{ lesson.numberDueVocables }}</td>
+        <tr *ngFor="let lesson of lessons; index as i" fd-table-row>
+            <td fd-table-cell id="list-lessons-title-{{i}}"> {{ lesson.title }}</td>
+            <td fd-table-cell id="list-lessons-language_a-{{i}}"> {{ lesson.language_a }}</td>
+            <td fd-table-cell id="list-lessons-language_b-{{i}}"> {{ lesson.language_b }}</td>
+            <td fd-table-cell id="list-lessons-numberVocables-{{i}}"> {{ lesson.numberVocables}}</td>
+            <td fd-table-cell id="list-lessons-numberDueVocables-{{i}}"> {{ lesson.numberDueVocables }}</td>
             <td fd-table-cell> 
                 <button fd-button (click)="editLesson(lesson.id)">Edit</button>
                 <button fd-button (click)="deleteLesson(lesson.id)">Delete</button>

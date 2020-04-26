@@ -5,6 +5,20 @@ import { HttpClient } from '@angular/common/http';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
+import { LessonService } from '../lesson.service';
+import { By } from '@angular/platform-browser';
+
+
+const testEditLesson = {
+  id: 2,
+  user: 'User1',
+  title: 'Unit 2',
+  language_a: 'English',
+  language_b: 'Deutsch',
+  numberVocables: 30,
+  numberDueVocables: 2
+};
 
 describe('EditLessonComponent', () => {
   let component: EditLessonComponent;
@@ -13,17 +27,24 @@ describe('EditLessonComponent', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
 
+  let getLessonSpy;
 
   beforeEach(async(() => {
+    const lessonService = jasmine.createSpyObj('LessonService', ['getLesson']);
+    getLessonSpy = lessonService.getLesson.and.returnValue(of(testEditLesson));
+
     TestBed.configureTestingModule({
-      declarations: [ EditLessonComponent ],
+      declarations: [EditLessonComponent],
       imports: [
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
+      ],
+      providers: [
+        {provide: LessonService, useValue: lessonService }
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -39,7 +60,7 @@ describe('EditLessonComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should have the required labels', () => {
+  it('should have the required labels', () => {
     let success = true;
 
     const expectedLabels = ['Title', 'Learned language', 'Known language'];
@@ -63,11 +84,32 @@ describe('EditLessonComponent', () => {
     expect(success).toBeTruthy('All expected labels rendered');
   });
 
-  it('should have "Title" input field filled');
-  it('should have "Learned Language" input field filled');
-  it('should have "Known Language" input field filled');
+  it('should have "Title" input field filled', () => {
+    const input = fixture.debugElement.query(By.css('#edit-lesson-title'));
+    const inputElement = input.nativeElement;
+    expect(inputElement.value).toBe(testEditLesson.title);
+    expect(getLessonSpy.calls.any()).toBe(true, 'getLesson called');
+  });
 
-  it('should have button "Save"');
+  it('should have "Learned Language" input field filled', () => {
+    const input = fixture.debugElement.query(By.css('#edit-lesson-language_a'));
+    const inputElement = input.nativeElement;
+    expect(inputElement.value).toContain(testEditLesson.language_a);
+    expect(getLessonSpy.calls.any()).toBe(true, 'getLesson called');
+  });
+
+  it('should have "Known Language" input field filled', () => {
+    const input = fixture.debugElement.query(By.css('#edit-lesson-language_b'));
+    const inputElement = input.nativeElement;
+    expect(inputElement.value).toContain(testEditLesson.language_b);
+    expect(getLessonSpy.calls.any()).toBe(true, 'getLesson called');
+  });
+
+  it('should have button "Save"', () => {
+    const appElement: HTMLElement = fixture.nativeElement;
+    const button = appElement.querySelector('button');
+    expect(button.textContent).toContain('Save');
+  });
 
   it('should navigate to list-lessons component when clicking "Save"');
 });

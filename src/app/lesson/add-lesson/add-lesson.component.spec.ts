@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
 
 describe('AddLessonComponent', () => {
   let component: AddLessonComponent;
@@ -62,11 +63,29 @@ describe('AddLessonComponent', () => {
     expect(success).toBeTruthy('All expected labels rendered');
   });
 
-  it('should have input field for "Title"');
-  it('should have input field for "Learned Language"');
-  it('should have input field for "Known Language"');
+  it('should have input field for "Title"', () => {
+    const input = fixture.debugElement.query(By.css('#add-lesson-title'));
+    const inputElement = input.nativeElement;
+    expect(inputElement.value).toBe('');
+  });
 
-  it('should have button "Create"');
+  it('should have input field for "Learned Language"', () => {
+    const input = fixture.debugElement.query(By.css('#add-lesson-language_a'));
+    const inputElement = input.nativeElement;
+    expect(inputElement.value).toBe('');
+  });
+
+  it('should have input field for "Known Language"', () => {
+    const input = fixture.debugElement.query(By.css('#add-lesson-language_b'));
+    const inputElement = input.nativeElement;
+    expect(inputElement.value).toBe('');
+  });
+
+  it('should have button "Create"', () => {
+    const appElement: HTMLElement = fixture.nativeElement;
+    const button = appElement.querySelector('button');
+    expect(button.textContent).toContain('Create');
+  });
 
   it('should navigate to list-lessons component when clicking "Create"');
 });
