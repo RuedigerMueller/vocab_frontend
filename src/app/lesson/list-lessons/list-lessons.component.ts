@@ -23,17 +23,17 @@ export class ListLessonsComponent implements OnInit {
     });
   }
 
-  editLesson(id: string): void {
-    this.router.navigate(['/editLesson/' + id ]);
+  createLesson() {
+    this.router.navigateByUrl('/createLesson');
+  }
+
+  updateLesson(id: string): void {
+    this.router.navigateByUrl(`/editLesson/${id}`);
   }
 
   deleteLesson(id: string): void {
     this.lessonService.deleteLesson(id).subscribe(() => {
       this.getLessons();
     });
-  }
-
-  createLesson() {
-    this.router.navigate(['/createLesson']);
   }
 }

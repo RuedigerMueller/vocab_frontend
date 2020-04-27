@@ -8,6 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { LessonService } from '../lesson.service';
 import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 
 const testEditLesson = {
@@ -32,16 +33,16 @@ describe('EditLessonComponent', () => {
   beforeEach(async(() => {
     const lessonService = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonSpy = lessonService.getLesson.and.returnValue(of(testEditLesson));
-
+   
     TestBed.configureTestingModule({
       declarations: [EditLessonComponent],
       imports: [
         ReactiveFormsModule,
-        RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
+        RouterTestingModule.withRoutes([]),
       ],
       providers: [
-        {provide: LessonService, useValue: lessonService }
+        { provide: LessonService, useValue: lessonService },
       ]
     })
       .compileComponents();
@@ -111,5 +112,7 @@ describe('EditLessonComponent', () => {
     expect(button.textContent).toContain('Save');
   });
 
-  it('should navigate to list-lessons component when clicking "Save"');
+  xit('should navigate to list-lessons component when clicking "Save"', () => {
+   
+  });
 });

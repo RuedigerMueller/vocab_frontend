@@ -6,6 +6,7 @@ import { ListLessonsComponent } from './list-lessons.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { LessonService } from '../lesson.service';
+import { Router } from '@angular/router';
 
 const testLessonList = [
   {
@@ -51,6 +52,7 @@ describe('ListLessonsComponent', () => {
   beforeEach(async(() => {
     const lessonService = jasmine.createSpyObj('LessonService', ['getLessons']);
     getLessonsSpy = lessonService.getLessons.and.returnValue(of(testLessonList));
+    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
     TestBed.configureTestingModule({
       declarations: [ListLessonsComponent],
@@ -59,7 +61,8 @@ describe('ListLessonsComponent', () => {
         RouterTestingModule.withRoutes([]),
       ],
       providers: [
-        { provide: LessonService, useValue: lessonService }
+        { provide: LessonService, useValue: lessonService },
+        { provide: Router, useValue: routerSpy }
       ]
     })
       .compileComponents();
@@ -163,7 +166,50 @@ describe('ListLessonsComponent', () => {
     expect(tableCell.textContent).toContain(testLessonList[index].numberDueVocables.toString());
   });
 
-  it('should navigate to add-lesson component when clicking "Create"');
-  it('should navigate to edit-lesson component when clicking "Edit"');
-  it('should stay on list-lessons component when clicking "Delete"');
+  describe('routing tests', () => {
+    let router: Router;
+
+    // Trigger component so it gets heroes and binds to them
+    beforeEach(async(() => {
+      router = fixture.debugElement.injector.get(Router);
+      fixture.detectChanges(); // runs ngOnInit -> getLessons
+      fixture.whenStable() // No need for the `lastPromise` hack!
+        .then(() => fixture.detectChanges()); // bind to lessons
+    }));
+
+    it('should navigate to add-lesson component when clicking "Create"', () => {
+      const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-createButton');
+      createButton.click();
+
+      const spy = router.navigateByUrl as jasmine.Spy;
+      const navArgs = spy.calls.first().args[0];
+
+      expect(navArgs).toBe('/createLesson',
+        'should nav to createLesson');
+    });
+
+    it('should navigate to edit-lesson component when clicking "Edit"', () => {
+      const editButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-editButton-0');
+      editButton.click();
+
+      const spy = router.navigateByUrl as jasmine.Spy;
+      const navArgs = spy.calls.first().args[0];
+
+      const id = component.lessons[0].id;
+      expect(navArgs).toBe('/editLesson/' + id,
+        'should nav to editLesson for first lesson');
+    });
+
+    it('should stay on list-lessons component when clicking "Delete"', () => {
+      const deleteButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-deleteButton-0');
+      deleteButton.click();
+
+      const spy = router.navigateByUrl as jasmine.Spy;
+      expect(spy.calls.first()).toBeUndefined('should stay on lessons list');
+    });
+  });
+
+  it('should refresh the list after "Create"');
+  it('should refresh the list after "Edit"');
+  it('should refresh the list after "Delete"');
 });

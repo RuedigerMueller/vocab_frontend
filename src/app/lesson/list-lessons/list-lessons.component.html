@@ -1,4 +1,4 @@
-<button fd-button (click)='createLesson()'>Create</button>
+<button fd-button id="list-lessons-createButton" (click)='createLesson()'>Create</button>
 
 <table fd-table>
     <thead fd-table-header>
@@ -19,8 +19,8 @@
             <td fd-table-cell id="list-lessons-numberVocables-{{i}}"> {{ lesson.numberVocables}}</td>
             <td fd-table-cell id="list-lessons-numberDueVocables-{{i}}"> {{ lesson.numberDueVocables }}</td>
             <td fd-table-cell> 
-                <button fd-button (click)="editLesson(lesson.id)">Edit</button>
-                <button fd-button (click)="deleteLesson(lesson.id)">Delete</button>
+                <button fd-button id="list-lessons-editButton-{{i}}" (click)="updateLesson(lesson.id)">Edit</button>
+                <button fd-button id="list-lessons-deleteButton-{{i}}"(click)="deleteLesson(lesson.id)">Delete</button>
             </td>
         </tr>
     </tbody>
