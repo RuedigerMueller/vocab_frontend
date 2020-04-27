@@ -33,6 +33,7 @@ describe('EditLessonComponent', () => {
   beforeEach(async(() => {
     const lessonService = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonSpy = lessonService.getLesson.and.returnValue(of(testEditLesson));
+    // const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
    
     TestBed.configureTestingModule({
       declarations: [EditLessonComponent],
@@ -43,6 +44,7 @@ describe('EditLessonComponent', () => {
       ],
       providers: [
         { provide: LessonService, useValue: lessonService },
+        // { provide: Router, useValue: routerSpy }
       ]
     })
       .compileComponents();

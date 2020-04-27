@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 describe('AddLessonComponent', () => {
   let component: AddLessonComponent;
@@ -15,15 +16,19 @@ describe('AddLessonComponent', () => {
   let httpTestingController: HttpTestingController;
 
   beforeEach(async(() => {
+    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     TestBed.configureTestingModule({
-      declarations: [ AddLessonComponent ],
+      declarations: [AddLessonComponent],
       imports: [
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
+      ],
+      providers: [
+        { provide: Router, useValue: routerSpy }
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -87,5 +92,25 @@ describe('AddLessonComponent', () => {
     expect(button.textContent).toContain('Create');
   });
 
-  it('should navigate to list-lessons component when clicking "Create"');
+  describe('routing tests', () => {
+    let router: Router;
+
+    // Trigger component so it gets heroes and binds to them
+    beforeEach(async(() => {
+      router = fixture.debugElement.injector.get(Router);
+      fixture.detectChanges(); // runs ngOnInit -> getLessons
+      fixture.whenStable() // No need for the `lastPromise` hack!
+        .then(() => fixture.detectChanges()); // bind to lessons
+    }));
+
+    xit('should navigate to list-lessons component when clicking "Create"', () => {
+      const createButton: HTMLElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
+      createButton.click();
+
+      const spy = router.navigateByUrl as jasmine.Spy;
+      const navArgs = spy.calls.first().args[0];
+
+      expect(navArgs).toBe('/lessons', 'should nav to lessons after create');
+    });
+  });
 });
