@@ -33,8 +33,8 @@ describe('EditLessonComponent', () => {
   beforeEach(async(() => {
     const lessonService = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonSpy = lessonService.getLesson.and.returnValue(of(testEditLesson));
-    // const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
-   
+    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+
     TestBed.configureTestingModule({
       declarations: [EditLessonComponent],
       imports: [
@@ -43,8 +43,8 @@ describe('EditLessonComponent', () => {
         RouterTestingModule.withRoutes([]),
       ],
       providers: [
+        // { provide: Router, useValue: routerSpy },
         { provide: LessonService, useValue: lessonService },
-        // { provide: Router, useValue: routerSpy }
       ]
     })
       .compileComponents();
@@ -115,6 +115,6 @@ describe('EditLessonComponent', () => {
   });
 
   xit('should navigate to list-lessons component when clicking "Save"', () => {
-   
+
   });
 });

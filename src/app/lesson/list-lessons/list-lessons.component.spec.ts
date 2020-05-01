@@ -208,8 +208,4 @@ describe('ListLessonsComponent', () => {
       expect(spy.calls.first()).toBeUndefined('should stay on lessons list');
     });
   });
-
-  it('should refresh the list after "Create"');
-  it('should refresh the list after "Edit"');
-  it('should refresh the list after "Delete"');
 });
