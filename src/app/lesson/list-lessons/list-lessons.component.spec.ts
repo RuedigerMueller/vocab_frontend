@@ -184,8 +184,7 @@ describe('ListLessonsComponent', () => {
       const spy = router.navigateByUrl as jasmine.Spy;
       const navArgs = spy.calls.first().args[0];
 
-      expect(navArgs).toBe('/createLesson',
-        'should nav to createLesson');
+      expect(navArgs).toBe('/createLesson', 'should nav to createLesson');
     });
 
     it('should navigate to edit-lesson component when clicking "Edit"', () => {
