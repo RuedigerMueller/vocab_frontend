@@ -109,25 +109,26 @@ describe('ListLessonsComponent', () => {
       expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
     });
 
-    it('should have required buttons', () => {
+    it('should have required actions', () => {
       let success = true;
 
-      const expectedActions = ['Create', 'Edit', 'Delete', 'Vocabularies'];
+      // ToDo: Check for "Quiz" Action => Not a a native HTML element....
+      const expectedActions = ['Create', 'Edit', 'Delete', 'Vocabularies' ];
 
       const appElement: HTMLElement = fixture.nativeElement;
-      const actions = appElement.querySelectorAll('li');
+      const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('button, li');
 
       for (const expectedAction of expectedActions) {
         let found = false;
         actions.forEach((action) => {
-          if (action.textContent.search(expectedAction)) {
+          if (action.textContent.trim() === expectedAction) {
             found = true;
           }
         });
 
         if (found === false) {
           success = false;
-          expect(found).toBeTruthy(`Button ${expectedAction} not found`);
+          expect(found).toBeTruthy(`Action ${expectedAction} not found`);
         }
       }
       expect(success).toBeTruthy('All expected actions rendered');

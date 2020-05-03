@@ -40,4 +40,8 @@ export class ListLessonsComponent implements OnInit {
   lessonVocabularies(id: string): void {
     this.router.navigateByUrl(`/lesson/${id}/vocabularies`);
   }
+
+  lessonQuiz(id: string): void {
+    alert('Stay tuned - will come soon');
+  }
 }
