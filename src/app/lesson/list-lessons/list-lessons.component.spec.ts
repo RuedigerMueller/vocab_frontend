@@ -112,25 +112,25 @@ describe('ListLessonsComponent', () => {
     it('should have required buttons', () => {
       let success = true;
 
-      const expectedButtons = ['Create', 'Edit', 'Delete', 'Vocabularies'];
+      const expectedActions = ['Create', 'Edit', 'Delete', 'Vocabularies'];
 
       const appElement: HTMLElement = fixture.nativeElement;
-      const buttons = appElement.querySelectorAll('button');
+      const actions = appElement.querySelectorAll('li');
 
-      for (const expectedButton of expectedButtons) {
+      for (const expectedAction of expectedActions) {
         let found = false;
-        buttons.forEach((button) => {
-          if (button.textContent === expectedButton) {
+        actions.forEach((action) => {
+          if (action.textContent.search(expectedAction)) {
             found = true;
           }
         });
 
         if (found === false) {
           success = false;
-          expect(found).toBeTruthy(`Button ${expectedButton} not found`);
+          expect(found).toBeTruthy(`Button ${expectedAction} not found`);
         }
       }
-      expect(success).toBeTruthy('All expected buttons rendered');
+      expect(success).toBeTruthy('All expected actions rendered');
       expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
     });
 
@@ -182,7 +182,7 @@ describe('ListLessonsComponent', () => {
     }));
 
     it('should navigate to add-lesson component when clicking "Create"', () => {
-      const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-createButton');
+      const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-createAction');
       createButton.click();
 
       const spy = router.navigateByUrl as jasmine.Spy;
@@ -192,7 +192,7 @@ describe('ListLessonsComponent', () => {
     });
 
     it('should navigate to edit-lesson component when clicking "Edit"', () => {
-      const editButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-editButton-0');
+      const editButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-editAction-0');
       editButton.click();
 
       const spy = router.navigateByUrl as jasmine.Spy;
@@ -203,7 +203,7 @@ describe('ListLessonsComponent', () => {
     });
 
     it('should stay on list-lessons component when clicking "Delete"', () => {
-      const deleteButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-deleteButton-0');
+      const deleteButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-deleteAction-0');
       deleteButton.click();
 
       const spy = router.navigateByUrl as jasmine.Spy;
@@ -211,7 +211,7 @@ describe('ListLessonsComponent', () => {
     });
 
     it('should navigate to listVocabularies component when clicking "Vocabularies"', () => {
-      const vocabulariesButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-vocabulariesButton-0');
+      const vocabulariesButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-vocabulariesAction-0');
       vocabulariesButton.click();
 
       const spy = router.navigateByUrl as jasmine.Spy;

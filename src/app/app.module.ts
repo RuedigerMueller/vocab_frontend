@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ShellbarModule, TableModule, ButtonModule, FormModule} from '@fundamental-ngx/core';
+import { ShellbarModule, TableModule, ButtonModule, FormModule, SplitButtonModule, MenuModule} from '@fundamental-ngx/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,7 +31,9 @@ import { ListVocabulariesComponent } from './vocabulary/list-vocabularies/list-v
     ShellbarModule,
     TableModule,
     ButtonModule,
-    FormModule
+    FormModule,
+    SplitButtonModule,
+    MenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

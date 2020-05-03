@@ -1,14 +1,14 @@
-<button fd-button id="list-lessons-createButton" (click)='createLesson()'>Create</button>
+<button fd-button id="list-lessons-createAction" (click)='createLesson()'>Create</button>
 
 <table fd-table>
     <thead fd-table-header>
         <tr fd-table-row>
-        <th fd-table-cell>Title</th>
-        <th fd-table-cell>Language</th>
-        <th fd-table-cell>Language</th>
-        <th fd-table-cell>#Vocabularies</th>
-        <th fd-table-cell>#Due Vocabularies</th>
-        <th fd-table-cell>Actions</th>
+            <th fd-table-cell>Title</th>
+            <th fd-table-cell>Language</th>
+            <th fd-table-cell>Language</th>
+            <th fd-table-cell>#Vocabularies</th>
+            <th fd-table-cell>#Due Vocabularies</th>
+            <th fd-table-cell>Actions</th>
         <tr>
     </thead>
     <tbody fd-table-body>
@@ -18,10 +18,31 @@
             <td fd-table-cell id="list-lessons-language_b-{{i}}"> {{ lesson.language_b }}</td>
             <td fd-table-cell id="list-lessons-numberVocables-{{i}}"> {{ lesson.numberVocables}}</td>
             <td fd-table-cell id="list-lessons-numberDueVocables-{{i}}"> {{ lesson.numberDueVocables }}</td>
-            <td fd-table-cell> 
+            <td fd-table-cell>
+                <!--
                 <button fd-button id="list-lessons-editButton-{{i}}" (click)="updateLesson(lesson.id)">Edit</button>
                 <button fd-button id="list-lessons-deleteButton-{{i}}"(click)="deleteLesson(lesson.id)">Delete</button>
                 <button fd-button id="list-lessons-vocabulariesButton-{{i}}"(click)="lessonVocabularies(lesson.id)">Vocabularies</button>
+                -->
+                
+                <fd-split-button [mainActionTitle]="'Quiz'">
+                    <div fd-split-button-menu>
+                        <fd-menu>
+                            <ul fd-menu-list>
+                                <li fd-menu-item id="list-lessons-editAction-{{i}}" (click)="updateLesson(lesson.id)">
+                                    Edit
+                                </li>
+                                <li fd-menu-item id="list-lessons-deleteAction-{{i}}" (click)="deleteLesson(lesson.id)">
+                                    Delete
+                                </li>
+                                <li fd-menu-item id="list-lessons-vocabulariesAction-{{i}}" (click)="lessonVocabularies(lesson.id)">
+                                    Vocabularies
+                                </li>
+                            </ul>
+                        </fd-menu>
+                    </div>
+                </fd-split-button>
+                
             </td>
         </tr>
     </tbody>
