@@ -11,13 +11,15 @@ import { AddLessonComponent } from './lesson/add-lesson/add-lesson.component';
 import { EditLessonComponent } from './lesson/edit-lesson/edit-lesson.component';
 import { ListLessonsComponent } from './lesson/list-lessons/list-lessons.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ListVocabulariesComponent } from './vocabulary/list-vocabularies/list-vocabularies.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddLessonComponent,
     EditLessonComponent,
-    ListLessonsComponent
+    ListLessonsComponent,
+    ListVocabulariesComponent
   ],
   imports: [
     BrowserModule,

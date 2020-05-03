@@ -77,93 +77,97 @@ describe('ListLessonsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('Test environment should be setup', () => {
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
   });
 
-  it('should have the required column heading', () => {
-    let success = true;
+  describe('UI elements should be displayed', () => {
+    it('should have the required column heading', () => {
+      let success = true;
 
-    const expectedColumns = ['Title', 'Language', '#Vocabularies', '#Due Vocabularies', 'Actions'];
+      const expectedColumns = ['Title', 'Language', '#Vocabularies', '#Due Vocabularies', 'Actions'];
 
-    const appElement: HTMLElement = fixture.nativeElement;
-    const tableHeaders = appElement.querySelectorAll('th');
+      const appElement: HTMLElement = fixture.nativeElement;
+      const tableHeaders = appElement.querySelectorAll('th');
 
-    for (const column of expectedColumns) {
-      let found = false;
-      tableHeaders.forEach((header) => {
-        if (header.textContent === column) {
-          found = true;
+      for (const column of expectedColumns) {
+        let found = false;
+        tableHeaders.forEach((header) => {
+          if (header.textContent === column) {
+            found = true;
+          }
+        });
+
+        if (found === false) {
+          success = false;
+          expect(found).toBeTruthy(`Column ${column} not found`);
         }
-      });
-
-      if (found === false) {
-        success = false;
-        expect(found).toBeTruthy(`Column ${column} not found`);
       }
-    }
-    expect(success).toBeTruthy('All expected columns rendered');
-    expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
-  });
+      expect(success).toBeTruthy('All expected columns rendered');
+      expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
+    });
 
-  it('should have required buttons', () => {
-    let success = true;
+    it('should have required buttons', () => {
+      let success = true;
 
-    const expectedButtons = ['Create', 'Edit', 'Delete'];
+      const expectedButtons = ['Create', 'Edit', 'Delete', 'Vocabularies'];
 
-    const appElement: HTMLElement = fixture.nativeElement;
-    const buttons = appElement.querySelectorAll('button');
+      const appElement: HTMLElement = fixture.nativeElement;
+      const buttons = appElement.querySelectorAll('button');
 
-    for (const expectedButton of expectedButtons) {
-      let found = false;
-      buttons.forEach((button) => {
-        if (button.textContent === expectedButton) {
-          found = true;
+      for (const expectedButton of expectedButtons) {
+        let found = false;
+        buttons.forEach((button) => {
+          if (button.textContent === expectedButton) {
+            found = true;
+          }
+        });
+
+        if (found === false) {
+          success = false;
+          expect(found).toBeTruthy(`Button ${expectedButton} not found`);
         }
-      });
-
-      if (found === false) {
-        success = false;
-        expect(found).toBeTruthy(`Button ${expectedButton} not found`);
       }
-    }
-    expect(success).toBeTruthy('All expected buttons rendered');
-    expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
-  });
+      expect(success).toBeTruthy('All expected buttons rendered');
+      expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
+    });
 
-  it('should display a lesson with a title as defined in second test data entry', () => {
-    const index = 1; // second element defined in testLessons
-    const appElement: HTMLElement = fixture.nativeElement;
-    const tableCell = appElement.querySelector(`#list-lessons-title-${index}`);
-    expect(tableCell.textContent).toContain(testLessonList[index].title);
-  });
+    it('should display a lesson with a title as defined in second test data entry', () => {
+      const index = 1; // second element defined in testLessons
+      const appElement: HTMLElement = fixture.nativeElement;
+      const tableCell = appElement.querySelector(`#list-lessons-title-${index}`);
+      expect(tableCell.textContent).toContain(testLessonList[index].title);
+    });
 
-  it('should display a lesson with a language_a as defined in first test data entry', () => {
-    const index = 0; // first element defined in testLessons
-    const appElement: HTMLElement = fixture.nativeElement;
-    const tableCell = appElement.querySelector(`#list-lessons-language_a-${index}`);
-    expect(tableCell.textContent).toContain(testLessonList[index].language_a);
-  });
+    it('should display a lesson with a language_a as defined in first test data entry', () => {
+      const index = 0; // first element defined in testLessons
+      const appElement: HTMLElement = fixture.nativeElement;
+      const tableCell = appElement.querySelector(`#list-lessons-language_a-${index}`);
+      expect(tableCell.textContent).toContain(testLessonList[index].language_a);
+    });
 
-  it('should display a lesson with a language_b as defined in third test data entry', () => {
-    const index = 2; // third element defined in testLessons
-    const appElement: HTMLElement = fixture.nativeElement;
-    const tableCell = appElement.querySelector(`#list-lessons-language_b-${index}`);
-    expect(tableCell.textContent).toContain(testLessonList[index].language_b);
-  });
+    it('should display a lesson with a language_b as defined in third test data entry', () => {
+      const index = 2; // third element defined in testLessons
+      const appElement: HTMLElement = fixture.nativeElement;
+      const tableCell = appElement.querySelector(`#list-lessons-language_b-${index}`);
+      expect(tableCell.textContent).toContain(testLessonList[index].language_b);
+    });
 
-  it('should display a lesson with a numberVocables as defined in first test data entry', () => {
-    const index = 0; // first element defined in testLessons
-    const appElement: HTMLElement = fixture.nativeElement;
-    const tableCell = appElement.querySelector(`#list-lessons-numberVocables-${index}`);
-    expect(tableCell.textContent).toContain(testLessonList[index].numberVocables.toString());
-  });
+    it('should display a lesson with a numberVocables as defined in first test data entry', () => {
+      const index = 0; // first element defined in testLessons
+      const appElement: HTMLElement = fixture.nativeElement;
+      const tableCell = appElement.querySelector(`#list-lessons-numberVocables-${index}`);
+      expect(tableCell.textContent).toContain(testLessonList[index].numberVocables.toString());
+    });
 
-  it('should display a lesson with a numberDueVocables as defined in second test data entry', () => {
-    const index = 1; // second element defined in testLessons
-    const appElement: HTMLElement = fixture.nativeElement;
-    const tableCell = appElement.querySelector(`#list-lessons-numberDueVocables-${index}`);
-    expect(tableCell.textContent).toContain(testLessonList[index].numberDueVocables.toString());
+    it('should display a lesson with a numberDueVocables as defined in second test data entry', () => {
+      const index = 1; // second element defined in testLessons
+      const appElement: HTMLElement = fixture.nativeElement;
+      const tableCell = appElement.querySelector(`#list-lessons-numberDueVocables-${index}`);
+      expect(tableCell.textContent).toContain(testLessonList[index].numberDueVocables.toString());
+    });
   });
 
   describe('routing tests', () => {
@@ -195,8 +199,7 @@ describe('ListLessonsComponent', () => {
       const navArgs = spy.calls.first().args[0];
 
       const id = component.lessons[0].id;
-      expect(navArgs).toBe('/editLesson/' + id,
-        'should nav to editLesson for first lesson');
+      expect(navArgs).toBe('/editLesson/' + id, 'should nav to editLesson for first lesson');
     });
 
     it('should stay on list-lessons component when clicking "Delete"', () => {
@@ -205,6 +208,17 @@ describe('ListLessonsComponent', () => {
 
       const spy = router.navigateByUrl as jasmine.Spy;
       expect(spy.calls.first()).toBeUndefined('should stay on lessons list');
+    });
+
+    it('should navigate to listVocabularies component when clicking "Vocabularies"', () => {
+      const vocabulariesButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-vocabulariesButton-0');
+      vocabulariesButton.click();
+
+      const spy = router.navigateByUrl as jasmine.Spy;
+      const navArgs = spy.calls.first().args[0];
+
+      const id = component.lessons[0].id;
+      expect(navArgs).toBe(`/lesson/${id}/vocabularies`, 'should nav to listVocabularies for first lesson');
     });
   });
 });

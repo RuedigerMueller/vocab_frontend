@@ -36,4 +36,8 @@ export class ListLessonsComponent implements OnInit {
       this.getLessons();
     });
   }
+
+  lessonVocabularies(id: string): void {
+    this.router.navigateByUrl(`/lesson/${id}/vocabularies`);
+  }
 }
