@@ -19,12 +19,6 @@
             <td fd-table-cell id="list-lessons-numberVocables-{{i}}"> {{ lesson.numberVocables}}</td>
             <td fd-table-cell id="list-lessons-numberDueVocables-{{i}}"> {{ lesson.numberDueVocables }}</td>
             <td fd-table-cell>
-                <!--
-                <button fd-button id="list-lessons-editButton-{{i}}" (click)="updateLesson(lesson.id)">Edit</button>
-                <button fd-button id="list-lessons-deleteButton-{{i}}"(click)="deleteLesson(lesson.id)">Delete</button>
-                <button fd-button id="list-lessons-vocabulariesButton-{{i}}"(click)="lessonVocabularies(lesson.id)">Vocabularies</button>
-                -->
-                
                 <fd-split-button id="list-lessons-quizAction-{{i}}" (primaryButtonClicked)="lessonQuiz(lesson.id)" [mainActionTitle]="'Quiz'">
                     <div fd-split-button-menu>
                         <fd-menu>
