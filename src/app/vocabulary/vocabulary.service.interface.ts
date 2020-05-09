@@ -4,4 +4,5 @@ export interface Vocabulary {
     language_b: string;
     level: number;
     dueDate: Date;
+    lesson: number;
 }

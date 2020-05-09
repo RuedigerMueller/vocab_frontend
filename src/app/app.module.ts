@@ -12,6 +12,8 @@ import { EditLessonComponent } from './lesson/edit-lesson/edit-lesson.component'
 import { ListLessonsComponent } from './lesson/list-lessons/list-lessons.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
+import { AddVocabularyComponent } from './vocabulary/add-vocabulary/add-vocabulary.component';
+import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocabulary.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocab
     AddLessonComponent,
     EditLessonComponent,
     ListLessonsComponent,
-    ListVocabularyComponent
+    ListVocabularyComponent,
+    AddVocabularyComponent,
+    EditVocabularyComponent
   ],
   imports: [
     BrowserModule,

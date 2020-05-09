@@ -40,5 +40,5 @@ export class EditLessonComponent implements OnInit {
       console.log('Lesson updated!');
       this.ngZone.run(() => this.router.navigateByUrl('/lessons'));
     });
-  };
+  }
 }

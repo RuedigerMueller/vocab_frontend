@@ -21,9 +21,34 @@ export class VocabularyService {
 
   constructor(private http: HttpClient) { }
 
-  getVocabulary(lessonID: string): Observable<Vocabulary[]>{
-    console.log('Service url: ', this.baseURL + this.lessonURI + '/' + lessonID + '/' + this.vocabularyURI);
+  createVocabulary(vocabulary: Vocabulary): Observable<Vocabulary> {
+    // ToDo: use real lesson....
+    vocabulary.lesson = 2;
+    return this.http.post<Vocabulary>(this.baseURL + this.vocabularyURI, JSON.stringify(vocabulary), this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandler)
+      );
+  }
+  getLessonVocabulary(lessonID: string): Observable<Vocabulary[]>{
+    // console.log('Service url: ', this.baseURL + this.lessonURI + '/' + lessonID + '/' + this.vocabularyURI);
     return this.http.get<Vocabulary[]>(this.baseURL + this.lessonURI + '/' + lessonID + '/' + this.vocabularyURI)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandler)
+      );
+  }
+
+  getVocabulary(vocabularyID: string): Observable<Vocabulary>{
+    return this.http.get<Vocabulary>(this.baseURL + this.vocabularyURI + '/' + vocabularyID)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandler)
+      );
+  }
+
+  updateVocabulary(id: string, vocabulary: Vocabulary): Observable<Vocabulary> {
+    return this.http.patch<Vocabulary>(this.baseURL + this.vocabularyURI + '/' + id, JSON.stringify(vocabulary), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)

@@ -25,17 +25,17 @@ export class ListVocabularyComponent implements OnInit {
   }
 
   getVocabulary(id: string): void {
-    this.vocabularyService.getVocabulary(id).subscribe((vocabulary: Vocabulary[]) => {
+    this.vocabularyService.getLessonVocabulary(id).subscribe((vocabulary: Vocabulary[]) => {
       this.vocabulary = vocabulary;
     });
   }
 
   createVocabulary(): void {
-
+    this.router.navigateByUrl('/addVocabulary');
   }
 
   updateVocabulary(id: string): void {
-
+    this.router.navigateByUrl(`/editVocabulary/${id}`);
   }
 
   deleteVocabulary(id: string): void {
