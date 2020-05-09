@@ -1,16 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 
 import { VocabularyService } from './vocabulary.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('VocabularyService', () => {
-  let service: VocabularyService;
+  let httpTestingController: HttpTestingController;
+  let vocabularyService: VocabularyService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(VocabularyService);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+    });
+    vocabularyService = TestBed.inject(VocabularyService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(vocabularyService).toBeTruthy();
   });
 });

@@ -10,8 +10,8 @@ import { retry, catchError } from 'rxjs/operators';
 })
 export class VocabularyService {
   baseURL = environment.backendUrl;
-  lessonURI = 'lessons/';
-  vocabularyURI = 'vocabularies/';
+  lessonURI = 'lessons';
+  vocabularyURI = 'vocabulary';
   lessons: Vocabulary[];
   httpOptions = {
     headers: new HttpHeaders({
@@ -21,8 +21,17 @@ export class VocabularyService {
 
   constructor(private http: HttpClient) { }
 
-  getVocabularies(lessonID: string): Observable<Vocabulary[]>{
-    return this.http.get<Vocabulary[]>(this.baseURL + this.lessonURI + lessonID + this.vocabularyURI)
+  getVocabulary(lessonID: string): Observable<Vocabulary[]>{
+    console.log('Service url: ', this.baseURL + this.lessonURI + '/' + lessonID + '/' + this.vocabularyURI);
+    return this.http.get<Vocabulary[]>(this.baseURL + this.lessonURI + '/' + lessonID + '/' + this.vocabularyURI)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandler)
+      );
+  }
+
+  deleteVocabulary(id: string) {
+    return this.http.delete(this.baseURL + this.vocabularyURI + '/' + id)
       .pipe(
         retry(1),
         catchError(this.errorHandler)

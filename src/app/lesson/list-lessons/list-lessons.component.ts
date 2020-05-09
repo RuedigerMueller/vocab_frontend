@@ -37,8 +37,8 @@ export class ListLessonsComponent implements OnInit {
     });
   }
 
-  lessonVocabularies(id: string): void {
-    this.router.navigateByUrl(`/lesson/${id}/vocabularies`);
+  lessonVocabulary(id: string): void {
+    this.router.navigateByUrl(`/lesson/${id}/vocabulary`);
   }
 
   lessonQuiz(id: string): void {

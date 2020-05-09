@@ -113,7 +113,7 @@ describe('ListLessonsComponent', () => {
       let success = true;
 
       // ToDo: Check for "Quiz" Action => Not a a native HTML element....
-      const expectedActions = ['Create', 'Edit', 'Delete', 'Vocabularies' ];
+      const expectedActions = ['Create', 'Edit', 'Delete', 'Vocabulary' ];
 
       const appElement: HTMLElement = fixture.nativeElement;
       const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('button, li');
@@ -211,15 +211,15 @@ describe('ListLessonsComponent', () => {
       expect(spy.calls.first()).toBeUndefined('should stay on lessons list');
     });
 
-    it('should navigate to listVocabularies component when clicking "Vocabularies"', () => {
-      const vocabulariesButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-vocabulariesAction-0');
+    it('should navigate to listVocabularies component when clicking "Vocabulary"', () => {
+      const vocabulariesButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-vocabularyAction-0');
       vocabulariesButton.click();
 
       const spy = router.navigateByUrl as jasmine.Spy;
       const navArgs = spy.calls.first().args[0];
 
       const id = component.lessons[0].id;
-      expect(navArgs).toBe(`/lesson/${id}/vocabularies`, 'should nav to listVocabularies for first lesson');
+      expect(navArgs).toBe(`/lesson/${id}/vocabulary`, 'should nav to listVocabularies for first lesson');
     });
   });
 });
