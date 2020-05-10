@@ -1,6 +1,6 @@
-<h3>{{ lesson.title}}</h3>
+<h3 *ngIf="lesson">{{ lesson.title}}</h3>
 <button fd-button id="list-vocabulary-createAction" (click)=createVocabulary()>Create</button>
-<table fd-table>
+<table *ngIf="lesson" fd-table>
     <thead fd-table-header>
         <tr fd-table-row>
             <th fd-table-cell>{{lesson.language_a}}</th>
