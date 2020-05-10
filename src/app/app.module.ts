@@ -39,14 +39,6 @@ import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocab
     SplitButtonModule,
     MenuModule
   ],
-  exports: [
-    ShellbarModule,
-    TableModule,
-    ButtonModule,
-    FormModule,
-    SplitButtonModule,
-    MenuModule
-  ],
   providers: [],
   bootstrap: [AppComponent]
 })
