@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Lesson } from '../lesson.service.interface';
 import { LessonService } from '../lesson.service';
 import { Router } from '@angular/router';
+import { frontend } from 'src/app/resource.identifiers';
 
 @Component({
   selector: 'app-list-lessons',
@@ -24,11 +25,11 @@ export class ListLessonsComponent implements OnInit {
   }
 
   createLesson() {
-    this.router.navigateByUrl('/createLesson');
+    this.router.navigateByUrl(`/${frontend.lessons}/${frontend.createLesson}`);
   }
 
   updateLesson(id: string): void {
-    this.router.navigateByUrl(`/editLesson/${id}`);
+    this.router.navigateByUrl(`/${frontend.lessons}/${id}/${frontend.editLesson}`);
   }
 
   deleteLesson(id: string): void {
@@ -38,7 +39,7 @@ export class ListLessonsComponent implements OnInit {
   }
 
   lessonVocabulary(id: string): void {
-    this.router.navigateByUrl(`/lesson/${id}/vocabulary`);
+    this.router.navigateByUrl(`/${frontend.lessons}/${id}/${frontend.vocabulary}`);
   }
 
   lessonQuiz(id: string): void {

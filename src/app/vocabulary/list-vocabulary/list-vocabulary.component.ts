@@ -4,6 +4,7 @@ import { Vocabulary } from '../vocabulary.service.interface';
 import { VocabularyService } from '../vocabulary.service';
 import { Lesson } from 'src/app/lesson/lesson.service.interface';
 import { LessonService } from 'src/app/lesson/lesson.service';
+import { frontend } from 'src/app/resource.identifiers';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class ListVocabularyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.lessonID = this.route.snapshot.paramMap.get('id');
+    this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
     this.getLesson(this.lessonID);
     this.getVocabulary(this.lessonID);
   }
@@ -42,11 +43,11 @@ export class ListVocabularyComponent implements OnInit {
   }
 
   createVocabulary(): void {
-    this.router.navigateByUrl(`/addVocabulary/${this.lessonID}`);
+    this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.addVocabulary}`);
   }
 
   updateVocabulary(id: string): void {
-    this.router.navigateByUrl(`/editVocabulary/${id}`);
+    this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.editVocabulary}/${id}`);
   }
 
   deleteVocabulary(id: string): void {

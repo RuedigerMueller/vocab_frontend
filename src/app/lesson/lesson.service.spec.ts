@@ -1,16 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
 
 import { LessonService } from './lesson.service';
 import { Lesson } from './lesson.service.interface';
 import { environment } from 'src/environments/environment';
+import { lessonTestData } from 'test/lesson.testdata.spec';
 
-const testLessons: Lesson[] = [
-  { id: 2, user: 'User1', title: 'Unit 2', language_a: 'English', language_b: 'Deutsch', numberVocables: 30, numberDueVocables: 2 },
-  { id: 4, user: 'User1', title: 'Unidad 1', language_a: 'Español', language_b: 'Deutsch', numberVocables: 0, numberDueVocables: 0 },
-  { id: 5, user: 'User1', title: 'Unidad 1', language_a: 'Español', language_b: 'Deutsch', numberVocables: 0, numberDueVocables: 0 },
-];
+const testLessons: Lesson[] = lessonTestData;
 
 describe('LessonService', () => {
   let httpTestingController: HttpTestingController;

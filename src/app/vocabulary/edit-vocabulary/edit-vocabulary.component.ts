@@ -3,6 +3,9 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Vocabulary } from '../vocabulary.service.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { VocabularyService } from '../vocabulary.service';
+import { LessonService } from 'src/app/lesson/lesson.service';
+import { Lesson } from 'src/app/lesson/lesson.service.interface';
+import { frontend } from 'src/app/resource.identifiers';
 
 @Component({
   selector: 'app-edit-vocabulary',
@@ -10,21 +13,28 @@ import { VocabularyService } from '../vocabulary.service';
   styleUrls: ['./edit-vocabulary.component.scss']
 })
 export class EditVocabularyComponent implements OnInit {
-  editVocabularyForm: FormGroup;
   vocabulary: Vocabulary;
+  lesson: Lesson;
+  editVocabularyForm: FormGroup;
 
   constructor(
+    private vocabularyService: VocabularyService,
+    private lessonService: LessonService,
     public fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router,
     private route: ActivatedRoute,
-    private vocabularyService: VocabularyService
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const vocabularyID = this.route.snapshot.paramMap.get('vocabularyID');
+    const lessonID = this.route.snapshot.paramMap.get('lessonID');
 
-    this.vocabularyService.getVocabulary(id).subscribe((vocabulary: Vocabulary) => {
+    this.lessonService.getLesson(lessonID).subscribe((lesson: Lesson) => {
+      this.lesson = lesson;
+    });
+
+    this.vocabularyService.getVocabulary(vocabularyID).subscribe((vocabulary: Vocabulary) => {
       this.vocabulary = vocabulary;
 
       this.editVocabularyForm = this.fb.group({
@@ -41,12 +51,11 @@ export class EditVocabularyComponent implements OnInit {
       console.log('Vocabulary updated!');
 
       // ToDo: navigation target
-      this.ngZone.run(() => this.router.navigateByUrl('/lessons'));
+      this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
     });
   }
 
   cancel(): void {
-    // ToDo: Should return to /lesson/:id/vocabulary => need to know the lesson ID :-(
-    this.ngZone.run(() => this.router.navigateByUrl('/lessons'));
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lesson.id}/${frontend.vocabulary}`));
   }
 }

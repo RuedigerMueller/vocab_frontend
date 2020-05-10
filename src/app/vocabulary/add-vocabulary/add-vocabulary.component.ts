@@ -3,6 +3,9 @@ import { VocabularyService } from '../vocabulary.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Vocabulary } from '../vocabulary.service.interface';
+import { Lesson } from 'src/app/lesson/lesson.service.interface';
+import { LessonService } from 'src/app/lesson/lesson.service';
+import { frontend } from 'src/app/resource.identifiers';
 
 @Component({
   selector: 'app-add-vocabulary',
@@ -10,38 +13,44 @@ import { Vocabulary } from '../vocabulary.service.interface';
   styleUrls: ['./add-vocabulary.component.scss']
 })
 export class AddVocabularyComponent implements OnInit {
-  lessonID: string;
-  vocabularyForm: FormGroup;
+  lesson: Lesson;
+  addVocabularyForm: FormGroup;
 
   constructor(
+    private vocabularyService: VocabularyService,
+    private lessonService: LessonService,
     public fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router,
     private route: ActivatedRoute,
-    private vocabularyService: VocabularyService
   ) { }
 
   ngOnInit(): void {
-    this.lessonID = this.route.snapshot.paramMap.get('lessonID');
-    this.vocabularyForm = this.fb.group({
+    const lessonID: string = this.route.snapshot.paramMap.get(`${frontend.lessonID}`);
+
+    this.lessonService.getLesson(lessonID).subscribe((lesson: Lesson) => {
+      this.lesson = lesson;
+    });
+
+    this.addVocabularyForm = this.fb.group({
       language_a: [''],
       language_b: ['']
     });
   }
 
   submitForm(): void {
-    const vocabulary: Vocabulary = this.vocabularyForm.value;
-    vocabulary.lesson = parseInt(this.lessonID, 10);
+    const vocabulary: Vocabulary = this.addVocabularyForm.value;
+    vocabulary.lesson = this.lesson.id;
     this.vocabularyService.createVocabulary(vocabulary).subscribe(res => {
       console.log('Vocabulary added!');
     });
-    this.vocabularyForm = this.fb.group({
+    this.addVocabularyForm = this.fb.group({
       language_a: [''],
       language_b: ['']
     });
   }
 
   cancel(): void {
-    this.ngZone.run(() => this.router.navigateByUrl('/lesson' + '/' + this.lessonID + '/' + 'vocabulary'));
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lesson.id}/${frontend.vocabulary}`));
   }
 }

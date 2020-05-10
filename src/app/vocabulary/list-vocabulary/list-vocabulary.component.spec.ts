@@ -7,38 +7,11 @@ import { HttpClient } from '@angular/common/http';
 import { VocabularyService } from '../vocabulary.service';
 import { LessonService } from 'src/app/lesson/lesson.service';
 import { of } from 'rxjs';
+import { lessonTestData } from 'test/lesson.testdata.spec';
+import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 
-const testLesson = {
-  id: 5,
-  user: 'User1',
-  title: 'Unidad 1',
-  language_a: 'Español',
-  language_b: 'Deutsch',
-  vocabularies: [],
-  numberVocables: 0,
-  numberDueVocables: 0
-};
-
-const testVocabularyist = [
-  {
-    language_a: 'house',
-    language_b: 'Haus',
-    level: 1,
-    dueDate: Date(),
-  },
-  {
-    language_a: 'mouse',
-    language_b: 'Maus',
-    level: 2,
-    dueDate: Date(),
-  },
-  {
-    language_a: 'school',
-    language_b: 'Schule',
-    level: 1,
-    dueDate: Date(),
-  },
-];
+const testLesson = lessonTestData[0];
+const testVocabularyist = vocabularyTestData;
 
 describe('ListVocabulariesComponent', () => {
   let httpClient: HttpClient;

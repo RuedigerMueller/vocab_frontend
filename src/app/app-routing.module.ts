@@ -7,17 +7,21 @@ import { EditLessonComponent } from './lesson/edit-lesson/edit-lesson.component'
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 import { AddVocabularyComponent } from './vocabulary/add-vocabulary/add-vocabulary.component';
 import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocabulary.component';
+import { frontend } from './resource.identifiers';
 
 
 const routes: Routes = [
-  { path: 'lessons', component: ListLessonsComponent },
-  { path: 'createLesson', component: AddLessonComponent },
-  { path: 'editLesson/:id', component: EditLessonComponent },
-  { path: 'lesson/:id/vocabulary', component: ListVocabularyComponent },
-  { path: 'addVocabulary/:lessonID', component: AddVocabularyComponent },
-  { path: 'editVocabulary/:id', component: EditVocabularyComponent },
+  { path: frontend.lessons, component: ListLessonsComponent },
+  { path: `${frontend.lessons}/${frontend.createLesson}`, component: AddLessonComponent },
+  { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.editLesson}`, component: EditLessonComponent },
+  { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.vocabulary}`, component: ListVocabularyComponent },
+  { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.addVocabulary}`, component: AddVocabularyComponent },
+  {
+    path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.editVocabulary}/:${frontend.vocabularyID}`, 
+    component: EditVocabularyComponent
+  },
   { path: '',
-    redirectTo: '/lessons',
+    redirectTo: frontend.lessons,
     pathMatch: 'full'
   },
   { path: '**', component: PageNotFoundComponent },

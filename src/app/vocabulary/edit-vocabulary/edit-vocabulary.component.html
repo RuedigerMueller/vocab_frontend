@@ -2,11 +2,11 @@
 <h3>Edit Vocabulary</h3>
 <form *ngIf="editVocabularyForm" [formGroup]="editVocabularyForm" (ngSubmit)="submitForm()" novalidate>
     <div fd-form-item>
-        <label fd-form-label for="edit-vocabulary-language_a">Learned language</label>
+        <label fd-form-label for="edit-vocabulary-language_a">{{lesson.language_a}}</label>
         <input fd-form-control type="text" formControlName="language_a" maxlength="20" id="edit-vocabulary-language_a">
     </div>
     <div fd-form-item>
-        <label fd-form-label for="edit-vocabulary-language_b">Known language</label>
+        <label fd-form-label for="edit-vocabulary-language_b">{{lesson.language_b}}</label>
         <input fd-form-control type="text" formControlName="language_b" maxlength="20" id="edit-vocabulary-language_b">
     </div>
     <button fd-button id="edit-vocabulary-saveButton" type="submit">Save</button>

@@ -7,38 +7,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { LessonService } from '../lesson.service';
 import { Router } from '@angular/router';
+import { lessonTestData } from 'test/lesson.testdata.spec';
+import { frontend } from 'src/app/resource.identifiers';
 
-const testLessonList = [
-  {
-    id: 2,
-    user: 'User1',
-    title: 'Unit 2',
-    language_a: 'English',
-    language_b: 'Deutsch',
-    numberVocables: 30,
-    numberDueVocables: 2
-  },
-  {
-    id: 4,
-    user: 'User1',
-    title: 'Unidad 1',
-    language_a: 'Español',
-    language_b: 'Deutsch',
-    vocabularies: [],
-    numberVocables: 0,
-    numberDueVocables: 0
-  },
-  {
-    id: 5,
-    user: 'User1',
-    title: 'Unidad 1',
-    language_a: 'Español',
-    language_b: 'Deutsch',
-    vocabularies: [],
-    numberVocables: 0,
-    numberDueVocables: 0
-  },
-];
+const testLessonList = lessonTestData;
 
 describe('ListLessonsComponent', () => {
   let httpClient: HttpClient;
@@ -87,7 +59,7 @@ describe('ListLessonsComponent', () => {
     it('should have the required column heading', () => {
       let success = true;
 
-      const expectedColumns = ['Title', 'Language', '#Vocabularies', '#Due Vocabularies', 'Actions'];
+      const expectedColumns = ['Title', 'Learned Language', 'Known Language', '#Vocabularies', '#Due Vocabularies', 'Actions'];
 
       const appElement: HTMLElement = fixture.nativeElement;
       const tableHeaders = appElement.querySelectorAll('th');
@@ -189,7 +161,7 @@ describe('ListLessonsComponent', () => {
       const spy = router.navigateByUrl as jasmine.Spy;
       const navArgs = spy.calls.first().args[0];
 
-      expect(navArgs).toBe('/createLesson', 'should nav to createLesson');
+      expect(navArgs).toBe(`/${frontend.lessons}/${frontend.createLesson}`, 'should nav to createLesson');
     });
 
     it('should navigate to edit-lesson component when clicking "Edit"', () => {
@@ -200,7 +172,7 @@ describe('ListLessonsComponent', () => {
       const navArgs = spy.calls.first().args[0];
 
       const id = component.lessons[0].id;
-      expect(navArgs).toBe('/editLesson/' + id, 'should nav to editLesson for first lesson');
+      expect(navArgs).toBe(`/${frontend.lessons}/${id}/${frontend.editLesson}`, 'should nav to editLesson for first lesson');
     });
 
     it('should stay on list-lessons component when clicking "Delete"', () => {
@@ -219,7 +191,7 @@ describe('ListLessonsComponent', () => {
       const navArgs = spy.calls.first().args[0];
 
       const id = component.lessons[0].id;
-      expect(navArgs).toBe(`/lesson/${id}/vocabulary`, 'should nav to listVocabularies for first lesson');
+      expect(navArgs).toBe(`/${frontend.lessons}/${id}/${frontend.vocabulary}`, 'should nav to listVocabularies for first lesson');
     });
   });
 });

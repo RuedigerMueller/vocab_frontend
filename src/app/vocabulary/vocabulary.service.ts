@@ -4,14 +4,13 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { backend } from '../resource.identifiers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VocabularyService {
-  baseURL = environment.backendUrl;
-  lessonURI = 'lessons';
-  vocabularyURI = 'vocabulary';
+  baseURL: string;
   lessons: Vocabulary[];
   httpOptions = {
     headers: new HttpHeaders({
@@ -19,18 +18,24 @@ export class VocabularyService {
     })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    const backendURL: string = environment.backendUrl;
+    if ( backendURL.charAt(backendURL.length - 1) === '/') {
+      this.baseURL = backendURL.slice(0, -1);
+    } else {
+      this.baseURL = backendURL;
+    }
+   }
 
   createVocabulary(vocabulary: Vocabulary): Observable<Vocabulary> {
-    return this.http.post<Vocabulary>(this.baseURL + this.vocabularyURI, JSON.stringify(vocabulary), this.httpOptions)
+    return this.http.post<Vocabulary>(`${this.baseURL}/${backend.vocabulary}`, JSON.stringify(vocabulary), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
       );
   }
   getLessonVocabulary(lessonID: string): Observable<Vocabulary[]>{
-    // console.log('Service url: ', this.baseURL + this.lessonURI + '/' + lessonID + '/' + this.vocabularyURI);
-    return this.http.get<Vocabulary[]>(this.baseURL + this.lessonURI + '/' + lessonID + '/' + this.vocabularyURI)
+    return this.http.get<Vocabulary[]>(`${this.baseURL}/${backend.lessons}/${lessonID}/${backend.vocabulary}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -38,7 +43,7 @@ export class VocabularyService {
   }
 
   getVocabulary(vocabularyID: string): Observable<Vocabulary>{
-    return this.http.get<Vocabulary>(this.baseURL + this.vocabularyURI + '/' + vocabularyID)
+    return this.http.get<Vocabulary>(`${this.baseURL}/${backend.vocabulary}/${vocabularyID}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -46,7 +51,7 @@ export class VocabularyService {
   }
 
   updateVocabulary(id: string, vocabulary: Vocabulary): Observable<Vocabulary> {
-    return this.http.patch<Vocabulary>(this.baseURL + this.vocabularyURI + '/' + id, JSON.stringify(vocabulary), this.httpOptions)
+    return this.http.patch<Vocabulary>(`${this.baseURL}/${backend.vocabulary}/${id}`, JSON.stringify(vocabulary), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -54,7 +59,7 @@ export class VocabularyService {
   }
 
   deleteVocabulary(id: string) {
-    return this.http.delete(this.baseURL + this.vocabularyURI + '/' + id)
+    return this.http.delete(`${this.baseURL}/${backend.vocabulary}/${id}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)

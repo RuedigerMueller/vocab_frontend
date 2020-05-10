@@ -8,18 +8,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { LessonService } from '../lesson.service';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { lessonTestData } from 'test/lesson.testdata.spec';
 
-
-const testEditLesson = {
-  id: 2,
-  user: 'User1',
-  title: 'Unit 2',
-  language_a: 'English',
-  language_b: 'Deutsch',
-  numberVocables: 30,
-  numberDueVocables: 2
-};
+const testEditLesson = lessonTestData[0];
 
 describe('EditLessonComponent', () => {
   let component: EditLessonComponent;

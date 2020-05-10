@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LessonService } from '../lesson.service';
 import { Lesson } from '../lesson.service.interface';
+import { frontend } from 'src/app/resource.identifiers';
 
 @Component({
   selector: 'app-edit-lesson',
@@ -22,7 +23,7 @@ export class EditLessonComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get(`${frontend.lessonID}`);
 
     this.lessonService.getLesson(id).subscribe((lesson: Lesson) => {
       this.lesson = lesson;
@@ -38,7 +39,11 @@ export class EditLessonComponent implements OnInit {
   submitForm(): void {
     this.lessonService.updateLesson(this.lesson.id.toString(), this.editLessonForm.value).subscribe(res => {
       console.log('Lesson updated!');
-      this.ngZone.run(() => this.router.navigateByUrl('/lessons'));
+      this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
     });
+  }
+
+  cancel(): void {
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
   }
 }

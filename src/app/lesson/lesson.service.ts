@@ -4,13 +4,13 @@ import { Lesson } from './lesson.service.interface';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { backend } from '../resource.identifiers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LessonService {
-  baseURL = environment.backendUrl;
-  lessonURI = 'lessons/';
+  baseURL: string;
   lessons: Lesson[];
   httpOptions = {
     headers: new HttpHeaders({
@@ -18,13 +18,20 @@ export class LessonService {
     })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    const backendURL: string = environment.backendUrl;
+    if ( backendURL.charAt(backendURL.length - 1) === '/') {
+      this.baseURL = backendURL.slice(0, -1);
+    } else {
+      this.baseURL = backendURL;
+    }
+  }
 
   createLesson(lesson: Lesson): Observable<Lesson> {
     // Todo: add the real user!
     lesson.user = 'UserFrontend';
 
-    return this.http.post<Lesson>(this.baseURL + this.lessonURI, JSON.stringify(lesson), this.httpOptions)
+    return this.http.post<Lesson>(`${this.baseURL}/${backend.lessons}`, JSON.stringify(lesson), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -32,7 +39,7 @@ export class LessonService {
   }
 
   getLessons(): Observable<Lesson[]>{
-    return this.http.get<Lesson[]>(this.baseURL + this.lessonURI)
+    return this.http.get<Lesson[]>(`${this.baseURL}/${backend.lessons}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -40,8 +47,7 @@ export class LessonService {
   }
 
   getLesson(id: string): Observable<Lesson> {
-    console.log('Service url: ', this.baseURL + this.lessonURI + id);
-    return this.http.get<Lesson>(this.baseURL + this.lessonURI + id)
+    return this.http.get<Lesson>(`${this.baseURL}/${backend.lessons}/${id}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -49,7 +55,7 @@ export class LessonService {
   }
 
   updateLesson(id: string, lesson: Lesson): Observable<Lesson> {
-    return this.http.patch<Lesson>(this.baseURL + this.lessonURI + id, JSON.stringify(lesson), this.httpOptions)
+    return this.http.patch<Lesson>(`${this.baseURL}/${backend.lessons}/${id}`, JSON.stringify(lesson), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -57,7 +63,7 @@ export class LessonService {
   }
 
   deleteLesson(id: string) {
-    return this.http.delete(this.baseURL + this.lessonURI + id)
+    return this.http.delete(`${this.baseURL}/${backend.lessons}/${id}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
