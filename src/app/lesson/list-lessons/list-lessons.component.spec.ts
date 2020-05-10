@@ -85,7 +85,7 @@ describe('ListLessonsComponent', () => {
       let success = true;
 
       // ToDo: Check for "Quiz" Action => Not a a native HTML element....
-      const expectedActions = ['Create', 'Edit', 'Delete', 'Vocabulary' ];
+      const expectedActions = ['Create', 'Edit', 'Delete', 'Vocabulary'];
 
       const appElement: HTMLElement = fixture.nativeElement;
       const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('button, li');
@@ -107,39 +107,41 @@ describe('ListLessonsComponent', () => {
       expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
     });
 
-    it('should display a lesson with a title as defined in second test data entry', () => {
-      const index = 1; // second element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-lessons-title-${index}`);
-      expect(tableCell.textContent).toContain(testLessonList[index].title);
-    });
+    describe('should display the content', () => {
+      it('should display a lesson with a title as defined in second test data entry', () => {
+        const index = 1; // second element defined in testLessons
+        const appElement: HTMLElement = fixture.nativeElement;
+        const tableCell = appElement.querySelector(`#list-lessons-title-${index}`);
+        expect(tableCell.textContent).toContain(testLessonList[index].title);
+      });
 
-    it('should display a lesson with a language_a as defined in first test data entry', () => {
-      const index = 0; // first element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-lessons-language_a-${index}`);
-      expect(tableCell.textContent).toContain(testLessonList[index].language_a);
-    });
+      it('should display a lesson with a language_a as defined in first test data entry', () => {
+        const index = 0; // first element defined in testLessons
+        const appElement: HTMLElement = fixture.nativeElement;
+        const tableCell = appElement.querySelector(`#list-lessons-language_a-${index}`);
+        expect(tableCell.textContent).toContain(testLessonList[index].language_a);
+      });
 
-    it('should display a lesson with a language_b as defined in third test data entry', () => {
-      const index = 2; // third element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-lessons-language_b-${index}`);
-      expect(tableCell.textContent).toContain(testLessonList[index].language_b);
-    });
+      it('should display a lesson with a language_b as defined in third test data entry', () => {
+        const index = 2; // third element defined in testLessons
+        const appElement: HTMLElement = fixture.nativeElement;
+        const tableCell = appElement.querySelector(`#list-lessons-language_b-${index}`);
+        expect(tableCell.textContent).toContain(testLessonList[index].language_b);
+      });
 
-    it('should display a lesson with a numberVocables as defined in first test data entry', () => {
-      const index = 0; // first element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-lessons-numberVocables-${index}`);
-      expect(tableCell.textContent).toContain(testLessonList[index].numberVocables.toString());
-    });
+      it('should display a lesson with a numberVocables as defined in first test data entry', () => {
+        const index = 0; // first element defined in testLessons
+        const appElement: HTMLElement = fixture.nativeElement;
+        const tableCell = appElement.querySelector(`#list-lessons-numberVocables-${index}`);
+        expect(tableCell.textContent).toContain(testLessonList[index].numberVocables.toString());
+      });
 
-    it('should display a lesson with a numberDueVocables as defined in second test data entry', () => {
-      const index = 1; // second element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-lessons-numberDueVocables-${index}`);
-      expect(tableCell.textContent).toContain(testLessonList[index].numberDueVocables.toString());
+      it('should display a lesson with a numberDueVocables as defined in second test data entry', () => {
+        const index = 1; // second element defined in testLessons
+        const appElement: HTMLElement = fixture.nativeElement;
+        const tableCell = appElement.querySelector(`#list-lessons-numberDueVocables-${index}`);
+        expect(tableCell.textContent).toContain(testLessonList[index].numberDueVocables.toString());
+      });
     });
   });
 

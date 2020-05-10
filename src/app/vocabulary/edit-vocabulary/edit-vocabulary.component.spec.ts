@@ -15,14 +15,14 @@ describe('EditVocabularyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditVocabularyComponent ],
+      declarations: [EditVocabularyComponent],
       imports: [
         ReactiveFormsModule,
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([]),
       ],
     })
-    .compileComponents();
+      .compileComponents();
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -36,5 +36,26 @@ describe('EditVocabularyComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have the required labels', () => {
+
+  });
+
+  xdescribe('should have the required fields', () => {
+    
+  })
+
+  xdescribe('should fill the fields', () => {
+
+  });
+
+  describe('should have the expected actions', () => {
+    it('should have button "Save"', () => {
+
+    });
+
+    it('should have button "Cancel"', () => {
+    });
   });
 });

@@ -25,7 +25,7 @@ describe('AddVocabularyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddVocabularyComponent ],
+      declarations: [AddVocabularyComponent],
       imports: [
         ReactiveFormsModule,
         HttpClientTestingModule,
@@ -35,7 +35,7 @@ describe('AddVocabularyComponent', () => {
         { provide: LessonService, useValue: lessonService },
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -49,5 +49,33 @@ describe('AddVocabularyComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  xdescribe('should have the correct labels', () => {
+
+  });
+
+  xdescribe('should have the required input fields', () => {
+
+  });
+
+  describe('should have the required actions', () => {
+    it('should have button "Create"', () => {
+
+    });
+
+    it('should have button "Cancel"', () => {
+
+    });
+  });
+
+  describe('routing tests', () => {
+    xit('should navigate to list-lessons component when clicking "Create"', () => {
+      
+    });
+
+    xit('should navigate to list-lessons component when clicking "Cancel"', () => {
+      
+    });
   });
 });

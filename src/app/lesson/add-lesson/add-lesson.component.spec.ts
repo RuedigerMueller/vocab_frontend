@@ -68,28 +68,38 @@ describe('AddLessonComponent', () => {
     expect(success).toBeTruthy('All expected labels rendered');
   });
 
-  it('should have input field for "Title"', () => {
-    const input = fixture.debugElement.query(By.css('#add-lesson-title'));
-    const inputElement = input.nativeElement;
-    expect(inputElement.value).toBe('');
+  describe('should have the required input fields', () => {
+    it('should have input field for "Title"', () => {
+      const input = fixture.debugElement.query(By.css('#add-lesson-title'));
+      const inputElement = input.nativeElement;
+      expect(inputElement.value).toBe('');
+    });
+
+    it('should have input field for "Learned Language"', () => {
+      const input = fixture.debugElement.query(By.css('#add-lesson-language_a'));
+      const inputElement = input.nativeElement;
+      expect(inputElement.value).toBe('');
+    });
+
+    it('should have input field for "Known Language"', () => {
+      const input = fixture.debugElement.query(By.css('#add-lesson-language_b'));
+      const inputElement = input.nativeElement;
+      expect(inputElement.value).toBe('');
+    });
   });
 
-  it('should have input field for "Learned Language"', () => {
-    const input = fixture.debugElement.query(By.css('#add-lesson-language_a'));
-    const inputElement = input.nativeElement;
-    expect(inputElement.value).toBe('');
-  });
+  describe('should have the required actioms', () => {
+    it('should have button "Create"', () => {
+      const appElement: HTMLElement = fixture.nativeElement;
+      const button = appElement.querySelector('button');
+      expect(button.textContent).toContain('Create');
+    });
 
-  it('should have input field for "Known Language"', () => {
-    const input = fixture.debugElement.query(By.css('#add-lesson-language_b'));
-    const inputElement = input.nativeElement;
-    expect(inputElement.value).toBe('');
-  });
-
-  it('should have button "Create"', () => {
-    const appElement: HTMLElement = fixture.nativeElement;
-    const button = appElement.querySelector('button');
-    expect(button.textContent).toContain('Create');
+    xit('should have button "Cancel"', () => {
+      const appElement: HTMLElement = fixture.nativeElement;
+      const button = appElement.querySelector('button');
+      expect(button.textContent).toContain('Create');
+    });
   });
 
   describe('routing tests', () => {
@@ -111,6 +121,16 @@ describe('AddLessonComponent', () => {
       const navArgs = spy.calls.first().args[0];
 
       expect(navArgs).toBe('/lessons', 'should nav to lessons after create');
+    });
+
+    xit('should navigate to list-lessons component when clicking "Cancel"', () => {
+      const createButton: HTMLElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
+      createButton.click();
+
+      const spy = router.navigateByUrl as jasmine.Spy;
+      const navArgs = spy.calls.first().args[0];
+
+      expect(navArgs).toBe('/lessons', 'should nav to lessons after cancel');
     });
   });
 });

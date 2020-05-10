@@ -31,7 +31,7 @@ describe('ListVocabulariesComponent', () => {
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
 
     TestBed.configureTestingModule({
-      declarations: [ ListVocabularyComponent ],
+      declarations: [ListVocabularyComponent],
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([]),
@@ -41,7 +41,7 @@ describe('ListVocabulariesComponent', () => {
         { provide: LessonService, useValue: lessonService },
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -53,7 +53,37 @@ describe('ListVocabulariesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('Test environment should be setup', () => {
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+  });
+
+  describe('UI elements should be displayed', () => {
+    it('should have the required column heading', () => {
+
+    });
+
+    it('should have required actions', () => {
+
+    });
+
+    describe('should display the content', () => {
+
+    });
+  });
+
+  describe('Routing tests', () => {
+    it('should navigate to add-vocabulary component when clicking "Create"', () => {
+
+    });
+
+    it('should navigate edit-vocabulary component when clicking "Edit"', () => {
+
+    });
+
+    it('should stay on list-vocabulary component when clicking "Delete"', () => {
+
+    });
   });
 });
