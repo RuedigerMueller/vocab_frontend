@@ -1,3 +1,4 @@
+<h3>{{ lesson.title}}</h3>
 <button fd-button id="list-vocabulary-createAction" (click)=createVocabulary()>Create</button>
 <table fd-table>
     <thead fd-table-header>
@@ -11,10 +12,10 @@
     </thead>
     <tbody fd-table-body>
         <tr *ngFor="let vocabulary of vocabulary; index as i" fd-table-row>
-            <td fd-table-cell id="list-vocabulary-language_a-{{i}}"> {{ vocabulary.language_a }}</td>
-            <td fd-table-cell id="list-vocabulary-language_b-{{i}}"> {{ vocabulary.language_b }}</td>
-            <td fd-table-cell id="list-vocabulary-level-{{i}}"> {{ vocabulary.level}}</td>
-            <td fd-table-cell id="list-vocabulary-dueDate-{{i}}"> {{ vocabulary.dueDate | date:'shortDate' }}</td>
+            <td fd-table-cell id="list-vocabulary-language_a-{{i}}">{{ vocabulary.language_a }}</td>
+            <td fd-table-cell id="list-vocabulary-language_b-{{i}}">{{ vocabulary.language_b }}</td>
+            <td fd-table-cell id="list-vocabulary-level-{{i}}">{{ vocabulary.level}}</td>
+            <td fd-table-cell id="list-vocabulary-dueDate-{{i}}">{{ vocabulary.dueDate | date:'shortDate' }}</td>
             <td fd-table-cell>
                 <fd-split-button id="list-vocabulary-editAction-{{i}}" (primaryButtonClicked)="updateVocabulary(vocabulary.id)" [mainActionTitle]="'Edit'">
                     <div fd-split-button-menu>

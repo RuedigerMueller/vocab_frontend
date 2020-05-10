@@ -1,7 +1,8 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { VocabularyService } from '../vocabulary.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Vocabulary } from '../vocabulary.service.interface';
 
 @Component({
   selector: 'app-add-vocabulary',
@@ -9,30 +10,38 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-vocabulary.component.scss']
 })
 export class AddVocabularyComponent implements OnInit {
+  lessonID: string;
   vocabularyForm: FormGroup;
 
   constructor(
     public fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router,
+    private route: ActivatedRoute,
     private vocabularyService: VocabularyService
   ) { }
 
   ngOnInit(): void {
+    this.lessonID = this.route.snapshot.paramMap.get('lessonID');
     this.vocabularyForm = this.fb.group({
       language_a: [''],
       language_b: ['']
     });
   }
 
-  submitForm() {
-    this.vocabularyService.createVocabulary(this.vocabularyForm.value).subscribe(res => {
+  submitForm(): void {
+    const vocabulary: Vocabulary = this.vocabularyForm.value;
+    vocabulary.lesson = parseInt(this.lessonID, 10);
+    this.vocabularyService.createVocabulary(vocabulary).subscribe(res => {
       console.log('Vocabulary added!');
-      //this.ngZone.run(() => this.router.navigateByUrl('/lessons'));
-      
-      // ToDo -> where to route to???
-      this.router.navigateByUrl('/lessons');
+    });
+    this.vocabularyForm = this.fb.group({
+      language_a: [''],
+      language_b: ['']
     });
   }
 
+  cancel(): void {
+    this.ngZone.run(() => this.router.navigateByUrl('/lesson' + '/' + this.lessonID + '/' + 'vocabulary'));
+  }
 }

@@ -2,8 +2,6 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Vocabulary } from '../vocabulary.service.interface';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LessonService } from 'src/app/lesson/lesson.service';
-import { Lesson } from 'src/app/lesson/lesson.service.interface';
 import { VocabularyService } from '../vocabulary.service';
 
 @Component({
@@ -45,5 +43,10 @@ export class EditVocabularyComponent implements OnInit {
       // ToDo: navigation target
       this.ngZone.run(() => this.router.navigateByUrl('/lessons'));
     });
+  }
+
+  cancel(): void {
+    // ToDo: Should return to /lesson/:id/vocabulary => need to know the lesson ID :-(
+    this.ngZone.run(() => this.router.navigateByUrl('/lessons'));
   }
 }

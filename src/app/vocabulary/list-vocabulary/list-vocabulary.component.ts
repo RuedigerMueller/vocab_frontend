@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Vocabulary } from '../vocabulary.service.interface';
 import { VocabularyService } from '../vocabulary.service';
+import { Lesson } from 'src/app/lesson/lesson.service.interface';
+import { LessonService } from 'src/app/lesson/lesson.service';
 
 
 @Component({
@@ -12,16 +14,25 @@ import { VocabularyService } from '../vocabulary.service';
 export class ListVocabularyComponent implements OnInit {
   vocabulary: ReadonlyArray<Vocabulary>;
   lessonID: string;
+  lesson: Lesson;
 
   constructor(
     private vocabularyService: VocabularyService,
+    private lessonService: LessonService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.lessonID = this.route.snapshot.paramMap.get('id');
+    this.getLesson(this.lessonID);
     this.getVocabulary(this.lessonID);
+  }
+
+  getLesson(id: string): void  {
+    this.lessonService.getLesson(id).subscribe((lesson: Lesson) => {
+      this.lesson = lesson;
+    });
   }
 
   getVocabulary(id: string): void {
@@ -31,7 +42,7 @@ export class ListVocabularyComponent implements OnInit {
   }
 
   createVocabulary(): void {
-    this.router.navigateByUrl('/addVocabulary');
+    this.router.navigateByUrl(`/addVocabulary/${this.lessonID}`);
   }
 
   updateVocabulary(id: string): void {

@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'createLesson', component: AddLessonComponent },
   { path: 'editLesson/:id', component: EditLessonComponent },
   { path: 'lesson/:id/vocabulary', component: ListVocabularyComponent },
-  { path: 'addVocabulary', component: AddVocabularyComponent },
+  { path: 'addVocabulary/:lessonID', component: AddVocabularyComponent },
   { path: 'editVocabulary/:id', component: EditVocabularyComponent },
   { path: '',
     redirectTo: '/lessons',

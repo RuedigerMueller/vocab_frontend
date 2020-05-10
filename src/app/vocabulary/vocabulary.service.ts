@@ -22,8 +22,6 @@ export class VocabularyService {
   constructor(private http: HttpClient) { }
 
   createVocabulary(vocabulary: Vocabulary): Observable<Vocabulary> {
-    // ToDo: use real lesson....
-    vocabulary.lesson = 2;
     return this.http.post<Vocabulary>(this.baseURL + this.vocabularyURI, JSON.stringify(vocabulary), this.httpOptions)
       .pipe(
         retry(1),
