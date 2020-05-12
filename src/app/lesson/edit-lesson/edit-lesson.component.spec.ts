@@ -102,13 +102,13 @@ describe('EditLessonComponent', () => {
   describe('should have the expected actions', () => {
     it('should have button "Save"', () => {
       const appElement: HTMLElement = fixture.nativeElement;
-      const button = appElement.querySelector('button');
+      const button = appElement.querySelector('#edit-lesson-saveButton');
       expect(button.textContent).toContain('Save');
     });
 
-    xit('should have button "Cancel"', () => {
+    it('should have button "Cancel"', () => {
       const appElement: HTMLElement = fixture.nativeElement;
-      const button = appElement.querySelector('button');
+      const button = appElement.querySelector('#edit-lesson-cancelButton');
       expect(button.textContent).toContain('Cancel');
     });
   });
