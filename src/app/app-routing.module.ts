@@ -10,7 +10,7 @@ import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocab
 import { frontend } from './resource.identifiers';
 
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: frontend.lessons, component: ListLessonsComponent },
   { path: `${frontend.lessons}/${frontend.createLesson}`, component: AddLessonComponent },
   { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.editLesson}`, component: EditLessonComponent },

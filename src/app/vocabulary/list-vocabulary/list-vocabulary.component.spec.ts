@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ListVocabularyComponent } from './list-vocabulary.component';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
@@ -9,9 +9,11 @@ import { LessonService } from 'src/app/lesson/lesson.service';
 import { of } from 'rxjs';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, convertToParamMap } from '@angular/router';
+import { Location } from '@angular/common';
 import { frontend } from 'src/app/resource.identifiers';
 import { TableModule, ButtonModule, SplitButtonModule, MenuModule } from '@fundamental-ngx/core';
+import { routes } from 'src/app/app-routing.module';
 
 const testLesson = lessonTestData[0];
 const testVocabularyList = vocabularyTestData;
@@ -19,6 +21,8 @@ const testVocabularyList = vocabularyTestData;
 describe('ListVocabulariesComponent', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
+  let location: Location;
+  let router: Router;
 
   let component: ListVocabularyComponent;
   let fixture: ComponentFixture<ListVocabularyComponent>;
@@ -40,13 +44,12 @@ describe('ListVocabulariesComponent', () => {
     const lessonService = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
 
-    // const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
     TestBed.configureTestingModule({
       declarations: [ListVocabularyComponent],
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule.withRoutes(routes),
         TableModule,
         ButtonModule,
         SplitButtonModule,
@@ -55,7 +58,16 @@ describe('ListVocabulariesComponent', () => {
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },
         { provide: LessonService, useValue: lessonService },
-        // { provide: Router, useValue: routerSpy }
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: convertToParamMap({
+                lessonID: testLesson.id
+              })
+            }
+          }
+        },
       ]
     })
       .compileComponents();
@@ -65,7 +77,10 @@ describe('ListVocabulariesComponent', () => {
   }));
 
   beforeEach(() => {
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
     fixture = TestBed.createComponent(ListVocabularyComponent);
+    router.initialNavigation();
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -185,9 +200,8 @@ describe('ListVocabulariesComponent', () => {
     });
   });
 
-  xdescribe('Routing tests', () => {
-    let router: Router;
-
+  describe('Routing tests', () => {
+    /*
     // Trigger component so it gets heroes and binds to them
     beforeEach(async(() => {
       router = fixture.debugElement.injector.get(Router);
@@ -195,12 +209,21 @@ describe('ListVocabulariesComponent', () => {
       fixture.whenStable() // No need for the `lastPromise` hack!
         .then(() => fixture.detectChanges()); // bind to vocabulary
     }));
+    */
+    it('should navigate to add-vocabulary component when clicking "Create"', fakeAsync(() => {
+      const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-createAction');
+      createButton.click();
+      tick();
+      const id = component.lesson.id;
+      expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.addVocabulary}`);
+    }));
 
     xit('should navigate to add-vocabulary component when clicking "Create"', () => {
+      const spy = router.navigateByUrl as jasmine.Spy;
+
       const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-createAction');
       createButton.click();
 
-      const spy = router.navigateByUrl as jasmine.Spy;
       const navArgs = spy.calls.first().args[0];
 
       const id = component.lesson.id;
