@@ -116,7 +116,7 @@ describe('EditLessonComponent', () => {
     });
   });
 
-  xit('should navigate to list-lessons component when clicking "Save"', () => {
+  xit('PENDING IMPL - should navigate to list-lessons component when clicking "Save"', () => {
 
   });
 });

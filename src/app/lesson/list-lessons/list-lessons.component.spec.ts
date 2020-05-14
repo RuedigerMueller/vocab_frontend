@@ -23,6 +23,13 @@ describe('ListLessonsComponent', () => {
 
   let getLessonsSpy;
 
+  const expandSplitButton = () => {
+    const appElement: HTMLElement = fixture.nativeElement;
+    const expandableButton: HTMLElement = appElement.querySelector('.sap-icon--slim-arrow-down');
+    expandableButton.click();
+    fixture.detectChanges();
+  };
+
   beforeEach(async(() => {
 
     const lessonService = jasmine.createSpyObj('LessonService', ['getLessons']);
@@ -88,14 +95,39 @@ describe('ListLessonsComponent', () => {
       expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
     });
 
-    it('should have required actions', () => {
+    it('should have required buttons', () => {
       let success = true;
 
-      // ToDo: Check for "'Edit', 'Delete', 'Vocabulary'" Action => Not a a native HTML element....
-      const expectedActions = ['Create', 'Quiz'];
+      const expectedActions = ['Create', 'Quiz' ];
 
       const appElement: HTMLElement = fixture.nativeElement;
-      const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('button, li');
+      const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('button');
+
+      for (const expectedAction of expectedActions) {
+        let found = false;
+        actions.forEach((action) => {
+          if (action.textContent.trim() === expectedAction) {
+            found = true;
+          }
+        });
+
+        if (found === false) {
+          success = false;
+          expect(found).toBeTruthy(`Action ${expectedAction} not found`);
+        }
+      }
+      expect(success).toBeTruthy('All expected actions rendered');
+      expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
+    });
+
+    it('should have the required actions as part of the split button', () => {
+      let success = true;
+
+      expandSplitButton();
+
+      const expectedActions = ['Edit', 'Delete', 'Vocabulary' ];
+      const appElement: HTMLElement = fixture.nativeElement;
+      const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('li');
 
       for (const expectedAction of expectedActions) {
         let found = false;
@@ -152,7 +184,7 @@ describe('ListLessonsComponent', () => {
     });
   });
 
-  xdescribe('routing tests', () => {
+  describe('routing tests', () => {
     let router: Router;
 
     // Trigger component so it gets heroes and binds to them
@@ -174,6 +206,7 @@ describe('ListLessonsComponent', () => {
     });
 
     it('should navigate to edit-lesson component when clicking "Edit"', () => {
+      expandSplitButton();
       const editButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-editAction-0');
       editButton.click();
 
@@ -184,7 +217,8 @@ describe('ListLessonsComponent', () => {
       expect(navArgs).toBe(`/${frontend.lessons}/${id}/${frontend.editLesson}`, 'should nav to editLesson for first lesson');
     });
 
-    it('should stay on list-lessons component when clicking "Delete"', () => {
+    xit('should stay on list-lessons component when clicking "Delete"', () => {
+      expandSplitButton();
       const deleteButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-deleteAction-0');
       deleteButton.click();
 
@@ -193,6 +227,7 @@ describe('ListLessonsComponent', () => {
     });
 
     it('should navigate to listVocabularies component when clicking "Vocabulary"', () => {
+      expandSplitButton();
       const vocabulariesButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-vocabularyAction-0');
       vocabulariesButton.click();
 
