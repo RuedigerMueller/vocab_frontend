@@ -1,14 +1,14 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
+import { ShellbarModule } from '@fundamental-ngx/core';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        FundamentalNgxCoreModule
+        ShellbarModule
       ],
       declarations: [
         AppComponent

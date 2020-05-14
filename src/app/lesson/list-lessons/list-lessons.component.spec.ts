@@ -9,7 +9,7 @@ import { LessonService } from '../lesson.service';
 import { Router } from '@angular/router';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { frontend } from 'src/app/resource.identifiers';
-import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
+import { TableModule, ButtonModule, SplitButtonModule, MenuModule } from '@fundamental-ngx/core';
 
 
 const testLessonList = lessonTestData;
@@ -34,7 +34,10 @@ describe('ListLessonsComponent', () => {
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([]),
-        FundamentalNgxCoreModule
+        TableModule,
+        ButtonModule,
+        SplitButtonModule,
+        MenuModule
       ],
       providers: [
         { provide: LessonService, useValue: lessonService },

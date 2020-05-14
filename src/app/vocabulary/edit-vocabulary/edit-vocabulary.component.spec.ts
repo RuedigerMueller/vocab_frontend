@@ -11,7 +11,7 @@ import { LessonService } from 'src/app/lesson/lesson.service';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { VocabularyService } from '../vocabulary.service';
 import { By } from '@angular/platform-browser';
-import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
+import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 
 const testLesson = lessonTestData[0];
 const testVocabularyList = vocabularyTestData;
@@ -40,7 +40,8 @@ describe('EditVocabularyComponent', () => {
         ReactiveFormsModule,
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([]),
-        FundamentalNgxCoreModule
+        ButtonModule,
+        FormModule,
       ],
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },

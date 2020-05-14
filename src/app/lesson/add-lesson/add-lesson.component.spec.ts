@@ -8,10 +8,9 @@ import { HttpClient } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
+import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 
 describe('AddLessonComponent', () => {
-  
   let component: AddLessonComponent;
   let fixture: ComponentFixture<AddLessonComponent>;
 
@@ -26,6 +25,8 @@ describe('AddLessonComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
+        ButtonModule,
+        FormModule
       ],
       providers: [
         { provide: Router, useValue: routerSpy }

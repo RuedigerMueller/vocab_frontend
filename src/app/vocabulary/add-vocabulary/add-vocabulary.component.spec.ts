@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 import { LessonService } from 'src/app/lesson/lesson.service';
 import { By } from '@angular/platform-browser';
 
-import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
+import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 
 const testLesson = lessonTestData[0];
 
@@ -33,6 +33,8 @@ describe('AddVocabularyComponent', () => {
         ReactiveFormsModule,
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([]),
+        ButtonModule,
+        FormModule,
       ],
       providers: [
         { provide: LessonService, useValue: lessonService },

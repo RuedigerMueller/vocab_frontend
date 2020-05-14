@@ -11,7 +11,7 @@ import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { Router } from '@angular/router';
 import { frontend } from 'src/app/resource.identifiers';
-import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
+import { TableModule, ButtonModule, SplitButtonModule, MenuModule } from '@fundamental-ngx/core';
 
 const testLesson = lessonTestData[0];
 const testVocabularyList = vocabularyTestData;
@@ -40,7 +40,10 @@ describe('ListVocabulariesComponent', () => {
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([]),
-        FundamentalNgxCoreModule,
+        TableModule,
+        ButtonModule,
+        SplitButtonModule,
+        MenuModule,
       ],
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },
