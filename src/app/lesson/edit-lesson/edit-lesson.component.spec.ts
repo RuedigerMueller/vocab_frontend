@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { LessonService } from '../lesson.service';
 import { By } from '@angular/platform-browser';
 import { lessonTestData } from 'test/lesson.testdata.spec';
+import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
 
 const testEditLesson = lessonTestData[0];
 
@@ -32,6 +33,7 @@ describe('EditLessonComponent', () => {
         ReactiveFormsModule,
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([]),
+        FundamentalNgxCoreModule
       ],
       providers: [
         // { provide: Router, useValue: routerSpy },

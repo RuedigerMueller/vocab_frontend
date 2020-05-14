@@ -11,11 +11,13 @@ import { LessonService } from 'src/app/lesson/lesson.service';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { VocabularyService } from '../vocabulary.service';
 import { By } from '@angular/platform-browser';
+import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
 
 const testLesson = lessonTestData[0];
 const testVocabularyList = vocabularyTestData;
 
 describe('EditVocabularyComponent', () => {
+  
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
 
@@ -38,6 +40,7 @@ describe('EditVocabularyComponent', () => {
         ReactiveFormsModule,
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([]),
+        FundamentalNgxCoreModule
       ],
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },
@@ -59,7 +62,7 @@ describe('EditVocabularyComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
+  
   it('should have the required labels', () => {
     let success = true;
 

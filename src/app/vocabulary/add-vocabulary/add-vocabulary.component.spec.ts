@@ -8,6 +8,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { of } from 'rxjs';
 import { LessonService } from 'src/app/lesson/lesson.service';
+import { By } from '@angular/platform-browser';
+
+import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
 
 const testLesson = lessonTestData[0];
 
@@ -51,31 +54,45 @@ describe('AddVocabularyComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xdescribe('should have the correct labels', () => {
+  describe('should have the correct labels', () => {
 
   });
 
-  xdescribe('should have the required input fields', () => {
+  describe('should have the required input fields', () => {
+    it('should have "Learned Language" input field filled', () => {
+      const input = fixture.debugElement.query(By.css('#add-vocabulary-language_a'));
+      const inputElement = input.nativeElement;
+      expect(inputElement.value).toBe('');
+    });
 
+    it('should have "Known Language" input field filled', () => {
+      const input = fixture.debugElement.query(By.css('#add-vocabulary-language_b'));
+      const inputElement = input.nativeElement;
+      expect(inputElement.value).toBe('');
+    });
   });
 
   describe('should have the required actions', () => {
-    it('should have button "Create"', () => {
-
+    it('should have button "Add"', () => {
+      const appElement: HTMLElement = fixture.nativeElement;
+      const button = appElement.querySelector('#add-vocabulary-addButton');
+      expect(button.textContent).toContain('Add');
     });
 
     it('should have button "Cancel"', () => {
-
+      const appElement: HTMLElement = fixture.nativeElement;
+      const button = appElement.querySelector('#add-vocabulary-cancelButton');
+      expect(button.textContent).toContain('Cancel');
     });
   });
 
   describe('routing tests', () => {
     xit('should navigate to list-lessons component when clicking "Create"', () => {
-      
+
     });
 
     xit('should navigate to list-lessons component when clicking "Cancel"', () => {
-      
+
     });
   });
 });

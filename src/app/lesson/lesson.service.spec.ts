@@ -5,13 +5,21 @@ import { LessonService } from './lesson.service';
 import { Lesson } from './lesson.service.interface';
 import { environment } from 'src/environments/environment';
 import { lessonTestData } from 'test/lesson.testdata.spec';
+import { backend } from '../resource.identifiers';
 
 const testLessons: Lesson[] = lessonTestData;
+
+let backendURL: string;
+if (environment.backendUrl.charAt(environment.backendUrl.length - 1) === '/') {
+  backendURL = environment.backendUrl.slice(0, -1);
+} else {
+  backendURL = environment.backendUrl;
+}
 
 describe('LessonService', () => {
   let httpTestingController: HttpTestingController;
   let lesssonService: LessonService;
-  const lessonsURI = 'lessons/';
+  const lessonsURI = backend.lessons;
 
   const requestCheck = async (url: string, method: string, testData: any) => {
     const req: TestRequest = httpTestingController.expectOne(url);
@@ -39,7 +47,7 @@ describe('LessonService', () => {
       expect(lessons.length).toBe(expectedLessons.length);
     });
 
-    requestCheck(environment.backendUrl + lessonsURI, 'GET', expectedLessons);
+    requestCheck(backendURL + '/' + lessonsURI, 'GET', expectedLessons);
   });
 
   it('should get a lesson', () => {
@@ -50,7 +58,7 @@ describe('LessonService', () => {
       fail
     );
 
-    requestCheck(environment.backendUrl + lessonsURI + expectedLesson.id, 'GET', expectedLesson);
+    requestCheck(backendURL + '/' + lessonsURI + '/' + expectedLesson.id, 'GET', expectedLesson);
   });
 
   it('should update a lesson', () => {
@@ -61,7 +69,7 @@ describe('LessonService', () => {
       fail
     );
 
-    requestCheck(environment.backendUrl + lessonsURI + updatedLesson.id, 'PATCH', updatedLesson);
+    requestCheck(backendURL + '/' +  lessonsURI + '/' +  updatedLesson.id, 'PATCH', updatedLesson);
   });
 
   it('should delete a lesson', () => {
@@ -72,6 +80,6 @@ describe('LessonService', () => {
       fail
     );
 
-    requestCheck(environment.backendUrl + lessonsURI + deletedLesson.id, 'DELETE', deletedLesson);
+    requestCheck(backendURL + '/' + lessonsURI + '/' + deletedLesson.id, 'DELETE', deletedLesson);
   });
 });

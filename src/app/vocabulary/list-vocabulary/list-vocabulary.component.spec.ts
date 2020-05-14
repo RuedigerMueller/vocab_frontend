@@ -11,6 +11,7 @@ import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { Router } from '@angular/router';
 import { frontend } from 'src/app/resource.identifiers';
+import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
 
 const testLesson = lessonTestData[0];
 const testVocabularyList = vocabularyTestData;
@@ -39,6 +40,7 @@ describe('ListVocabulariesComponent', () => {
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([]),
+        FundamentalNgxCoreModule,
       ],
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },
@@ -94,8 +96,8 @@ describe('ListVocabulariesComponent', () => {
     it('should have required actions', () => {
       let success = true;
 
-      // ToDo: Check for "Edit" Action => Not a a native HTML element....
-      const expectedActions = ['Create', 'Delete'];
+      // ToDo: Check for "Delete" Action => Not a a native HTML element....
+      const expectedActions = ['Create', 'Edit'];
 
       const appElement: HTMLElement = fixture.nativeElement;
       const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('button, li');

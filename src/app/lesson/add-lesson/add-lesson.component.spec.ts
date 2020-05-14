@@ -8,7 +8,10 @@ import { HttpClient } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
+import { FundamentalNgxCoreModule } from '@fundamental-ngx/core';
+
 describe('AddLessonComponent', () => {
+  
   let component: AddLessonComponent;
   let fixture: ComponentFixture<AddLessonComponent>;
 
@@ -91,14 +94,14 @@ describe('AddLessonComponent', () => {
   describe('should have the required actioms', () => {
     it('should have button "Create"', () => {
       const appElement: HTMLElement = fixture.nativeElement;
-      const button = appElement.querySelector('button');
+      const button = appElement.querySelector('#add-lesson-createButton');
       expect(button.textContent).toContain('Create');
     });
 
-    xit('should have button "Cancel"', () => {
+    it('should have button "Cancel"', () => {
       const appElement: HTMLElement = fixture.nativeElement;
-      const button = appElement.querySelector('button');
-      expect(button.textContent).toContain('Create');
+      const button = appElement.querySelector('#add-lesson-cancelButton');
+      expect(button.textContent).toContain('Cancel');
     });
   });
 
@@ -134,3 +137,4 @@ describe('AddLessonComponent', () => {
     });
   });
 });
+

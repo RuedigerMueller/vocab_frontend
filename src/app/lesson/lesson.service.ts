@@ -62,8 +62,8 @@ export class LessonService {
       );
   }
 
-  deleteLesson(id: string) {
-    return this.http.delete(`${this.baseURL}/${backend.lessons}/${id}`)
+  deleteLesson(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseURL}/${backend.lessons}/${id}`, this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
