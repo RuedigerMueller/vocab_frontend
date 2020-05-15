@@ -80,7 +80,7 @@ describe('ListVocabulariesComponent', () => {
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
     fixture = TestBed.createComponent(ListVocabularyComponent);
-    router.initialNavigation();
+    // router.initialNavigation();
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -213,33 +213,22 @@ describe('ListVocabulariesComponent', () => {
     it('should navigate to add-vocabulary component when clicking "Create"', fakeAsync(() => {
       const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-createAction');
       createButton.click();
+
       tick();
+
       const id = component.lesson.id;
       expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.addVocabulary}`);
     }));
 
-    xit('should navigate to add-vocabulary component when clicking "Create"', () => {
-      const spy = router.navigateByUrl as jasmine.Spy;
-
-      const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-createAction');
-      createButton.click();
-
-      const navArgs = spy.calls.first().args[0];
-
-      const id = component.lesson.id;
-      expect(navArgs).toBe(`/${frontend.lessons}/${id}/${frontend.addVocabulary}`, 'should nav to addVocabulary');
-    });
-
-    xit('should navigate edit-vocabulary component when clicking "Edit"', () => {
+    xit('should navigate edit-vocabulary component when clicking "Edit"', fakeAsync(() => {
       const editButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-editAction-0');
       editButton.click();
 
-      const spy = router.navigateByUrl as jasmine.Spy;
-      const navArgs = spy.calls.first().args[0];
+      tick();
 
       const id = component.lesson.id;
-      expect(navArgs).toBe(`/${frontend.lessons}/${id}/${frontend.editVocabulary}/${component.vocabulary[0].id}`, 'should nav to editLesson for first lesson');
-    });
+      expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.editVocabulary}/${component.vocabulary[0].id}`, 'should nav to editLesson for first lesson');
+    }));
 
     xit('should stay on list-vocabulary component when clicking "Delete"', () => {
       expandSplitButton();

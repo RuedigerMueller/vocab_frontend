@@ -31,11 +31,11 @@ export class AddLessonComponent implements OnInit {
     this.lessonService.createLesson(this.lessonForm.value).subscribe(res => {
       console.log('Lesson created!');
       // this.ngZone.run(() => this.router.navigateByUrl('/lessons'));
-      this.router.navigateByUrl(`/${frontend.lessons}`);
+      this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
     });
   }
 
   cancel(): void {
-    this.router.navigateByUrl(`/${frontend.lessons}`);
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
   }
 }

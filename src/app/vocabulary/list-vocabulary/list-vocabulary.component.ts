@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Vocabulary } from '../vocabulary.service.interface';
 import { VocabularyService } from '../vocabulary.service';
@@ -20,6 +20,7 @@ export class ListVocabularyComponent implements OnInit {
   constructor(
     private vocabularyService: VocabularyService,
     private lessonService: LessonService,
+    private ngZone: NgZone,
     private router: Router,
     private route: ActivatedRoute
   ) { }
@@ -43,11 +44,11 @@ export class ListVocabularyComponent implements OnInit {
   }
 
   createVocabulary(): void {
-    this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.addVocabulary}`);
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.addVocabulary}`));
   }
 
   updateVocabulary(id: string): void {
-    this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.editVocabulary}/${id}`);
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.editVocabulary}/${id}`));
   }
 
   deleteVocabulary(id: string): void {
