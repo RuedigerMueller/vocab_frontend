@@ -27,6 +27,7 @@ describe('ListVocabulariesComponent', () => {
   let component: ListVocabularyComponent;
   let fixture: ComponentFixture<ListVocabularyComponent>;
 
+
   let getVocabularySpy;
   let deleteVocabularySpy;
   let getLessonsSpy;
@@ -45,7 +46,6 @@ describe('ListVocabulariesComponent', () => {
 
     const lessonService = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
-
 
     TestBed.configureTestingModule({
       declarations: [ListVocabularyComponent],
@@ -82,7 +82,11 @@ describe('ListVocabulariesComponent', () => {
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
     fixture = TestBed.createComponent(ListVocabularyComponent);
-    // router.initialNavigation();
+    /*
+    fixture.ngZone.run(() => {
+      router.initialNavigation();
+    });
+    */
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

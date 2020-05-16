@@ -1,27 +1,31 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 
 import { ListLessonsComponent } from './list-lessons.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { LessonService } from '../lesson.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { frontend } from 'src/app/resource.identifiers';
 import { TableModule, ButtonModule, SplitButtonModule, MenuModule } from '@fundamental-ngx/core';
-
+import { routes } from 'src/app/app-routing.module';
 
 const testLessonList = lessonTestData;
 
 describe('ListLessonsComponent', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
+  let location: Location;
+  let router: Router;
 
   let component: ListLessonsComponent;
   let fixture: ComponentFixture<ListLessonsComponent>;
 
   let getLessonsSpy;
+  let deleteLessonSpy;
 
   const expandSplitButton = () => {
     const appElement: HTMLElement = fixture.nativeElement;
@@ -31,16 +35,17 @@ describe('ListLessonsComponent', () => {
   };
 
   beforeEach(async(() => {
-
-    const lessonService = jasmine.createSpyObj('LessonService', ['getLessons']);
+    const lessonService = jasmine.createSpyObj('LessonService', ['getLessons', 'deleteLesson']);
     getLessonsSpy = lessonService.getLessons.and.returnValue(of(testLessonList));
-    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+    deleteLessonSpy = lessonService.deleteLesson.and.returnValue(new Observable<void>());
+
+    //const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
     TestBed.configureTestingModule({
       declarations: [ListLessonsComponent],
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule.withRoutes(routes),
         TableModule,
         ButtonModule,
         SplitButtonModule,
@@ -48,7 +53,7 @@ describe('ListLessonsComponent', () => {
       ],
       providers: [
         { provide: LessonService, useValue: lessonService },
-        { provide: Router, useValue: routerSpy }
+        //{ provide: Router, useValue: routerSpy }
       ]
     })
       .compileComponents();
@@ -58,6 +63,8 @@ describe('ListLessonsComponent', () => {
   }));
 
   beforeEach(() => {
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
     fixture = TestBed.createComponent(ListLessonsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -185,57 +192,42 @@ describe('ListLessonsComponent', () => {
   });
 
   describe('routing tests', () => {
-    let router: Router;
-
-    // Trigger component so it gets heroes and binds to them
-    beforeEach(async(() => {
-      router = fixture.debugElement.injector.get(Router);
-      fixture.detectChanges(); // runs ngOnInit -> getLessons
-      fixture.whenStable() // No need for the `lastPromise` hack!
-        .then(() => fixture.detectChanges()); // bind to lessons
-    }));
-
-    it('should navigate to add-lesson component when clicking "Create"', () => {
+    it('should navigate to add-lesson component when clicking "Create"', fakeAsync(() => {
       const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-createAction');
       createButton.click();
+      tick();
 
-      const spy = router.navigateByUrl as jasmine.Spy;
-      const navArgs = spy.calls.first().args[0];
+      expect(location.path()).toBe(`/${frontend.lessons}/${frontend.createLesson}`, 'should nav to createLesson');
+    }));
 
-      expect(navArgs).toBe(`/${frontend.lessons}/${frontend.createLesson}`, 'should nav to createLesson');
-    });
-
-    it('should navigate to edit-lesson component when clicking "Edit"', () => {
+    it('should navigate to edit-lesson component when clicking "Edit"', fakeAsync(() => {
       expandSplitButton();
       const editButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-editAction-0');
       editButton.click();
-
-      const spy = router.navigateByUrl as jasmine.Spy;
-      const navArgs = spy.calls.first().args[0];
+      tick();
 
       const id = component.lessons[0].id;
-      expect(navArgs).toBe(`/${frontend.lessons}/${id}/${frontend.editLesson}`, 'should nav to editLesson for first lesson');
-    });
+      expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.editLesson}`, 'should nav to editLesson for first lesson');
+    }));
 
-    xit('should stay on list-lessons component when clicking "Delete"', () => {
+    it('should stay on list-lessons component when clicking "Delete"', fakeAsync(() => {
+      const currentPath = location.path();
       expandSplitButton();
       const deleteButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-deleteAction-0');
       deleteButton.click();
+      tick();
 
-      const spy = router.navigateByUrl as jasmine.Spy;
-      expect(spy.calls.first()).toBeUndefined('should stay on lessons list');
-    });
+      expect(location.path()).toBe(currentPath);
+    }));
 
-    it('should navigate to listVocabularies component when clicking "Vocabulary"', () => {
+    it('should navigate to listVocabularies component when clicking "Vocabulary"', fakeAsync(() => {
       expandSplitButton();
       const vocabulariesButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-vocabularyAction-0');
       vocabulariesButton.click();
-
-      const spy = router.navigateByUrl as jasmine.Spy;
-      const navArgs = spy.calls.first().args[0];
+      tick();
 
       const id = component.lessons[0].id;
-      expect(navArgs).toBe(`/${frontend.lessons}/${id}/${frontend.vocabulary}`, 'should nav to listVocabularies for first lesson');
-    });
+      expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.vocabulary}`, 'should nav to listVocabularies for first lesson');
+    }));
   });
 });
