@@ -58,8 +58,8 @@ export class VocabularyService {
       );
   }
 
-  deleteVocabulary(id: string) {
-    return this.http.delete(`${this.baseURL}/${backend.vocabulary}/${id}`)
+  deleteVocabulary(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseURL}/${backend.vocabulary}/${id}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)

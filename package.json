@@ -6,7 +6,7 @@
     "start-dev": "ng serve",
     "start": "node server.js",
     "build": "ng build --prod --aot",
-    "test": "ng test --progress=true",
+    "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

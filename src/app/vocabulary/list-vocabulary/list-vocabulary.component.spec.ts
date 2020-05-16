@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient } from '@angular/common/http';
 import { VocabularyService } from '../vocabulary.service';
 import { LessonService } from 'src/app/lesson/lesson.service';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { Router, ActivatedRoute, convertToParamMap } from '@angular/router';
@@ -28,6 +28,7 @@ describe('ListVocabulariesComponent', () => {
   let fixture: ComponentFixture<ListVocabularyComponent>;
 
   let getVocabularySpy;
+  let deleteVocabularySpy;
   let getLessonsSpy;
 
   const expandSplitButton = () => {
@@ -38,8 +39,9 @@ describe('ListVocabulariesComponent', () => {
   };
 
   beforeEach(async(() => {
-    const vocabularyService = jasmine.createSpyObj('VocabularyService', ['getLessonVocabulary']);
+    const vocabularyService = jasmine.createSpyObj('VocabularyService', ['getLessonVocabulary', 'deleteVocabulary']);
     getVocabularySpy = vocabularyService.getLessonVocabulary.and.returnValue(of(testVocabularyList));
+    deleteVocabularySpy = vocabularyService.deleteVocabulary.and.returnValue(new Observable<void>());
 
     const lessonService = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
@@ -201,42 +203,33 @@ describe('ListVocabulariesComponent', () => {
   });
 
   describe('Routing tests', () => {
-    /*
-    // Trigger component so it gets heroes and binds to them
-    beforeEach(async(() => {
-      router = fixture.debugElement.injector.get(Router);
-      fixture.detectChanges(); // runs ngOnInit -> getVocabulary
-      fixture.whenStable() // No need for the `lastPromise` hack!
-        .then(() => fixture.detectChanges()); // bind to vocabulary
-    }));
-    */
     it('should navigate to add-vocabulary component when clicking "Create"', fakeAsync(() => {
       const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-createAction');
       createButton.click();
-
       tick();
 
       const id = component.lesson.id;
       expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.addVocabulary}`);
     }));
 
-    xit('should navigate edit-vocabulary component when clicking "Edit"', fakeAsync(() => {
-      const editButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-editAction-0');
+    it('should navigate edit-vocabulary component when clicking "Edit"', fakeAsync(() => {
+      const splitButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-editAction-0');
+      const editButton: HTMLElement = splitButton.querySelectorAll('button')[0];
       editButton.click();
-
       tick();
 
       const id = component.lesson.id;
       expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.editVocabulary}/${component.vocabulary[0].id}`, 'should nav to editLesson for first lesson');
     }));
 
-    xit('should stay on list-vocabulary component when clicking "Delete"', () => {
+    it('should stay on list-vocabulary component when clicking "Delete"', fakeAsync(() => {
+      const currentPath = location.path();
       expandSplitButton();
       const deleteButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-deleteAction-0');
       deleteButton.click();
+      tick();
 
-      const spy = router.navigateByUrl as jasmine.Spy;
-      expect(spy.calls.first()).toBeUndefined('should stay on vocabulary list');
-    });
+      expect(location.path()).toBe(currentPath, 'should stay on vocabulary list');
+    }));
   });
 });
