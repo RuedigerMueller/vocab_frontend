@@ -1,21 +1,21 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-
-import { EditVocabularyComponent } from './edit-vocabulary.component';
+import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { lessonTestData } from 'test/lesson.testdata.spec';
-import { of } from 'rxjs';
-import { LessonService } from 'src/app/lesson/lesson.service';
-import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
-import { VocabularyService } from '../vocabulary.service';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { routes } from 'src/app/app-routing.module';
-import { frontend } from 'src/app/resource.identifiers';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonModule, FormModule } from '@fundamental-ngx/core';
+import { of } from 'rxjs';
+import { routes } from 'src/app/app-routing.module';
+import { LessonService } from 'src/app/lesson/lesson.service';
+import { frontend } from 'src/app/resource.identifiers';
+import { lessonTestData } from 'test/lesson.testdata.spec';
+import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
+import { VocabularyService } from '../vocabulary.service';
+import { EditVocabularyComponent } from './edit-vocabulary.component';
+
 
 const testLesson = lessonTestData[0];
 const testVocabularyList = vocabularyTestData;
@@ -69,13 +69,13 @@ describe('EditVocabularyComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('Test environment should be setup', () => {
+  describe('should create component', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
   });
 
-  describe('should have the required UI elements', () => {
+  describe('should render UI elements', () => {
     it('should have the required labels', () => {
       let success = true;
 
@@ -115,7 +115,7 @@ describe('EditVocabularyComponent', () => {
     });
   });
 
-  describe('should have the expected actions', () => {
+  describe('should have required actions', () => {
     it('should have button "Save"', () => {
       const appElement: HTMLElement = fixture.nativeElement;
       const button = appElement.querySelector('#edit-vocabulary-saveButton');
@@ -129,7 +129,7 @@ describe('EditVocabularyComponent', () => {
     });
   });
 
-  describe('routing tests', () => {
+  describe('should route correctly on actions', () => {
     it('should navigate to list-lessons component when clicking "Save"', fakeAsync(() => {
       const saveButton: HTMLElement = fixture.nativeElement.querySelector('#edit-vocabulary-saveButton');
       saveButton.click();

@@ -13,8 +13,8 @@ export class AddLessonComponent implements OnInit {
   lessonForm: FormGroup;
 
   constructor(
-    public fb: FormBuilder, 
-    private ngZone: NgZone, 
+    public fb: FormBuilder,
+    private ngZone: NgZone,
     private router: Router,
     private lessonService: LessonService
   ) { }
@@ -29,7 +29,6 @@ export class AddLessonComponent implements OnInit {
 
   submitForm() {
     this.lessonService.createLesson(this.lessonForm.value).subscribe(res => {
-      // this.ngZone.run(() => this.router.navigateByUrl('/lessons'));
       this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
     });
   }

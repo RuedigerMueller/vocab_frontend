@@ -1,20 +1,18 @@
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-
-import { AddLessonComponent } from './add-lesson.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ButtonModule, FormModule } from '@fundamental-ngx/core';
+import { of } from 'rxjs';
 import { routes } from 'src/app/app-routing.module';
 import { frontend } from 'src/app/resource.identifiers';
-
-import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 import { lessonTestData } from 'test/lesson.testdata.spec';
-import { of } from 'rxjs';
 import { LessonService } from '../lesson.service';
+import { AddLessonComponent } from './add-lesson.component';
 
 const testAddLesson = lessonTestData[0];
 
@@ -60,13 +58,13 @@ describe('AddLessonComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('Test environment should be setup', () => {
+  describe('should create component', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
   });
 
-  describe('UI elements should be displayed', () => {
+  describe('should render UI elements', () => {
     it('should have the required labels', () => {
       let success = true;
 
@@ -110,7 +108,7 @@ describe('AddLessonComponent', () => {
     });
   });
 
-  describe('should have the required actioms', () => {
+  describe('should have required actions', () => {
     it('should have button "Create"', () => {
       const appElement: HTMLElement = fixture.nativeElement;
       const button = appElement.querySelector('#add-lesson-createButton');
@@ -124,7 +122,7 @@ describe('AddLessonComponent', () => {
     });
   });
 
-  describe('routing tests', () => {
+  describe('should route correctly on actions', () => {
     it('should navigate to list-lessons component when clicking "Create"', fakeAsync(() => {
       const createButton: HTMLElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
       createButton.click();

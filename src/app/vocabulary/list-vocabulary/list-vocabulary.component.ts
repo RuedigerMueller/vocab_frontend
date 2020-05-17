@@ -31,6 +31,10 @@ export class ListVocabularyComponent implements OnInit {
     this.getVocabulary(this.lessonID);
   }
 
+  createVocabulary(): void {
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.addVocabulary}`));
+  }
+
   getLesson(id: string): void  {
     this.lessonService.getLesson(id).subscribe((lesson: Lesson) => {
       this.lesson = lesson;
@@ -41,10 +45,6 @@ export class ListVocabularyComponent implements OnInit {
     this.vocabularyService.getLessonVocabulary(id).subscribe((vocabulary: Vocabulary[]) => {
       this.vocabulary = vocabulary;
     });
-  }
-
-  createVocabulary(): void {
-    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.addVocabulary}`));
   }
 
   updateVocabulary(id: string): void {

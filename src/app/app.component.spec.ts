@@ -1,7 +1,7 @@
-import { TestBed, async } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
 import { ShellbarModule } from '@fundamental-ngx/core';
+import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -16,27 +16,31 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  describe('should create application', () => {
+    it('should create the app', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+      expect(app).toBeTruthy();
+    });
   });
 
-  it(`should have as title 'Vocab TS'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual(app.title);
-  });
+  describe('should render UI elements', () => {
+    it(`should have as title 'Vocab TS'`, () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+      expect(app.title).toEqual(app.title);
+    });
 
-  it('should render title', async () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+    it('should render title', async () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
 
-    fixture.detectChanges();
+      fixture.detectChanges();
 
-    const appElement: HTMLElement = fixture.nativeElement;
-    const titleElement = appElement.querySelector('fd-shellbar-title');
+      const appElement: HTMLElement = fixture.nativeElement;
+      const titleElement = appElement.querySelector('fd-shellbar-title');
 
-    expect(titleElement.textContent).toContain(app.title);
+      expect(titleElement.textContent).toContain(app.title);
+    });
   });
 });

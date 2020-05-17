@@ -1,20 +1,20 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-
-import { ListVocabularyComponent } from './list-vocabulary.component';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { VocabularyService } from '../vocabulary.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ButtonModule, MenuModule, SplitButtonModule, TableModule } from '@fundamental-ngx/core';
+import { Observable, of } from 'rxjs';
+import { routes } from 'src/app/app-routing.module';
 import { LessonService } from 'src/app/lesson/lesson.service';
-import { of, Observable } from 'rxjs';
+import { Lesson } from 'src/app/lesson/lesson.service.interface';
+import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
-import { Router, ActivatedRoute, convertToParamMap } from '@angular/router';
-import { Location } from '@angular/common';
-import { frontend } from 'src/app/resource.identifiers';
-import { TableModule, ButtonModule, SplitButtonModule, MenuModule } from '@fundamental-ngx/core';
-import { routes } from 'src/app/app-routing.module';
-import { Lesson } from 'src/app/lesson/lesson.service.interface';
+import { VocabularyService } from '../vocabulary.service';
+import { ListVocabularyComponent } from './list-vocabulary.component';
+
 
 const testLesson: Lesson = lessonTestData[0];
 const testVocabularyList = vocabularyTestData;
@@ -82,22 +82,17 @@ describe('ListVocabulariesComponent', () => {
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
     fixture = TestBed.createComponent(ListVocabularyComponent);
-    /*
-    fixture.ngZone.run(() => {
-      router.initialNavigation();
-    });
-    */
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  describe('Test environment should be setup', () => {
+  describe('should create component', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
   });
 
-  describe('UI elements should be displayed', () => {
+  describe('should render UI elements', () => {
     it('should have the required column heading', () => {
       let success = true;
 
@@ -124,6 +119,38 @@ describe('ListVocabulariesComponent', () => {
       expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
     });
 
+    it('should display a vocabulary with a lanaguage_a as defined in second test data entry', () => {
+      const index = 1; // second element defined in testLessons
+      const appElement: HTMLElement = fixture.nativeElement;
+      const tableCell = appElement.querySelector(`#list-vocabulary-language_a-${index}`);
+      expect(tableCell.textContent).toContain(testVocabularyList[index].language_a);
+    });
+
+    it('should display a vocabulary with a lanaguage_b as defined in second test data entry', () => {
+      const index = 1; // second element defined in testLessons
+      const appElement: HTMLElement = fixture.nativeElement;
+      const tableCell = appElement.querySelector(`#list-vocabulary-language_b-${index}`);
+      expect(tableCell.textContent).toContain(testVocabularyList[index].language_b);
+    });
+
+    it('should display a vocabulary with a level as defined in second test data entry', () => {
+      const index = 1; // second element defined in testLessons
+      const appElement: HTMLElement = fixture.nativeElement;
+      const tableCell = appElement.querySelector(`#list-vocabulary-level-${index}`);
+      expect(tableCell.textContent).toContain(testVocabularyList[index].level.toString());
+    });
+
+    it('should display a vocabulary with a dueDate as defined in second test data entry', () => {
+      const index = 1; // second element defined in testLessons
+      const appElement: HTMLElement = fixture.nativeElement;
+      const tableCell = appElement.querySelector(`#list-vocabulary-dueDate-${index}`);
+
+      const dueDate: Date = new Date(testVocabularyList[index].dueDate);
+      expect(tableCell.textContent).toContain(dueDate.toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }));
+    });
+  });
+
+  describe('should have required actions', () => {
     it('should have required buttons', () => {
       let success = true;
 
@@ -174,41 +201,9 @@ describe('ListVocabulariesComponent', () => {
       expect(success).toBeTruthy('All expected actions rendered');
       expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
     });
-
-    describe('should display the content', () => {
-      it('should display a vocabulary with a lanaguage_a as defined in second test data entry', () => {
-        const index = 1; // second element defined in testLessons
-        const appElement: HTMLElement = fixture.nativeElement;
-        const tableCell = appElement.querySelector(`#list-vocabulary-language_a-${index}`);
-        expect(tableCell.textContent).toContain(testVocabularyList[index].language_a);
-      });
-
-      it('should display a vocabulary with a lanaguage_b as defined in second test data entry', () => {
-        const index = 1; // second element defined in testLessons
-        const appElement: HTMLElement = fixture.nativeElement;
-        const tableCell = appElement.querySelector(`#list-vocabulary-language_b-${index}`);
-        expect(tableCell.textContent).toContain(testVocabularyList[index].language_b);
-      });
-
-      it('should display a vocabulary with a level as defined in second test data entry', () => {
-        const index = 1; // second element defined in testLessons
-        const appElement: HTMLElement = fixture.nativeElement;
-        const tableCell = appElement.querySelector(`#list-vocabulary-level-${index}`);
-        expect(tableCell.textContent).toContain(testVocabularyList[index].level.toString());
-      });
-
-      it('should display a vocabulary with a dueDate as defined in second test data entry', () => {
-        const index = 1; // second element defined in testLessons
-        const appElement: HTMLElement = fixture.nativeElement;
-        const tableCell = appElement.querySelector(`#list-vocabulary-dueDate-${index}`);
-
-        const dueDate: Date = new Date(testVocabularyList[index].dueDate);
-        expect(tableCell.textContent).toContain(dueDate.toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }));
-      });
-    });
   });
 
-  describe('Routing tests', () => {
+  describe('should route correctly on actions', () => {
     it('should navigate to add-vocabulary component when clicking "Create"', fakeAsync(() => {
       const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-createAction');
       createButton.click();

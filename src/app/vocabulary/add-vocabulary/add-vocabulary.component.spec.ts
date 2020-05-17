@@ -68,13 +68,13 @@ describe('AddVocabularyComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('Test environment should be setup', () => {
+  describe('should create component', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
   });
 
-  describe('should have the correct labels', () => {
+  describe('should render UI elements', () => {
     it('should have the required labels', () => {
       let success = true;
 
@@ -98,9 +98,7 @@ describe('AddVocabularyComponent', () => {
       }
       expect(success).toBeTruthy('All expected labels rendered');
     });
-  });
 
-  describe('should have the required input fields', () => {
     it('should have "Learned Language" input field filled', () => {
       const input = fixture.debugElement.query(By.css('#add-vocabulary-language_a'));
       const inputElement = input.nativeElement;
@@ -114,7 +112,7 @@ describe('AddVocabularyComponent', () => {
     });
   });
 
-  describe('should have the required actions', () => {
+  describe('should have required actions', () => {
     it('should have button "Add"', () => {
       const appElement: HTMLElement = fixture.nativeElement;
       const button = appElement.querySelector('#add-vocabulary-addButton');
@@ -128,7 +126,7 @@ describe('AddVocabularyComponent', () => {
     });
   });
 
-  describe('routing tests', () => {
+  describe('should route correctly on actions', () => {
     it('should stay on add-vocabulary when clicking "Add"', fakeAsync(() => {
       const currentLocation: string = location.path();
       const addButton: HTMLElement = fixture.nativeElement.querySelector('#add-vocabulary-addButton');
