@@ -43,8 +43,11 @@ describe('VocabularyService', () => {
     expect(vocabularyService).toBeTruthy();
   });
 
-  xit('should create vocabulary', () => {
-    const expectedVocabulary = testVocabulary[0];
+  it('should create vocabulary', () => {
+    const expectedVocabulary: Vocabulary = testVocabulary[0];
+    vocabularyService.createVocabulary(expectedVocabulary).subscribe((vocabulary: Vocabulary) => { });
+
+    requestCheck(`${backendURL}/${backend.vocabulary}`, 'POST', expectedVocabulary);
   });
 
   it('should get the lesson vocabulary', () => {
@@ -54,32 +57,25 @@ describe('VocabularyService', () => {
     requestCheck(`${backendURL}/${backend.lessons}/${testLesson.id}/${backend.vocabulary}`, 'GET', expectedVocabulary);
   });
 
-  xit('should get a single vocabulary', () => {
-    const expectedVocabulary = testVocabulary[0];
-
+  it('should get a single vocabulary', () => {
+    const expectedVocabulary: Vocabulary = testVocabulary[0];
     vocabularyService.getVocabulary(expectedVocabulary.id.toString()).subscribe((vocabulary: Vocabulary) => { });
 
-    requestCheck(`${backendURL}/${backend.vocabulary}/${expectedVocabulary.id.toString()}}`, 'GET', expectedVocabulary);
+    requestCheck(`${backendURL}/${backend.vocabulary}/${expectedVocabulary.id.toString()}`, 'GET', expectedVocabulary);
   });
 
-  xit('should update a vocabulary', () => {
-    /*
-    const expectedVocabulary = testVocabulary[0];
-
-    let expectedVocabulary: Vocabulary;
-    expectedVocabulary.id = testVocabulary[0].id;
-    expectedVocabulary.dueDate = Date(testVocabulary[0].dueDate);
+  it('should update a vocabulary', () => {
+    const expectedVocabulary: Vocabulary = testVocabulary[0];
     vocabularyService.updateVocabulary(expectedVocabulary.id.toString(), expectedVocabulary).subscribe((vocabulary: Vocabulary) => { });
 
-    requestCheck(`${backendURL}/${backend.vocabulary}/${expectedVocabulary.id.toString()}}`, 'PATCH', expectedVocabulary);
-    */
+    requestCheck(`${backendURL}/${backend.vocabulary}/${expectedVocabulary.id.toString()}`, 'PATCH', expectedVocabulary);
   });
 
-  xit('should delete vocabulary', () => {
-    const expectedVocabulary = testVocabulary[0];
+  it('should delete vocabulary', () => {
+    const expectedVocabulary: Vocabulary = testVocabulary[0];
 
     vocabularyService.deleteVocabulary(expectedVocabulary.id.toString()).subscribe(() => { });
 
-    requestCheck(`${backendURL}/${backend.vocabulary}/${expectedVocabulary.id.toString()}}`, 'DELETE', expectedVocabulary);
+    requestCheck(`${backendURL}/${backend.vocabulary}/${expectedVocabulary.id.toString()}`, 'DELETE', expectedVocabulary);
   });
 });
