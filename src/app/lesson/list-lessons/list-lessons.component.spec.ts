@@ -39,8 +39,6 @@ describe('ListLessonsComponent', () => {
     getLessonsSpy = lessonService.getLessons.and.returnValue(of(testLessonList));
     deleteLessonSpy = lessonService.deleteLesson.and.returnValue(new Observable<void>());
 
-    //const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
-
     TestBed.configureTestingModule({
       declarations: [ListLessonsComponent],
       imports: [
@@ -53,7 +51,6 @@ describe('ListLessonsComponent', () => {
       ],
       providers: [
         { provide: LessonService, useValue: lessonService },
-        //{ provide: Router, useValue: routerSpy }
       ]
     })
       .compileComponents();

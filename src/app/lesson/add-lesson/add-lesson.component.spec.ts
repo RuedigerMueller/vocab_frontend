@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 
 import { AddLessonComponent } from './add-lesson.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -7,29 +7,43 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClient } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { routes } from 'src/app/app-routing.module';
+import { frontend } from 'src/app/resource.identifiers';
 
 import { ButtonModule, FormModule } from '@fundamental-ngx/core';
+import { lessonTestData } from 'test/lesson.testdata.spec';
+import { of } from 'rxjs';
+import { LessonService } from '../lesson.service';
+
+const testAddLesson = lessonTestData[0];
 
 describe('AddLessonComponent', () => {
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
+  let location: Location;
+  let router: Router;
+
   let component: AddLessonComponent;
   let fixture: ComponentFixture<AddLessonComponent>;
 
-  let httpClient: HttpClient;
-  let httpTestingController: HttpTestingController;
+  let addLessonSpy;
 
   beforeEach(async(() => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+    const lessonService = jasmine.createSpyObj('LessonService', ['createLesson']);
+    addLessonSpy = lessonService.createLesson.and.returnValue(of(testAddLesson));
+
     TestBed.configureTestingModule({
       declarations: [AddLessonComponent],
       imports: [
         ReactiveFormsModule,
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule.withRoutes(routes),
         HttpClientTestingModule,
         ButtonModule,
         FormModule
       ],
       providers: [
-        { provide: Router, useValue: routerSpy }
+        { provide: LessonService, useValue: lessonService },
       ]
     })
       .compileComponents();
@@ -39,40 +53,44 @@ describe('AddLessonComponent', () => {
   }));
 
   beforeEach(() => {
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
     fixture = TestBed.createComponent(AddLessonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('Test environment should be setup', () => {
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
   });
 
-  it('should have the required labels', () => {
-    let success = true;
+  describe('UI elements should be displayed', () => {
+    it('should have the required labels', () => {
+      let success = true;
 
-    const expectedLabels = ['Title', 'Learned language', 'Known language'];
+      const expectedLabels = ['Title', 'Learned language', 'Known language'];
 
-    const appElement: HTMLElement = fixture.nativeElement;
-    const labels = appElement.querySelectorAll('label');
+      const appElement: HTMLElement = fixture.nativeElement;
+      const labels = appElement.querySelectorAll('label');
 
-    for (const expectedLabel of expectedLabels) {
-      let found = false;
-      labels.forEach((label) => {
-        if (label.textContent === expectedLabel) {
-          found = true;
+      for (const expectedLabel of expectedLabels) {
+        let found = false;
+        labels.forEach((label) => {
+          if (label.textContent === expectedLabel) {
+            found = true;
+          }
+        });
+
+        if (found === false) {
+          success = false;
+          expect(found).toBeTruthy(`Label ${expectedLabel} not found`);
         }
-      });
-
-      if (found === false) {
-        success = false;
-        expect(found).toBeTruthy(`Label ${expectedLabel} not found`);
       }
-    }
-    expect(success).toBeTruthy('All expected labels rendered');
-  });
+      expect(success).toBeTruthy('All expected labels rendered');
+    });
 
-  describe('should have the required input fields', () => {
     it('should have input field for "Title"', () => {
       const input = fixture.debugElement.query(By.css('#add-lesson-title'));
       const inputElement = input.nativeElement;
@@ -107,35 +125,21 @@ describe('AddLessonComponent', () => {
   });
 
   describe('routing tests', () => {
-    let router: Router;
+    it('should navigate to list-lessons component when clicking "Create"', fakeAsync(() => {
+      const createButton: HTMLElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
+      createButton.click();
+      tick();
 
-    // Trigger component so it gets heroes and binds to them
-    beforeEach(async(() => {
-      router = fixture.debugElement.injector.get(Router);
-      fixture.detectChanges(); // runs ngOnInit -> getLessons
-      fixture.whenStable() // No need for the `lastPromise` hack!
-        .then(() => fixture.detectChanges()); // bind to lessons
+      expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to listLessons');
     }));
 
-    xit('should navigate to list-lessons component when clicking "Create"', () => {
-      const createButton: HTMLElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
-      createButton.click();
+    it('should navigate to list-lessons component when clicking "Cancel"', fakeAsync(() => {
+      const cancelButton: HTMLElement = fixture.nativeElement.querySelector('#add-lesson-cancelButton');
+      cancelButton.click();
+      tick();
 
-      const spy = router.navigateByUrl as jasmine.Spy;
-      const navArgs = spy.calls.first().args[0];
-
-      expect(navArgs).toBe('/lessons', 'should nav to lessons after create');
-    });
-
-    xit('should navigate to list-lessons component when clicking "Cancel"', () => {
-      const createButton: HTMLElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
-      createButton.click();
-
-      const spy = router.navigateByUrl as jasmine.Spy;
-      const navArgs = spy.calls.first().args[0];
-
-      expect(navArgs).toBe('/lessons', 'should nav to lessons after cancel');
-    });
+      expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to listLessons');
+    }));
   });
 });
 

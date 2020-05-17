@@ -38,7 +38,6 @@ export class EditLessonComponent implements OnInit {
 
   submitForm(): void {
     this.lessonService.updateLesson(this.lesson.id.toString(), this.editLessonForm.value).subscribe(res => {
-      console.log('Lesson updated!');
       this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
     });
   }
