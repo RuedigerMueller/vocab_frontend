@@ -48,8 +48,6 @@ export class EditVocabularyComponent implements OnInit {
     const updatedVocabulary: Vocabulary = this.editVocabularyForm.value;
     updatedVocabulary.level = this.vocabulary.level;
     this.vocabularyService.updateVocabulary(this.vocabulary.id.toString(), this.editVocabularyForm.value).subscribe(res => {
-      console.log('Vocabulary updated!');
-
       this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lesson.id}/${frontend.vocabulary}`));
     });
   }

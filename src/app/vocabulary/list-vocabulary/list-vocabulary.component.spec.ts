@@ -14,8 +14,9 @@ import { Location } from '@angular/common';
 import { frontend } from 'src/app/resource.identifiers';
 import { TableModule, ButtonModule, SplitButtonModule, MenuModule } from '@fundamental-ngx/core';
 import { routes } from 'src/app/app-routing.module';
+import { Lesson } from 'src/app/lesson/lesson.service.interface';
 
-const testLesson = lessonTestData[0];
+const testLesson: Lesson = lessonTestData[0];
 const testVocabularyList = vocabularyTestData;
 
 describe('ListVocabulariesComponent', () => {
@@ -26,7 +27,6 @@ describe('ListVocabulariesComponent', () => {
 
   let component: ListVocabularyComponent;
   let fixture: ComponentFixture<ListVocabularyComponent>;
-
 
   let getVocabularySpy;
   let deleteVocabularySpy;
@@ -197,11 +197,13 @@ describe('ListVocabulariesComponent', () => {
         expect(tableCell.textContent).toContain(testVocabularyList[index].level.toString());
       });
 
-      xit('should display a vocabulary with a dueDate as defined in second test data entry', () => {
+      it('should display a vocabulary with a dueDate as defined in second test data entry', () => {
         const index = 1; // second element defined in testLessons
         const appElement: HTMLElement = fixture.nativeElement;
         const tableCell = appElement.querySelector(`#list-vocabulary-dueDate-${index}`);
-        expect(tableCell.textContent).toContain(testVocabularyList[index].dueDate);
+
+        const dueDate: Date = new Date(testVocabularyList[index].dueDate);
+        expect(tableCell.textContent).toContain(dueDate.toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }));
       });
     });
   });
