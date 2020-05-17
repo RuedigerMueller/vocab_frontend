@@ -41,9 +41,7 @@ export class AddVocabularyComponent implements OnInit {
   submitForm(): void {
     const vocabulary: Vocabulary = this.addVocabularyForm.value;
     vocabulary.lesson = this.lesson.id;
-    this.vocabularyService.createVocabulary(vocabulary).subscribe(res => {
-      console.log('Vocabulary added!');
-    });
+    this.vocabularyService.createVocabulary(vocabulary).subscribe(res => { });
     this.addVocabularyForm = this.fb.group({
       language_a: [''],
       language_b: ['']

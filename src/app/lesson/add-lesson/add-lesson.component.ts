@@ -29,7 +29,6 @@ export class AddLessonComponent implements OnInit {
 
   submitForm() {
     this.lessonService.createLesson(this.lessonForm.value).subscribe(res => {
-      console.log('Lesson created!');
       // this.ngZone.run(() => this.router.navigateByUrl('/lessons'));
       this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
     });

@@ -18,4 +18,24 @@ describe('VocabularyService', () => {
   it('should be created', () => {
     expect(vocabularyService).toBeTruthy();
   });
+
+  xit('should create vocabulary', () => {
+
+  });
+
+  xit('should get the lesson vocabulary', () => {
+
+  });
+
+  xit('should get a single vocabulary', () => {
+
+  });
+
+  xit('should update a vocabulary', () => {
+
+  });
+
+  xit('should delete vocabulary', () => {
+
+  });
 });
