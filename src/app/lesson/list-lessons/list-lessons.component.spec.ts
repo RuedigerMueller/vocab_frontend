@@ -11,8 +11,9 @@ import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { LessonService } from '../lesson.service';
 import { ListLessonsComponent } from './list-lessons.component';
+import { Lesson } from '../lesson.service.interface';
 
-const testLessonList = lessonTestData;
+const testLessonList: ReadonlyArray<Lesson> = lessonTestData;
 
 describe('ListLessonsComponent', () => {
   let httpClient: HttpClient;
@@ -23,18 +24,17 @@ describe('ListLessonsComponent', () => {
   let component: ListLessonsComponent;
   let fixture: ComponentFixture<ListLessonsComponent>;
 
-  let getLessonsSpy;
-  let deleteLessonSpy;
+  let getLessonsSpy: any;
+  let deleteLessonSpy: any;
 
   const expandSplitButton = () => {
-    const appElement: HTMLElement = fixture.nativeElement;
-    const expandableButton: HTMLElement = appElement.querySelector('.sap-icon--slim-arrow-down');
+    const expandableButton: HTMLButtonElement = fixture.nativeElement.querySelector('.sap-icon--slim-arrow-down');
     expandableButton.click();
     fixture.detectChanges();
   };
 
   beforeEach(async(() => {
-    const lessonService = jasmine.createSpyObj('LessonService', ['getLessons', 'deleteLesson']);
+    const lessonService: any = jasmine.createSpyObj('LessonService', ['getLessons', 'deleteLesson']);
     getLessonsSpy = lessonService.getLessons.and.returnValue(of(testLessonList));
     deleteLessonSpy = lessonService.deleteLesson.and.returnValue(new Observable<void>());
 
@@ -76,10 +76,9 @@ describe('ListLessonsComponent', () => {
     it('should have the required column heading', () => {
       let success = true;
 
-      const expectedColumns = ['Title', 'Learned Language', 'Known Language', '#Vocabularies', '#Due Vocabularies', 'Actions'];
+      const expectedColumns: ReadonlyArray<string> = ['Title', 'Learned Language', 'Known Language', '#Vocabularies', '#Due Vocabularies', 'Actions'];
 
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableHeaders = appElement.querySelectorAll('th');
+      const tableHeaders: NodeListOf<HTMLLabelElement> = fixture.nativeElement.querySelectorAll('th');
 
       for (const column of expectedColumns) {
         let found = false;
@@ -102,36 +101,31 @@ describe('ListLessonsComponent', () => {
   describe('should render UI elements', () => {
     it('should display a lesson with a title as defined in second test data entry', () => {
       const index = 1; // second element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-lessons-title-${index}`);
+      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-title-${index}`);
       expect(tableCell.textContent).toContain(testLessonList[index].title);
     });
 
     it('should display a lesson with a language_a as defined in first test data entry', () => {
       const index = 0; // first element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-lessons-language_a-${index}`);
+      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-language_a-${index}`);
       expect(tableCell.textContent).toContain(testLessonList[index].language_a);
     });
 
     it('should display a lesson with a language_b as defined in third test data entry', () => {
       const index = 2; // third element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-lessons-language_b-${index}`);
+      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-language_b-${index}`);
       expect(tableCell.textContent).toContain(testLessonList[index].language_b);
     });
 
     it('should display a lesson with a numberVocables as defined in first test data entry', () => {
       const index = 0; // first element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-lessons-numberVocables-${index}`);
+      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-numberVocables-${index}`);
       expect(tableCell.textContent).toContain(testLessonList[index].numberVocables.toString());
     });
 
     it('should display a lesson with a numberDueVocables as defined in second test data entry', () => {
       const index = 1; // second element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-lessons-numberDueVocables-${index}`);
+      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-numberDueVocables-${index}`);
       expect(tableCell.textContent).toContain(testLessonList[index].numberDueVocables.toString());
     });
   });
@@ -140,10 +134,9 @@ describe('ListLessonsComponent', () => {
     it('should have required buttons', () => {
       let success = true;
 
-      const expectedActions = ['Create', 'Quiz' ];
+      const expectedActions: ReadonlyArray<string> = ['Create', 'Quiz' ];
 
-      const appElement: HTMLElement = fixture.nativeElement;
-      const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('button');
+      const actions: NodeListOf<HTMLButtonElement> = fixture.nativeElement.querySelectorAll('button');
 
       for (const expectedAction of expectedActions) {
         let found = false;
@@ -167,9 +160,9 @@ describe('ListLessonsComponent', () => {
 
       expandSplitButton();
 
-      const expectedActions = ['Edit', 'Delete', 'Vocabulary' ];
+      const expectedActions: ReadonlyArray<string> = ['Edit', 'Delete', 'Vocabulary' ];
       const appElement: HTMLElement = fixture.nativeElement;
-      const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('li');
+      const actions: NodeListOf<HTMLLIElement> = fixture.nativeElement.querySelectorAll('li');
 
       for (const expectedAction of expectedActions) {
         let found = false;
@@ -191,7 +184,7 @@ describe('ListLessonsComponent', () => {
 
   describe('should route correctly on actions', () => {
     it('should navigate to add-lesson component when clicking "Create"', fakeAsync(() => {
-      const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-createAction');
+      const createButton: HTMLButtonElement = fixture.nativeElement.querySelector('#list-lessons-createAction');
       createButton.click();
       tick();
 
@@ -200,18 +193,17 @@ describe('ListLessonsComponent', () => {
 
     it('should navigate to edit-lesson component when clicking "Edit"', fakeAsync(() => {
       expandSplitButton();
-      const editButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-editAction-0');
+      const editButton: HTMLLIElement = fixture.nativeElement.querySelector('#list-lessons-editAction-0');
       editButton.click();
       tick();
 
-      const id = component.lessons[0].id;
-      expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.editLesson}`, 'should nav to editLesson for first lesson');
+      expect(location.path()).toBe(`/${frontend.lessons}/${component.lessons[0].id}/${frontend.editLesson}`, 'should nav to editLesson for first lesson');
     }));
 
     it('should stay on list-lessons component when clicking "Delete"', fakeAsync(() => {
       const currentPath = location.path();
       expandSplitButton();
-      const deleteButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-deleteAction-0');
+      const deleteButton: HTMLLIElement = fixture.nativeElement.querySelector('#list-lessons-deleteAction-0');
       deleteButton.click();
       tick();
 
@@ -220,12 +212,11 @@ describe('ListLessonsComponent', () => {
 
     it('should navigate to listVocabularies component when clicking "Vocabulary"', fakeAsync(() => {
       expandSplitButton();
-      const vocabulariesButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-vocabularyAction-0');
+      const vocabulariesButton: HTMLLIElement = fixture.nativeElement.querySelector('#list-lessons-vocabularyAction-0');
       vocabulariesButton.click();
       tick();
 
-      const id = component.lessons[0].id;
-      expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.vocabulary}`, 'should nav to listVocabularies for first lesson');
+      expect(location.path()).toBe(`/${frontend.lessons}/${component.lessons[0].id}/${frontend.vocabulary}`, 'should nav to listVocabularies for first lesson');
     }));
   });
 });

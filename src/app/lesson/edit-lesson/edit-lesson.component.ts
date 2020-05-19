@@ -23,7 +23,7 @@ export class EditLessonComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get(`${frontend.lessonID}`);
+    const id: string = this.route.snapshot.paramMap.get(`${frontend.lessonID}`);
 
     this.lessonService.getLesson(id).subscribe((lesson: Lesson) => {
       this.lesson = lesson;

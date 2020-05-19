@@ -13,6 +13,7 @@ import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { LessonService } from '../lesson.service';
 import { EditLessonComponent } from './edit-lesson.component';
+import { DebugElement } from '@angular/core';
 
 const testEditLesson = lessonTestData[0];
 
@@ -25,11 +26,11 @@ describe('EditLessonComponent', () => {
   let component: EditLessonComponent;
   let fixture: ComponentFixture<EditLessonComponent>;
 
-  let getLessonSpy;
-  let updateLessonSpy;
+  let getLessonSpy: any;
+  let updateLessonSpy: any;
 
   beforeEach(async(() => {
-    const lessonService = jasmine.createSpyObj('LessonService', ['getLesson', 'updateLesson']);
+    const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson', 'updateLesson']);
     getLessonSpy = lessonService.getLesson.and.returnValue(of(testEditLesson));
     updateLessonSpy = lessonService.updateLesson.and.returnValue(of(testEditLesson));
 
@@ -70,10 +71,9 @@ describe('EditLessonComponent', () => {
     it('should have the required labels', () => {
       let success = true;
 
-      const expectedLabels = ['Title', 'Learned language', 'Known language'];
+      const expectedLabels: ReadonlyArray<string> = ['Title', 'Learned language', 'Known language'];
 
-      const appElement: HTMLElement = fixture.nativeElement;
-      const labels = appElement.querySelectorAll('label');
+      const labels: NodeListOf<HTMLLabelElement> = fixture.nativeElement.querySelectorAll('label');
 
       for (const expectedLabel of expectedLabels) {
         let found = false;
@@ -92,22 +92,22 @@ describe('EditLessonComponent', () => {
     });
 
     it('should have "Title" input field filled', () => {
-      const input = fixture.debugElement.query(By.css('#edit-lesson-title'));
-      const inputElement = input.nativeElement;
+      const input: DebugElement = fixture.debugElement.query(By.css('#edit-lesson-title'));
+      const inputElement: any = input.nativeElement;
       expect(inputElement.value).toBe(testEditLesson.title);
       expect(getLessonSpy.calls.any()).toBe(true, 'getLesson called');
     });
 
     it('should have "Learned Language" input field filled', () => {
-      const input = fixture.debugElement.query(By.css('#edit-lesson-language_a'));
-      const inputElement = input.nativeElement;
+      const input: DebugElement = fixture.debugElement.query(By.css('#edit-lesson-language_a'));
+      const inputElement: any = input.nativeElement;
       expect(inputElement.value).toContain(testEditLesson.language_a);
       expect(getLessonSpy.calls.any()).toBe(true, 'getLesson called');
     });
 
     it('should have "Known Language" input field filled', () => {
-      const input = fixture.debugElement.query(By.css('#edit-lesson-language_b'));
-      const inputElement = input.nativeElement;
+      const input: DebugElement = fixture.debugElement.query(By.css('#edit-lesson-language_b'));
+      const inputElement: any = input.nativeElement;
       expect(inputElement.value).toContain(testEditLesson.language_b);
       expect(getLessonSpy.calls.any()).toBe(true, 'getLesson called');
     });
@@ -115,21 +115,19 @@ describe('EditLessonComponent', () => {
 
   describe('should have required actions', () => {
     it('should have button "Save"', () => {
-      const appElement: HTMLElement = fixture.nativeElement;
-      const button = appElement.querySelector('#edit-lesson-saveButton');
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
       expect(button.textContent).toContain('Save');
     });
 
     it('should have button "Cancel"', () => {
-      const appElement: HTMLElement = fixture.nativeElement;
-      const button = appElement.querySelector('#edit-lesson-cancelButton');
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-cancelButton');
       expect(button.textContent).toContain('Cancel');
     });
   });
 
   describe('should route correctly on actions', () => {
     it('should navigate to list-lessons component when clicking "Save"', fakeAsync(() => {
-      const saveButton: HTMLElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
+      const saveButton: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
       saveButton.click();
       tick();
 
@@ -137,7 +135,7 @@ describe('EditLessonComponent', () => {
     }));
 
     it('should navigate to list-lessons component when clicking "Cancel"', fakeAsync(() => {
-      const cancelButton: HTMLElement = fixture.nativeElement.querySelector('#edit-lesson-cancelButton');
+      const cancelButton: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-cancelButton');
       cancelButton.click();
       tick();
 

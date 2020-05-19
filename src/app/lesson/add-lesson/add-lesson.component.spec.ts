@@ -13,6 +13,7 @@ import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { LessonService } from '../lesson.service';
 import { AddLessonComponent } from './add-lesson.component';
+import { DebugElement } from '@angular/core';
 
 const testAddLesson = lessonTestData[0];
 
@@ -25,10 +26,10 @@ describe('AddLessonComponent', () => {
   let component: AddLessonComponent;
   let fixture: ComponentFixture<AddLessonComponent>;
 
-  let addLessonSpy;
+  let addLessonSpy: any;
 
   beforeEach(async(() => {
-    const lessonService = jasmine.createSpyObj('LessonService', ['createLesson']);
+    const lessonService: any = jasmine.createSpyObj('LessonService', ['createLesson']);
     addLessonSpy = lessonService.createLesson.and.returnValue(of(testAddLesson));
 
     TestBed.configureTestingModule({
@@ -71,7 +72,7 @@ describe('AddLessonComponent', () => {
       const expectedLabels = ['Title', 'Learned language', 'Known language'];
 
       const appElement: HTMLElement = fixture.nativeElement;
-      const labels = appElement.querySelectorAll('label');
+      const labels: NodeListOf<HTMLLabelElement> = appElement.querySelectorAll('label');
 
       for (const expectedLabel of expectedLabels) {
         let found = false;
@@ -90,41 +91,39 @@ describe('AddLessonComponent', () => {
     });
 
     it('should have input field for "Title"', () => {
-      const input = fixture.debugElement.query(By.css('#add-lesson-title'));
-      const inputElement = input.nativeElement;
+      const input: DebugElement = fixture.debugElement.query(By.css('#add-lesson-title'));
+      const inputElement: any = input.nativeElement;
       expect(inputElement.value).toBe('');
     });
 
     it('should have input field for "Learned Language"', () => {
-      const input = fixture.debugElement.query(By.css('#add-lesson-language_a'));
-      const inputElement = input.nativeElement;
+      const input: DebugElement = fixture.debugElement.query(By.css('#add-lesson-language_a'));
+      const inputElement: any = input.nativeElement;
       expect(inputElement.value).toBe('');
     });
 
     it('should have input field for "Known Language"', () => {
-      const input = fixture.debugElement.query(By.css('#add-lesson-language_b'));
-      const inputElement = input.nativeElement;
+      const input: DebugElement = fixture.debugElement.query(By.css('#add-lesson-language_b'));
+      const inputElement: any = input.nativeElement;
       expect(inputElement.value).toBe('');
     });
   });
 
   describe('should have required actions', () => {
     it('should have button "Create"', () => {
-      const appElement: HTMLElement = fixture.nativeElement;
-      const button = appElement.querySelector('#add-lesson-createButton');
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
       expect(button.textContent).toContain('Create');
     });
 
     it('should have button "Cancel"', () => {
-      const appElement: HTMLElement = fixture.nativeElement;
-      const button = appElement.querySelector('#add-lesson-cancelButton');
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('#add-lesson-cancelButton');
       expect(button.textContent).toContain('Cancel');
     });
   });
 
   describe('should route correctly on actions', () => {
     it('should navigate to list-lessons component when clicking "Create"', fakeAsync(() => {
-      const createButton: HTMLElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
+      const createButton: HTMLButtonElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
       createButton.click();
       tick();
 
@@ -132,7 +131,7 @@ describe('AddLessonComponent', () => {
     }));
 
     it('should navigate to list-lessons component when clicking "Cancel"', fakeAsync(() => {
-      const cancelButton: HTMLElement = fixture.nativeElement.querySelector('#add-lesson-cancelButton');
+      const cancelButton: HTMLButtonElement = fixture.nativeElement.querySelector('#add-lesson-cancelButton');
       cancelButton.click();
       tick();
 
@@ -140,4 +139,3 @@ describe('AddLessonComponent', () => {
     }));
   });
 });
-

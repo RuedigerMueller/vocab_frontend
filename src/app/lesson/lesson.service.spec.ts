@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { backend } from '../resource.identifiers';
 
-const testLessons: Lesson[] = lessonTestData;
+const testLessons: ReadonlyArray<Lesson> = lessonTestData;
 
 let backendURL: string;
 if (environment.backendUrl.charAt(environment.backendUrl.length - 1) === '/') {
@@ -19,7 +19,7 @@ if (environment.backendUrl.charAt(environment.backendUrl.length - 1) === '/') {
 describe('LessonService', () => {
   let httpTestingController: HttpTestingController;
   let lesssonService: LessonService;
-  const lessonsURI = backend.lessons;
+  const lessonsURI: string = backend.lessons;
 
   const requestCheck = async (url: string, method: string, testData: any) => {
     const req: TestRequest = httpTestingController.expectOne(url);
@@ -52,12 +52,11 @@ describe('LessonService', () => {
   });
 
   it('should get lessons', () => {
-    const expectedLessons: Lesson[] = testLessons;
     lesssonService.getLessons().subscribe((lessons: Lesson[]) => {
-      expect(lessons.length).toBe(expectedLessons.length);
+      expect(lessons.length).toBe(testLessons.length);
     });
 
-    requestCheck(backendURL + '/' + lessonsURI, 'GET', expectedLessons);
+    requestCheck(backendURL + '/' + lessonsURI, 'GET', testLessons);
   });
 
   it('should get a lesson', () => {
