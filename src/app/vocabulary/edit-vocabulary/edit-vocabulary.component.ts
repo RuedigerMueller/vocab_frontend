@@ -27,8 +27,8 @@ export class EditVocabularyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const vocabularyID = this.route.snapshot.paramMap.get('vocabularyID');
-    const lessonID = this.route.snapshot.paramMap.get('lessonID');
+    const vocabularyID: string = this.route.snapshot.paramMap.get('vocabularyID');
+    const lessonID: string = this.route.snapshot.paramMap.get('lessonID');
 
     this.lessonService.getLesson(lessonID).subscribe((lesson: Lesson) => {
       this.lesson = lesson;

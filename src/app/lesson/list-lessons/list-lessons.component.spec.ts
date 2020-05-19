@@ -161,7 +161,6 @@ describe('ListLessonsComponent', () => {
       expandSplitButton();
 
       const expectedActions: ReadonlyArray<string> = ['Edit', 'Delete', 'Vocabulary' ];
-      const appElement: HTMLElement = fixture.nativeElement;
       const actions: NodeListOf<HTMLLIElement> = fixture.nativeElement.querySelectorAll('li');
 
       for (const expectedAction of expectedActions) {

@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -16,7 +17,6 @@ import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { VocabularyService } from '../vocabulary.service';
 import { EditVocabularyComponent } from './edit-vocabulary.component';
 
-
 const testLesson = lessonTestData[0];
 const testVocabularyList = vocabularyTestData;
 
@@ -29,16 +29,16 @@ describe('EditVocabularyComponent', () => {
   let component: EditVocabularyComponent;
   let fixture: ComponentFixture<EditVocabularyComponent>;
 
-  let getVocabularySpy;
-  let updateVocabularySpy;
-  let getLessonsSpy;
+  let getVocabularySpy: any;
+  let updateVocabularySpy: any;
+  let getLessonsSpy: any;
 
   beforeEach(async(() => {
-    const vocabularyService = jasmine.createSpyObj('VocabularyService', ['getVocabulary', 'updateVocabulary']);
+    const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getVocabulary', 'updateVocabulary']);
     getVocabularySpy = vocabularyService.getVocabulary.and.returnValue(of(testVocabularyList[0]));
     updateVocabularySpy = vocabularyService.updateVocabulary.and.returnValue(of(testVocabularyList[0]));
 
-    const lessonService = jasmine.createSpyObj('LessonService', ['getLesson']);
+    const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
 
     TestBed.configureTestingModule({
@@ -79,10 +79,9 @@ describe('EditVocabularyComponent', () => {
     it('should have the required labels', () => {
       let success = true;
 
-      const expectedLabels = [testLesson.language_a, testLesson.language_b];
+      const expectedLabels: ReadonlyArray<string> = [testLesson.language_a, testLesson.language_b];
 
-      const appElement: HTMLElement = fixture.nativeElement;
-      const labels = appElement.querySelectorAll('label');
+      const labels: NodeListOf<HTMLLabelElement> = fixture.nativeElement.querySelectorAll('label');
 
       for (const expectedLabel of expectedLabels) {
         let found = false;
@@ -101,15 +100,15 @@ describe('EditVocabularyComponent', () => {
     });
 
     it('should have "Learned Language" input field filled', () => {
-      const input = fixture.debugElement.query(By.css('#edit-vocabulary-language_a'));
-      const inputElement = input.nativeElement;
+      const input: DebugElement = fixture.debugElement.query(By.css('#edit-vocabulary-language_a'));
+      const inputElement: any = input.nativeElement;
       expect(inputElement.value).toContain(testVocabularyList[0].language_a);
       expect(getVocabularySpy.calls.any()).toBe(true, 'getVocabulary called');
     });
 
     it('should have "Known Language" input field filled', () => {
-      const input = fixture.debugElement.query(By.css('#edit-vocabulary-language_b'));
-      const inputElement = input.nativeElement;
+      const input: DebugElement = fixture.debugElement.query(By.css('#edit-vocabulary-language_b'));
+      const inputElement: any = input.nativeElement;
       expect(inputElement.value).toContain(testVocabularyList[0].language_b);
       expect(getVocabularySpy.calls.any()).toBe(true, 'getVocabulary called');
     });
@@ -117,36 +116,31 @@ describe('EditVocabularyComponent', () => {
 
   describe('should have required actions', () => {
     it('should have button "Save"', () => {
-      const appElement: HTMLElement = fixture.nativeElement;
-      const button = appElement.querySelector('#edit-vocabulary-saveButton');
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-vocabulary-saveButton');
       expect(button.textContent).toContain('Save');
     });
 
     it('should have button "Cancel"', () => {
-      const appElement: HTMLElement = fixture.nativeElement;
-      const button = appElement.querySelector('#edit-vocabulary-cancelButton');
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-vocabulary-cancelButton');
       expect(button.textContent).toContain('Cancel');
     });
   });
 
   describe('should route correctly on actions', () => {
     it('should navigate to list-lessons component when clicking "Save"', fakeAsync(() => {
-      const saveButton: HTMLElement = fixture.nativeElement.querySelector('#edit-vocabulary-saveButton');
+      const saveButton: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-vocabulary-saveButton');
       saveButton.click();
       tick();
 
-      const id: number = component.lesson.id;
-      expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.vocabulary}`, 'should nav to listVocabulary');
+      expect(location.path()).toBe(`/${frontend.lessons}/${component.lesson.id}/${frontend.vocabulary}`, 'should nav to listVocabulary');
     }));
 
     it('should navigate to list-lessons component when clicking "Cancel"', fakeAsync(() => {
-      const cancelButton: HTMLElement = fixture.nativeElement.querySelector('#edit-vocabulary-cancelButton');
+      const cancelButton: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-vocabulary-cancelButton');
       cancelButton.click();
       tick();
 
-      const id: number = component.lesson.id;
-      expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.vocabulary}`, 'should nav to listVocabulary');
+      expect(location.path()).toBe(`/${frontend.lessons}/${component.lesson.id}/${frontend.vocabulary}`, 'should nav to listVocabulary');
     }));
   });
-  
 });

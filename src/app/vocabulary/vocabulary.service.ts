@@ -1,10 +1,10 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Vocabulary } from './vocabulary.service.interface';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
 import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 import { backend } from '../resource.identifiers';
+import { Vocabulary } from './vocabulary.service.interface';
 
 @Injectable({
   providedIn: 'root'

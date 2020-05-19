@@ -13,11 +13,11 @@ import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { VocabularyService } from '../vocabulary.service';
+import { Vocabulary } from '../vocabulary.service.interface';
 import { ListVocabularyComponent } from './list-vocabulary.component';
 
-
 const testLesson: Lesson = lessonTestData[0];
-const testVocabularyList = vocabularyTestData;
+const testVocabularyList: ReadonlyArray<Vocabulary> = vocabularyTestData;
 
 describe('ListVocabulariesComponent', () => {
   let httpClient: HttpClient;
@@ -28,23 +28,22 @@ describe('ListVocabulariesComponent', () => {
   let component: ListVocabularyComponent;
   let fixture: ComponentFixture<ListVocabularyComponent>;
 
-  let getVocabularySpy;
-  let deleteVocabularySpy;
-  let getLessonsSpy;
+  let getVocabularySpy: any;
+  let deleteVocabularySpy: any;
+  let getLessonsSpy: any;
 
   const expandSplitButton = () => {
-    const appElement: HTMLElement = fixture.nativeElement;
-    const expandableButton: HTMLElement = appElement.querySelector('.sap-icon--slim-arrow-down');
+    const expandableButton: HTMLButtonElement = fixture.nativeElement.querySelector('.sap-icon--slim-arrow-down');
     expandableButton.click();
     fixture.detectChanges();
   };
 
   beforeEach(async(() => {
-    const vocabularyService = jasmine.createSpyObj('VocabularyService', ['getLessonVocabulary', 'deleteVocabulary']);
+    const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getLessonVocabulary', 'deleteVocabulary']);
     getVocabularySpy = vocabularyService.getLessonVocabulary.and.returnValue(of(testVocabularyList));
     deleteVocabularySpy = vocabularyService.deleteVocabulary.and.returnValue(new Observable<void>());
 
-    const lessonService = jasmine.createSpyObj('LessonService', ['getLesson']);
+    const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
 
     TestBed.configureTestingModule({
@@ -96,10 +95,9 @@ describe('ListVocabulariesComponent', () => {
     it('should have the required column heading', () => {
       let success = true;
 
-      const expectedColumns = [testLesson.language_a, testLesson.language_b, 'Level', 'Due Date', 'Actions'];
+      const expectedColumns: ReadonlyArray<string> = [testLesson.language_a, testLesson.language_b, 'Level', 'Due Date', 'Actions'];
 
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableHeaders = appElement.querySelectorAll('th');
+      const tableHeaders: NodeListOf<HTMLTableHeaderCellElement> = fixture.nativeElement.querySelectorAll('th');
 
       for (const column of expectedColumns) {
         let found = false;
@@ -121,29 +119,25 @@ describe('ListVocabulariesComponent', () => {
 
     it('should display a vocabulary with a lanaguage_a as defined in second test data entry', () => {
       const index = 1; // second element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-vocabulary-language_a-${index}`);
+      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-vocabulary-language_a-${index}`);
       expect(tableCell.textContent).toContain(testVocabularyList[index].language_a);
     });
 
     it('should display a vocabulary with a lanaguage_b as defined in second test data entry', () => {
       const index = 1; // second element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-vocabulary-language_b-${index}`);
+      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-vocabulary-language_b-${index}`);
       expect(tableCell.textContent).toContain(testVocabularyList[index].language_b);
     });
 
     it('should display a vocabulary with a level as defined in second test data entry', () => {
       const index = 1; // second element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-vocabulary-level-${index}`);
+      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-vocabulary-level-${index}`);
       expect(tableCell.textContent).toContain(testVocabularyList[index].level.toString());
     });
 
     it('should display a vocabulary with a dueDate as defined in second test data entry', () => {
       const index = 1; // second element defined in testLessons
-      const appElement: HTMLElement = fixture.nativeElement;
-      const tableCell = appElement.querySelector(`#list-vocabulary-dueDate-${index}`);
+      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-vocabulary-dueDate-${index}`);
 
       const dueDate: Date = new Date(testVocabularyList[index].dueDate);
       expect(tableCell.textContent).toContain(dueDate.toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' }));
@@ -154,10 +148,9 @@ describe('ListVocabulariesComponent', () => {
     it('should have required buttons', () => {
       let success = true;
 
-      const expectedActions = ['Create', 'Edit'];
+      const expectedActions: ReadonlyArray<string> = ['Create', 'Edit'];
 
-      const appElement: HTMLElement = fixture.nativeElement;
-      const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('button');
+      const actions: NodeListOf<HTMLButtonElement> = fixture.nativeElement.querySelectorAll('button');
 
       for (const expectedAction of expectedActions) {
         let found = false;
@@ -181,9 +174,8 @@ describe('ListVocabulariesComponent', () => {
 
       expandSplitButton();
 
-      const appElement: HTMLElement = fixture.nativeElement;
-      const expectedActions = ['Delete'];
-      const actions: NodeListOf<HTMLElement> = appElement.querySelectorAll('li');
+      const expectedActions: ReadonlyArray<string> = ['Delete'];
+      const actions: NodeListOf<HTMLLIElement> = fixture.nativeElement.querySelectorAll('li');
 
       for (const expectedAction of expectedActions) {
         let found = false;
@@ -205,28 +197,26 @@ describe('ListVocabulariesComponent', () => {
 
   describe('should route correctly on actions', () => {
     it('should navigate to add-vocabulary component when clicking "Create"', fakeAsync(() => {
-      const createButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-createAction');
+      const createButton: HTMLButtonElement = fixture.nativeElement.querySelector('#list-vocabulary-createAction');
       createButton.click();
       tick();
 
-      const id = component.lesson.id;
-      expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.addVocabulary}`);
+      expect(location.path()).toBe(`/${frontend.lessons}/${component.lesson.id}/${frontend.addVocabulary}`);
     }));
 
     it('should navigate edit-vocabulary component when clicking "Edit"', fakeAsync(() => {
       const splitButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-editAction-0');
-      const editButton: HTMLElement = splitButton.querySelectorAll('button')[0];
+      const editButton: HTMLButtonElement = splitButton.querySelectorAll('button')[0];
       editButton.click();
       tick();
 
-      const id = component.lesson.id;
-      expect(location.path()).toBe(`/${frontend.lessons}/${id}/${frontend.editVocabulary}/${component.vocabulary[0].id}`, 'should nav to editLesson for first lesson');
+      expect(location.path()).toBe(`/${frontend.lessons}/${component.lesson.id}/${frontend.editVocabulary}/${component.vocabulary[0].id}`, 'should nav to editLesson for first lesson');
     }));
 
     it('should stay on list-vocabulary component when clicking "Delete"', fakeAsync(() => {
-      const currentPath = location.path();
+      const currentPath: string = location.path();
       expandSplitButton();
-      const deleteButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-deleteAction-0');
+      const deleteButton: HTMLButtonElement = fixture.nativeElement.querySelector('#list-vocabulary-deleteAction-0');
       deleteButton.click();
       tick();
 

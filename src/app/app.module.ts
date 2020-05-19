@@ -1,19 +1,17 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { ShellbarModule, TableModule, ButtonModule, FormModule, SplitButtonModule, MenuModule} from '@fundamental-ngx/core';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonModule, FormModule, MenuModule, ShellbarModule, SplitButtonModule, TableModule } from '@fundamental-ngx/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddLessonComponent } from './lesson/add-lesson/add-lesson.component';
 import { EditLessonComponent } from './lesson/edit-lesson/edit-lesson.component';
 import { ListLessonsComponent } from './lesson/list-lessons/list-lessons.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 import { AddVocabularyComponent } from './vocabulary/add-vocabulary/add-vocabulary.component';
 import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocabulary.component';
+import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 
 @NgModule({
   declarations: [

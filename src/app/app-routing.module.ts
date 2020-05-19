@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ListLessonsComponent } from './lesson/list-lessons/list-lessons.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { RouterModule, Routes } from '@angular/router';
 import { AddLessonComponent } from './lesson/add-lesson/add-lesson.component';
 import { EditLessonComponent } from './lesson/edit-lesson/edit-lesson.component';
-import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
+import { ListLessonsComponent } from './lesson/list-lessons/list-lessons.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { frontend } from './resource.identifiers';
 import { AddVocabularyComponent } from './vocabulary/add-vocabulary/add-vocabulary.component';
 import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocabulary.component';
-import { frontend } from './resource.identifiers';
+import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 
 
 export const routes: Routes = [
