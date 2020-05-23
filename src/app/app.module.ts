@@ -13,6 +13,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AddVocabularyComponent } from './vocabulary/add-vocabulary/add-vocabulary.component';
 import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocabulary.component';
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
+import { QuizComponent } from './vocabulary/quiz/quiz.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocab
     ListVocabularyComponent,
     AddVocabularyComponent,
     EditVocabularyComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    QuizComponent
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,7 @@ import { frontend } from './resource.identifiers';
 import { AddVocabularyComponent } from './vocabulary/add-vocabulary/add-vocabulary.component';
 import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocabulary.component';
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
+import { QuizComponent } from './vocabulary/quiz/quiz.component';
 
 
 export const routes: Routes = [
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.editLesson}`, component: EditLessonComponent },
   { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.vocabulary}`, component: ListVocabularyComponent },
   { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.addVocabulary}`, component: AddVocabularyComponent },
+  { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.quiz}`, component: QuizComponent },
   {
     path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.editVocabulary}/:${frontend.vocabularyID}`, 
     component: EditVocabularyComponent

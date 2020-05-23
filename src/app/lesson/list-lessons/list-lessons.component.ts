@@ -43,6 +43,6 @@ export class ListLessonsComponent implements OnInit {
   }
 
   lessonQuiz(id: string): void {
-    alert('Stay tuned - will come soon');
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${id}/${frontend.quiz}`));
   }
 }

@@ -217,5 +217,16 @@ describe('ListLessonsComponent', () => {
 
       expect(location.path()).toBe(`/${frontend.lessons}/${component.lessons[0].id}/${frontend.vocabulary}`, 'should nav to listVocabularies for first lesson');
     }));
+
+    it('should navigate to quiz component when clicking "Quiz"', fakeAsync(() => {
+      const splitButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-quizAction-0');
+      const quizButton: HTMLButtonElement = splitButton.querySelectorAll('button')[0];
+
+      quizButton.click();
+      tick();
+
+      expect(location.path()).toBe(`/${frontend.lessons}/${component.lessons[0].id}/${frontend.quiz}`,
+        'should nav to quiz for first lesson');
+    }));
   });
 });

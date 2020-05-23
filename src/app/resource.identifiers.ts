@@ -7,6 +7,7 @@ export const frontend = {
     editVocabulary : 'editVocabulary',
     lessonID : 'lessonID',
     vocabularyID: 'vocabularyID',
+    quiz: 'quiz',
 };
 
 export const backend = {
