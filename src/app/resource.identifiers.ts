@@ -13,4 +13,5 @@ export const frontend = {
 export const backend = {
     lessons : 'lessons',
     vocabulary : 'vocabulary',
+    dueLessonVocabulary: 'dueLessonVocabulary',
 };

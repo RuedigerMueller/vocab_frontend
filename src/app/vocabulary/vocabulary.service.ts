@@ -50,6 +50,14 @@ export class VocabularyService {
       );
   }
 
+  getDueLessonVocabulary(lessonID: string): Observable<Vocabulary[]> {
+    return this.http.get<Vocabulary[]>(`${this.baseURL}/${backend.lessons}/${lessonID}/${backend.dueLessonVocabulary}`)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandler)
+      );
+  }
+
   updateVocabulary(id: string, vocabulary: Vocabulary): Observable<Vocabulary> {
     return this.http.patch<Vocabulary>(`${this.baseURL}/${backend.vocabulary}/${id}`, JSON.stringify(vocabulary), this.httpOptions)
       .pipe(
