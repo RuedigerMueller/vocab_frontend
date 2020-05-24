@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { frontend } from 'src/app/resource.identifiers';
 import { VocabularyService } from '../vocabulary.service';
 import { Vocabulary } from '../vocabulary.service.interface';
+import { Lesson } from 'src/app/lesson/lesson.service.interface';
+import { LessonService } from 'src/app/lesson/lesson.service';
 
 @Component({
   selector: 'app-quiz',
@@ -11,12 +13,13 @@ import { Vocabulary } from '../vocabulary.service.interface';
 })
 export class QuizComponent implements OnInit {
   dueVocabulary: ReadonlyArray<Vocabulary>;
+  vocabulary: Vocabulary;
   lessonID: string;
-  // lesson: Lesson;
+  lesson: Lesson;
 
   constructor(
     private vocabularyService: VocabularyService,
-    // private lessonService: LessonService,
+    private lessonService: LessonService,
     private ngZone: NgZone,
     private router: Router,
     private route: ActivatedRoute
@@ -24,23 +27,26 @@ export class QuizComponent implements OnInit {
 
   ngOnInit(): void {
     this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
-    // this.getLesson(this.lessonID);
+    this.getLesson(this.lessonID);
     this.getDueVocabulary(this.lessonID);
   }
 
-  /* getLesson(lessonID: string): void {
+  getLesson(lessonID: string): void {
     this.lessonService.getLesson(lessonID).subscribe((lesson: Lesson) => {
       this.lesson = lesson;
     });
-  } */
+  }
 
   getDueVocabulary(lessonID: string): void {
     this.vocabularyService.getDueLessonVocabulary(lessonID).subscribe((vocabulary: Vocabulary[]) => {
       this.dueVocabulary = this.shuffle(vocabulary);
+      if (this.dueVocabulary[0]) {
+        this.vocabulary = this.dueVocabulary[0];
+      };
     });
   }
 
-   shuffle(vocabulary: Vocabulary[]): Vocabulary[] {
+  shuffle(vocabulary: Vocabulary[]): Vocabulary[] {
     let currentIndex: number = vocabulary.length;
     let temporaryValue: Vocabulary;
     let randomIndex: number;
@@ -59,5 +65,25 @@ export class QuizComponent implements OnInit {
     }
 
     return vocabulary;
+  }
+
+  checkResponse(): void {
+
+  }
+
+  validResponse(): void {
+
+  }
+
+  invalidResponse(): void {
+
+  }
+
+  next(): void {
+
+  }
+
+  cancel(): void {
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
   }
 }

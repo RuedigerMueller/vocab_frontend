@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ButtonModule, FormModule, MenuModule, MessageStripModule, ShellbarModule, SplitButtonModule, TableModule } from '@fundamental-ngx/core';
+import { ButtonModule, FormModule, MenuModule, MessageStripModule, ShellbarModule, SplitButtonModule, TableModule, LayoutGridModule, PanelModule } from '@fundamental-ngx/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddLessonComponent } from './lesson/add-lesson/add-lesson.component';
@@ -40,7 +40,9 @@ import { QuizComponent } from './vocabulary/quiz/quiz.component';
     FormModule,
     SplitButtonModule,
     MenuModule,
-    MessageStripModule
+    MessageStripModule,
+    LayoutGridModule,
+    PanelModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

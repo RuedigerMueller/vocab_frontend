@@ -1,1 +1,40 @@
-<p>quiz works!</p>
+<button fd-button id="quiz-cancel" (click)=cancel()>Cancel</button>
+<fd-layout-grid [col]="3" *ngIf="vocabulary">
+    <fd-panel>
+        <fd-panel-body>
+            <div fd-form-item>
+                <label fd-form-label for="quiz-knownLanguageLabel">{{lesson.language_a}}</label>
+                <textarea fd-form-control id="quiz-knownLanguage" rows="10"
+                    readonly>{{vocabulary.language_a}}</textarea>
+            </div>
+        </fd-panel-body>
+    </fd-panel>
+    <fd-panel>
+        <fd-panel-body>
+            <div fd-form-item>
+                <label fd-form-label for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
+                <textarea fd-form-control id="quiz-learnedLanguage" rows="10"></textarea>
+            </div>
+            <button fd-button id="quiz-checkResponse" (click)=checkResponse() style="display: block">Check
+                response</button>
+            <button fd-button id="quiz-validResponse" (click)=validResponse() style="display: none">Valid
+                response</button>
+            <button fd-button id="quiz-invalidResponse" (click)=invalidResponse() style="display: none">Invalid
+                response</button>
+            <button fd-button id="quiz-next" (click)=next() style="display: none">Next</button>
+        </fd-panel-body>
+    </fd-panel>
+    <fd-panel>
+        <fd-panel-body>
+            <div fd-form-item>
+                <label fd-form-label for="quiz-correctResponseLabel">Correct Response</label>
+                <textarea fd-form-control id="quiz-correctResponse" rows="10" readonly></textarea>
+            </div>
+        </fd-panel-body>
+    </fd-panel>
+</fd-layout-grid>
+<p *ngIf="!vocabulary">
+    <fd-message-strip [type]="'error'" [dismissible]="false">
+        No due vocabulary in lesson "{{lesson.title}}"
+    </fd-message-strip>
+</p>

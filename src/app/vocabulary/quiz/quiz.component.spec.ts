@@ -4,6 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FormModule, ButtonModule, LayoutGridModule, PanelModule } from '@fundamental-ngx/core';
 import { of } from 'rxjs/internal/observable/of';
 import { routes } from 'src/app/app-routing.module';
 import { Lesson } from 'src/app/lesson/lesson.service.interface';
@@ -12,6 +13,7 @@ import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { VocabularyService } from '../vocabulary.service';
 import { Vocabulary } from '../vocabulary.service.interface';
 import { QuizComponent } from './quiz.component';
+import { LessonService } from 'src/app/lesson/lesson.service';
 
 
 const testLesson: Lesson = lessonTestData[0];
@@ -27,20 +29,27 @@ describe('QuizComponent', () => {
   let fixture: ComponentFixture<QuizComponent>;
 
   let getDueLessonVocabularySpy: any;
-  // let getLessonsSpy: any;
+  let getLessonsSpy: any;
 
   beforeEach(async(() => {
     const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getDueLessonVocabulary']);
     getDueLessonVocabularySpy = vocabularyService.getDueLessonVocabulary.and.returnValue(of(testVocabularyList));
+
+    const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson']);
+    getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
 
     TestBed.configureTestingModule({
       declarations: [ QuizComponent ],
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes(routes),
+        LayoutGridModule,
+        PanelModule,
+        ButtonModule,
       ],
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },
+        { provide: LessonService, useValue: lessonService },
         {
           provide: ActivatedRoute,
           useValue: {
