@@ -16,6 +16,8 @@ export class QuizComponent implements OnInit {
   vocabulary: Vocabulary;
   lessonID: string;
   lesson: Lesson;
+  questionedVocabulary: number;
+  numberDueVocabularies: number;
 
   constructor(
     private vocabularyService: VocabularyService,
@@ -29,6 +31,7 @@ export class QuizComponent implements OnInit {
     this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
     this.getLesson(this.lessonID);
     this.getDueVocabulary(this.lessonID);
+    this.questionedVocabulary = 1;
   }
 
   getLesson(lessonID: string): void {
@@ -40,6 +43,7 @@ export class QuizComponent implements OnInit {
   getDueVocabulary(lessonID: string): void {
     this.vocabularyService.getDueLessonVocabulary(lessonID).subscribe((vocabulary: Vocabulary[]) => {
       this.dueVocabulary = this.shuffle(vocabulary);
+      this.numberDueVocabularies = this.dueVocabulary.length;
       if (this.dueVocabulary[0]) {
         this.vocabulary = this.dueVocabulary[0];
       };
@@ -68,7 +72,7 @@ export class QuizComponent implements OnInit {
   }
 
   checkResponse(): void {
-
+    
   }
 
   validResponse(): void {

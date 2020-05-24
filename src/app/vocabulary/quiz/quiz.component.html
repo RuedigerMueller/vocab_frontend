@@ -1,4 +1,9 @@
-<button fd-button id="quiz-cancel" (click)=cancel()>Cancel</button>
+<fd-layout-grid [col]="3">
+    <P></P>
+    <P style="text-align:center; vertical-align: bottom">{{questionedVocabulary}}/{{numberDueVocabularies}}</P>
+    <p style="text-align:right"><button fd-button [glyph]="'sys-cancel'" id="quiz-cancel" (click)=cancel()></button></p>
+</fd-layout-grid>
+<P></P>
 <fd-layout-grid [col]="3" *ngIf="vocabulary">
     <fd-panel>
         <fd-panel-body>
@@ -34,7 +39,7 @@
     </fd-panel>
 </fd-layout-grid>
 <p *ngIf="!vocabulary">
-    <fd-message-strip [type]="'error'" [dismissible]="false">
+    <fd-message-strip [type]="'error'" [dismissible]="false" *ngIf="lesson">
         No due vocabulary in lesson "{{lesson.title}}"
     </fd-message-strip>
 </p>
