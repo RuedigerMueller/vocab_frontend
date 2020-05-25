@@ -14,6 +14,7 @@ import { VocabularyService } from '../vocabulary.service';
 import { Vocabulary } from '../vocabulary.service.interface';
 import { QuizComponent } from './quiz.component';
 import { LessonService } from 'src/app/lesson/lesson.service';
+import { FormsModule } from '@angular/forms';
 
 
 const testLesson: Lesson = lessonTestData[0];
@@ -46,6 +47,8 @@ describe('QuizComponent', () => {
         LayoutGridModule,
         PanelModule,
         ButtonModule,
+        FormsModule,
+        FormModule,
       ],
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },

@@ -18,22 +18,22 @@
         <fd-panel-body>
             <div fd-form-item>
                 <label fd-form-label for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
-                <textarea fd-form-control id="quiz-learnedLanguage" rows="10"></textarea>
+                <textarea fd-form-control id="quiz-learnedLanguage" rows="10" [state]="entryFieldState" [(ngModel)]="enteredResponse"></textarea>
             </div>
-            <button fd-button id="quiz-checkResponse" (click)=checkResponse() style="display: block">Check
+            <button *ngIf="displayCheckResponseButton" fd-button id="quiz-checkResponse" (click)=checkResponse()>Check
                 response</button>
-            <button fd-button id="quiz-validResponse" (click)=validResponse() style="display: none">Valid
+            <button *ngIf="displayValidateResponseButton" fd-button id="quiz-validResponse" (click)=validResponse()>Valid
                 response</button>
-            <button fd-button id="quiz-invalidResponse" (click)=invalidResponse() style="display: none">Invalid
+            <button *ngIf="displayInvalidateResponseButton" fd-button id="quiz-invalidResponse" (click)=invalidResponse()>Invalid
                 response</button>
-            <button fd-button id="quiz-next" (click)=next() style="display: none">Next</button>
+            <button *ngIf="displayNextButton" fd-button id="quiz-next" (click)=next()>Next</button>
         </fd-panel-body>
     </fd-panel>
     <fd-panel>
         <fd-panel-body>
             <div fd-form-item>
                 <label fd-form-label for="quiz-correctResponseLabel">Correct Response</label>
-                <textarea fd-form-control id="quiz-correctResponse" rows="10" readonly></textarea>
+                <textarea fd-form-control id="quiz-correctResponse" rows="10" readonly>{{correctResponse}}</textarea>
             </div>
         </fd-panel-body>
     </fd-panel>

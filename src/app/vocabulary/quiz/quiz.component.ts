@@ -18,6 +18,13 @@ export class QuizComponent implements OnInit {
   lesson: Lesson;
   questionedVocabulary: number;
   numberDueVocabularies: number;
+  entryFieldState = '';
+  displayCheckResponseButton = true;
+  displayValidateResponseButton = false;
+  displayInvalidateResponseButton = false;
+  displayNextButton = false;
+  enteredResponse = '';
+  correctResponse = '';
 
   constructor(
     private vocabularyService: VocabularyService,
@@ -72,19 +79,60 @@ export class QuizComponent implements OnInit {
   }
 
   checkResponse(): void {
-    
+    this.correctResponse = this.vocabulary.language_b;
+    if (this.enteredResponse === this.vocabulary.language_b) {
+      this.entryFieldState = 'success';
+      this.displayCheckResponseButton = false;
+      this.displayValidateResponseButton = false;
+      this.displayInvalidateResponseButton = false;
+      this.displayNextButton = true;
+    } else {
+      this.entryFieldState = 'error';
+      this.displayCheckResponseButton = false;
+      this.displayValidateResponseButton = true;
+      this.displayInvalidateResponseButton = false;
+      this.displayNextButton = true;
+    };
   }
 
   validResponse(): void {
-
+    this.entryFieldState = 'success';
+    this.displayCheckResponseButton = false;
+    this.displayValidateResponseButton = false;
+    this.displayInvalidateResponseButton = true;
+    this.displayNextButton = true;
   }
 
   invalidResponse(): void {
-
+    this.entryFieldState = 'error';
+    this.displayCheckResponseButton = false;
+    this.displayValidateResponseButton = true;
+    this.displayInvalidateResponseButton = false;
+    this.displayNextButton = true;
   }
 
   next(): void {
+    if (this.entryFieldState === 'success') {
+      // this.vocabularyService.
+    } else {
+      // this.vocabularyService.
+    }
 
+    this.correctResponse = '';
+
+    this.entryFieldState = '';
+    this.displayCheckResponseButton = true;
+    this.displayValidateResponseButton = false;
+    this.displayInvalidateResponseButton = false;
+    this.displayNextButton = false;
+
+    if (this.questionedVocabulary < this.numberDueVocabularies) {
+      this.enteredResponse = '';
+      this.vocabulary = this.dueVocabulary[this.questionedVocabulary];
+      this.questionedVocabulary += 1;
+    } else {
+      this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
+    }
   }
 
   cancel(): void {
