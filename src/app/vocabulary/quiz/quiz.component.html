@@ -18,7 +18,7 @@
         <fd-panel-body>
             <div fd-form-item>
                 <label fd-form-label for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
-                <textarea fd-form-control id="quiz-learnedLanguage" rows="10" [state]="entryFieldState" [(ngModel)]="enteredResponse"></textarea>
+                <textarea fd-form-control id="quiz-learnedLanguage" rows="10" [state]="entryFieldState" [(ngModel)]="enteredResponse" (keyup.enter)="checkResponse()"></textarea>
             </div>
             <button *ngIf="displayCheckResponseButton" fd-button id="quiz-checkResponse" (click)=checkResponse()>Check
                 response</button>

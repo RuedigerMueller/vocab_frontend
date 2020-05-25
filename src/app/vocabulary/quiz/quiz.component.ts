@@ -80,7 +80,8 @@ export class QuizComponent implements OnInit {
 
   checkResponse(): void {
     this.correctResponse = this.vocabulary.language_b;
-    if (this.enteredResponse === this.vocabulary.language_b) {
+
+    if (this.enteredResponse.trimRight() === this.vocabulary.language_b) {
       this.entryFieldState = 'success';
       this.displayCheckResponseButton = false;
       this.displayValidateResponseButton = false;

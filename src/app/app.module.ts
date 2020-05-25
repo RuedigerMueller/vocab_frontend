@@ -43,6 +43,7 @@ import { QuizComponent } from './vocabulary/quiz/quiz.component';
     MessageStripModule,
     LayoutGridModule,
     PanelModule,
+    FormModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
