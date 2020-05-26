@@ -14,4 +14,6 @@ export const backend = {
     lessons : 'lessons',
     vocabulary : 'vocabulary',
     dueLessonVocabulary: 'dueLessonVocabulary',
+    vocabularyKnown: 'vocabKnown',
+    vocabularyUnknown: 'vocabUnknown',
 };

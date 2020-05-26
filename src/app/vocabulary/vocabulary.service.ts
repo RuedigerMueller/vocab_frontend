@@ -74,6 +74,22 @@ export class VocabularyService {
       );
   }
 
+  vocababularyKnown(id: string): Observable<void> {
+    return this.http.put<void>(`${this.baseURL}/${backend.vocabulary}/${backend.vocabularyKnown}/${id}`, '')
+    .pipe(
+      retry(1),
+      catchError(this.errorHandler)
+    );
+  }
+
+  vocababularyUnknown(id: string): Observable<void> {
+    return this.http.put<void>(`${this.baseURL}/${backend.vocabulary}/${backend.vocabularyUnknown}/${id}`, '')
+    .pipe(
+      retry(1),
+      catchError(this.errorHandler)
+    );
+  }
+
   errorHandler(error: any) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

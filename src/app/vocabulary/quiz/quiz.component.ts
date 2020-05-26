@@ -53,7 +53,7 @@ export class QuizComponent implements OnInit {
       this.numberDueVocabularies = this.dueVocabulary.length;
       if (this.dueVocabulary[0]) {
         this.vocabulary = this.dueVocabulary[0];
-      };
+      }
     });
   }
 
@@ -93,7 +93,7 @@ export class QuizComponent implements OnInit {
       this.displayValidateResponseButton = true;
       this.displayInvalidateResponseButton = false;
       this.displayNextButton = true;
-    };
+    }
   }
 
   validResponse(): void {
@@ -113,20 +113,22 @@ export class QuizComponent implements OnInit {
   }
 
   next(): void {
+    // Update backend
     if (this.entryFieldState === 'success') {
-      // this.vocabularyService.
+      this.vocabularyService.vocababularyKnown(this.vocabulary.id.toString()).subscribe(() => { });
     } else {
-      // this.vocabularyService.
+      this.vocabularyService.vocababularyUnknown(this.vocabulary.id.toString()).subscribe(() => { });
     }
 
+    // Reset states and buttons for next vocabulary
     this.correctResponse = '';
-
     this.entryFieldState = '';
     this.displayCheckResponseButton = true;
     this.displayValidateResponseButton = false;
     this.displayInvalidateResponseButton = false;
     this.displayNextButton = false;
 
+    // In case we are not yet at the end of th quiz: move to next vocabulary; otherwise return to lesson list
     if (this.questionedVocabulary < this.numberDueVocabularies) {
       this.enteredResponse = '';
       this.vocabulary = this.dueVocabulary[this.questionedVocabulary];
