@@ -14,6 +14,7 @@ import { AddVocabularyComponent } from './vocabulary/add-vocabulary/add-vocabula
 import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocabulary.component';
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 import { QuizComponent } from './vocabulary/quiz/quiz.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { QuizComponent } from './vocabulary/quiz/quiz.component';
     AddVocabularyComponent,
     EditVocabularyComponent,
     PageNotFoundComponent,
-    QuizComponent
+    QuizComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

@@ -9,24 +9,59 @@ import { AddVocabularyComponent } from './vocabulary/add-vocabulary/add-vocabula
 import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocabulary.component';
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 import { QuizComponent } from './vocabulary/quiz/quiz.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuardService as AuthGuard } from './auth-guard.service';
 
 
 export const routes: Routes = [
-  { path: frontend.lessons, component: ListLessonsComponent },
-  { path: `${frontend.lessons}/${frontend.createLesson}`, component: AddLessonComponent },
-  { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.editLesson}`, component: EditLessonComponent },
-  { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.vocabulary}`, component: ListVocabularyComponent },
-  { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.addVocabulary}`, component: AddVocabularyComponent },
-  { path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.quiz}`, component: QuizComponent },
   {
-    path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.editVocabulary}/:${frontend.vocabularyID}`, 
-    component: EditVocabularyComponent
+    path: frontend.lessons,
+    component: ListLessonsComponent,
+    canActivate: [AuthGuard]
   },
-  { path: '',
+  {
+    path: `${frontend.lessons}/${frontend.createLesson}`,
+    component: AddLessonComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.editLesson}`,
+    component: EditLessonComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.vocabulary}`,
+    component: ListVocabularyComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.addVocabulary}`,
+    component: AddVocabularyComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.quiz}`,
+    component: QuizComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: `${frontend.lessons}/:${frontend.lessonID}/${frontend.editVocabulary}/:${frontend.vocabularyID}`,
+    component: EditVocabularyComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: '',
     redirectTo: frontend.lessons,
     pathMatch: 'full'
   },
-  { path: '**', component: PageNotFoundComponent },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
+  },
 ];
 
 @NgModule({

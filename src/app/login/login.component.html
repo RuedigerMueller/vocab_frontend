@@ -1,0 +1,13 @@
+<!-- Form -->
+<h3>Login</h3>
+<form *ngIf="loginForm" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+    <div fd-form-item>
+        <label fd-form-label for="login-eMail">e-Mail</label>
+        <input fd-form-control type="text" formControlName="eMail" maxlength="20" id="login-userEmail">
+    </div>
+    <div fd-form-item>
+        <label fd-form-label for="login-password">Password</label>
+        <input fd-form-control type="text" formControlName="password" maxlength="20"id="login-userPassword">
+    </div>
+    <button fd-button id="login-loginButton" type="submit">Login</button>
+</form>

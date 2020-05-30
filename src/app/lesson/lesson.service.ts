@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Lesson } from './lesson.service.interface';
+import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { backend } from '../resource.identifiers';
+import { Lesson } from './lesson.service.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +17,20 @@ export class LessonService {
       'Content-Type': 'application/json'
     })
   };
+  bearerString: string;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     const backendURL: string = environment.backendUrl;
-    if ( backendURL.charAt(backendURL.length - 1) === '/') {
+    if (backendURL.charAt(backendURL.length - 1) === '/') {
       this.baseURL = backendURL.slice(0, -1);
     } else {
       this.baseURL = backendURL;
     }
+
+    const accessTokenObj = JSON.parse(localStorage.getItem('userInfo'));
+    const accessToken: string = accessTokenObj.access_token;
+    const bearerString = `Bearer ${accessToken}`;
+    this.httpOptions.headers = this.httpOptions.headers.set('Authorization', bearerString);
   }
 
   createLesson(lesson: Lesson): Observable<Lesson> {
@@ -38,8 +44,8 @@ export class LessonService {
       );
   }
 
-  getLessons(): Observable<Lesson[]>{
-    return this.http.get<Lesson[]>(`${this.baseURL}/${backend.lessons}`)
+  getLessons(): Observable<Lesson[]> {
+    return this.http.get<Lesson[]>(`${this.baseURL}/${backend.lessons}`, this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -47,7 +53,7 @@ export class LessonService {
   }
 
   getLesson(id: string): Observable<Lesson> {
-    return this.http.get<Lesson>(`${this.baseURL}/${backend.lessons}/${id}`)
+    return this.http.get<Lesson>(`${this.baseURL}/${backend.lessons}/${id}`, this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)

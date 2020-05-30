@@ -16,4 +16,5 @@ export const backend = {
     dueLessonVocabulary: 'dueLessonVocabulary',
     vocabularyKnown: 'vocabKnown',
     vocabularyUnknown: 'vocabUnknown',
+    login: 'auth/login',
 };
