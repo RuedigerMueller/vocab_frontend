@@ -2,13 +2,15 @@ import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ShellbarModule } from '@fundamental-ngx/core';
 import { AppComponent } from './app.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        ShellbarModule
+        ShellbarModule, 
+        HttpClientTestingModule,
       ],
       declarations: [
         AppComponent
@@ -16,7 +18,7 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  xdescribe('should create application', () => {
+  describe('should create application', () => {
     it('should create the app', () => {
       const fixture = TestBed.createComponent(AppComponent);
       const app = fixture.componentInstance;
@@ -24,7 +26,7 @@ describe('AppComponent', () => {
     });
   });
 
-  xdescribe('should render UI elements', () => {
+  describe('should render UI elements', () => {
     it(`should have as title 'Vocab TS'`, () => {
       const fixture = TestBed.createComponent(AppComponent);
       const app = fixture.componentInstance;
