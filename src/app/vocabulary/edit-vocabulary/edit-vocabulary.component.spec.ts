@@ -16,6 +16,7 @@ import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { VocabularyService } from '../../services/vocabulary.service';
 import { EditVocabularyComponent } from './edit-vocabulary.component';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 
 const testLesson = lessonTestData[0];
 const testVocabularyList = vocabularyTestData;
@@ -32,6 +33,7 @@ describe('EditVocabularyComponent', () => {
   let getVocabularySpy: any;
   let updateVocabularySpy: any;
   let getLessonsSpy: any;
+  let canActivateSpy: any;
 
   beforeEach(async(() => {
     const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getVocabulary', 'updateVocabulary']);
@@ -40,6 +42,9 @@ describe('EditVocabularyComponent', () => {
 
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
+
+    const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate']);
+    canActivateSpy = authGuardService.canActivate.and.returnValue(true);
 
     TestBed.configureTestingModule({
       declarations: [EditVocabularyComponent],
@@ -53,6 +58,7 @@ describe('EditVocabularyComponent', () => {
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },
         { provide: LessonService, useValue: lessonService },
+        { provide: AuthGuardService, useValue: authGuardService },
       ]
     })
       .compileComponents();
@@ -126,7 +132,7 @@ describe('EditVocabularyComponent', () => {
     });
   });
 
-  xdescribe('should route correctly on actions', () => {
+  describe('should route correctly on actions', () => {
     it('should navigate to list-lessons component when clicking "Save"', fakeAsync(() => {
       const saveButton: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-vocabulary-saveButton');
       saveButton.click();

@@ -2,9 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-import { backend, baseURL } from '../resource.identifiers';
+import { AuthService } from '../helpers/auth.service';
 import { Lesson } from '../models/lesson.model.';
+import { backend, baseURL } from '../resource.identifiers';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +17,11 @@ export class LessonService {
     })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   createLesson(lesson: Lesson): Observable<Lesson> {
-    // Todo: add the real user!
-    lesson.user = 'UserFrontend';
+    // ToDo: send user or determine in backend?
+    lesson.user = this.authService.currentUserValue.username;
 
     return this.http.post<Lesson>(`${baseURL}/${backend.lessons}`, JSON.stringify(lesson), this.httpOptions)
       .pipe(

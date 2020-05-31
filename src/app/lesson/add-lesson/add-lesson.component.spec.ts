@@ -14,6 +14,7 @@ import { lessonTestData } from 'test/lesson.testdata.spec';
 import { LessonService } from '../../services/lesson.service';
 import { AddLessonComponent } from './add-lesson.component';
 import { DebugElement } from '@angular/core';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 
 const testAddLesson = lessonTestData[0];
 
@@ -27,10 +28,14 @@ describe('AddLessonComponent', () => {
   let fixture: ComponentFixture<AddLessonComponent>;
 
   let addLessonSpy: any;
+  let canActivateSpy: any;
 
   beforeEach(async(() => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['createLesson']);
     addLessonSpy = lessonService.createLesson.and.returnValue(of(testAddLesson));
+
+    const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate']);
+    canActivateSpy = authGuardService.canActivate.and.returnValue(true);
 
     TestBed.configureTestingModule({
       declarations: [AddLessonComponent],
@@ -43,6 +48,7 @@ describe('AddLessonComponent', () => {
       ],
       providers: [
         { provide: LessonService, useValue: lessonService },
+        { provide: AuthGuardService, useValue: authGuardService },
       ]
     })
       .compileComponents();
@@ -121,7 +127,7 @@ describe('AddLessonComponent', () => {
     });
   });
 
-  xdescribe('should route correctly on actions', () => {
+  describe('should route correctly on actions', () => {
     it('should navigate to list-lessons component when clicking "Create"', fakeAsync(() => {
       const createButton: HTMLButtonElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
       createButton.click();

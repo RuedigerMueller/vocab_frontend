@@ -15,6 +15,7 @@ import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { VocabularyService } from '../../services/vocabulary.service';
 import { Vocabulary } from '../../models/vocabulary.model';
 import { ListVocabularyComponent } from './list-vocabulary.component';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 
 const testLesson: Lesson = lessonTestData[0];
 const testVocabularyList: ReadonlyArray<Vocabulary> = vocabularyTestData;
@@ -31,6 +32,7 @@ describe('ListVocabulariesComponent', () => {
   let getVocabularySpy: any;
   let deleteVocabularySpy: any;
   let getLessonsSpy: any;
+  let canActivateSpy: any;
 
   const expandSplitButton = () => {
     const expandableButton: HTMLButtonElement = fixture.nativeElement.querySelector('.sap-icon--slim-arrow-down');
@@ -46,6 +48,9 @@ describe('ListVocabulariesComponent', () => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
 
+    const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate']);
+    canActivateSpy = authGuardService.canActivate.and.returnValue(true);
+
     TestBed.configureTestingModule({
       declarations: [ListVocabularyComponent],
       imports: [
@@ -59,6 +64,7 @@ describe('ListVocabulariesComponent', () => {
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },
         { provide: LessonService, useValue: lessonService },
+        { provide: AuthGuardService, useValue: authGuardService },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -195,7 +201,7 @@ describe('ListVocabulariesComponent', () => {
     });
   });
 
-  xdescribe('should route correctly on actions', () => {
+  describe('should route correctly on actions', () => {
     it('should navigate to add-vocabulary component when clicking "Create"', fakeAsync(() => {
       const createButton: HTMLButtonElement = fixture.nativeElement.querySelector('#list-vocabulary-createAction');
       createButton.click();

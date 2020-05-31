@@ -82,4 +82,8 @@ describe('QuizComponent', () => {
   it('should create component', () => {
     expect(component).toBeTruthy();
   });
+
+  xdescribe('should be unit tested', () => {
+
+  });
 });

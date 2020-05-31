@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -13,7 +14,8 @@ import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { LessonService } from '../../services/lesson.service';
 import { EditLessonComponent } from './edit-lesson.component';
-import { DebugElement } from '@angular/core';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
+import { AuthService } from 'src/app/helpers/auth.service';
 
 const testEditLesson = lessonTestData[0];
 
@@ -28,11 +30,15 @@ describe('EditLessonComponent', () => {
 
   let getLessonSpy: any;
   let updateLessonSpy: any;
+  let canActivateSpy: any;
 
   beforeEach(async(() => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson', 'updateLesson']);
     getLessonSpy = lessonService.getLesson.and.returnValue(of(testEditLesson));
     updateLessonSpy = lessonService.updateLesson.and.returnValue(of(testEditLesson));
+
+    const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate']);
+    canActivateSpy = authGuardService.canActivate.and.returnValue(true);
 
     TestBed.configureTestingModule({
       declarations: [EditLessonComponent],
@@ -45,6 +51,7 @@ describe('EditLessonComponent', () => {
       ],
       providers: [
         { provide: LessonService, useValue: lessonService },
+        { provide: AuthGuardService, useValue: authGuardService },
       ]
     })
       .compileComponents();
@@ -125,7 +132,7 @@ describe('EditLessonComponent', () => {
     });
   });
 
-  xdescribe('should route correctly on actions', () => {
+  describe('should route correctly on actions', () => {
     it('should navigate to list-lessons component when clicking "Save"', fakeAsync(() => {
       const saveButton: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
       saveButton.click();

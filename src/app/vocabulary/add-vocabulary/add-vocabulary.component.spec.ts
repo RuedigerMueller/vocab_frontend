@@ -10,13 +10,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 import { of } from 'rxjs';
 import { routes } from 'src/app/app-routing.module';
-import { LessonService } from 'src/app/services/lesson.service';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
+import { LessonService } from 'src/app/services/lesson.service';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
-import { VocabularyService } from '../../services/vocabulary.service';
 import { Vocabulary } from '../../models/vocabulary.model';
+import { VocabularyService } from '../../services/vocabulary.service';
 import { AddVocabularyComponent } from './add-vocabulary.component';
 
 const testLesson: Lesson = lessonTestData[0];
@@ -33,6 +34,7 @@ describe('AddVocabularyComponent', () => {
 
   let getLessonsSpy: any;
   let createVocabularySpy: any;
+  let canActivateSpy: any;
 
   beforeEach(async(() => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson']);
@@ -40,6 +42,9 @@ describe('AddVocabularyComponent', () => {
 
     const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['createVocabulary']);
     createVocabularySpy = vocabularyService.createVocabulary.and.returnValue(of(testVocabulary));
+
+    const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate']);
+    canActivateSpy = authGuardService.canActivate.and.returnValue(true);
 
     TestBed.configureTestingModule({
       declarations: [AddVocabularyComponent],
@@ -53,6 +58,7 @@ describe('AddVocabularyComponent', () => {
       providers: [
         { provide: LessonService, useValue: lessonService },
         { provide: VocabularyService, useValue: vocabularyService },
+        { provide: AuthGuardService, useValue: authGuardService },
       ]
     })
       .compileComponents();
@@ -124,7 +130,7 @@ describe('AddVocabularyComponent', () => {
     });
   });
 
-  xdescribe('should route correctly on actions', () => {
+  describe('should route correctly on actions', () => {
     it('should stay on add-vocabulary when clicking "Add"', fakeAsync(() => {
       const currentLocation: string = location.path();
       const addButton: HTMLButtonElement = fixture.nativeElement.querySelector('#add-vocabulary-addButton');

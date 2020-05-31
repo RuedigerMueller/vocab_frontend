@@ -12,6 +12,7 @@ import { lessonTestData } from 'test/lesson.testdata.spec';
 import { LessonService } from '../../services/lesson.service';
 import { ListLessonsComponent } from './list-lessons.component';
 import { Lesson } from '../../models/lesson.model.';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 
 const testLessonList: ReadonlyArray<Lesson> = lessonTestData;
 
@@ -26,6 +27,7 @@ describe('ListLessonsComponent', () => {
 
   let getLessonsSpy: any;
   let deleteLessonSpy: any;
+  let canActivateSpy: any;
 
   const expandSplitButton = () => {
     const expandableButton: HTMLButtonElement = fixture.nativeElement.querySelector('.sap-icon--slim-arrow-down');
@@ -37,6 +39,9 @@ describe('ListLessonsComponent', () => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLessons', 'deleteLesson']);
     getLessonsSpy = lessonService.getLessons.and.returnValue(of(testLessonList));
     deleteLessonSpy = lessonService.deleteLesson.and.returnValue(new Observable<void>());
+
+    const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate']);
+    canActivateSpy = authGuardService.canActivate.and.returnValue(true);
 
     TestBed.configureTestingModule({
       declarations: [ListLessonsComponent],
@@ -50,6 +55,7 @@ describe('ListLessonsComponent', () => {
       ],
       providers: [
         { provide: LessonService, useValue: lessonService },
+        { provide: AuthGuardService, useValue: authGuardService },
       ]
     })
       .compileComponents();
@@ -181,7 +187,7 @@ describe('ListLessonsComponent', () => {
     });
   });
 
-  xdescribe('should route correctly on actions', () => {
+  describe('should route correctly on actions', () => {
     it('should navigate to add-lesson component when clicking "Create"', fakeAsync(() => {
       const createButton: HTMLButtonElement = fixture.nativeElement.querySelector('#list-lessons-createAction');
       createButton.click();
