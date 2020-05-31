@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 
 import { VocabularyService } from './vocabulary.service';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { Vocabulary } from './vocabulary.service.interface';
+import { Vocabulary } from '../models/vocabulary.model';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { lessonTestData } from 'test/lesson.testdata.spec';
-import { Lesson } from '../lesson/lesson.service.interface';
+import { Lesson } from '../models/lesson.model.';
 import { environment } from 'src/environments/environment';
 import { backend } from '../resource.identifiers';
 

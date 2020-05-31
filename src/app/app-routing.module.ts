@@ -10,7 +10,7 @@ import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocab
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 import { QuizComponent } from './vocabulary/quiz/quiz.component';
 import { LoginComponent } from './login/login.component';
-import { AuthGuardService as AuthGuard } from './auth-guard.service';
+import { AuthGuardService as AuthGuard } from './helpers/auth-guard.service';
 
 
 export const routes: Routes = [

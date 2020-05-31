@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
 import { LessonService } from './lesson.service';
-import { Lesson } from './lesson.service.interface';
+import { Lesson } from '../models/lesson.model.';
 import { environment } from 'src/environments/environment';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { backend } from '../resource.identifiers';

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../helpers/auth.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -25,10 +26,22 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authService.validate(this.loginForm.value.eMail, this.loginForm.value.password)
+    /* this.authService.validate(this.loginForm.value.eMail, this.loginForm.value.password)
       .then((response) => {
         this.authService.setUserInfo(response);
         this.router.navigate(['lessons']);
       });
+  } */
+    this.authService.login(this.loginForm.value.eMail, this.loginForm.value.password)
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.router.navigate(['lessons']);
+        },
+        error => {
+          /* this.error = error;
+          this.loading = false. */
+        }
+      );
   }
 }

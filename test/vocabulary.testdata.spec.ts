@@ -1,6 +1,6 @@
 import { lessonTestData } from './lesson.testdata.spec';
-import { Lesson } from 'src/app/lesson/lesson.service.interface';
-import { Vocabulary } from 'src/app/vocabulary/vocabulary.service.interface';
+import { Lesson } from 'src/app/models/lesson.model.';
+import { Vocabulary } from 'src/app/models/vocabulary.model';
 
 function createVocabulary(
   id: number,

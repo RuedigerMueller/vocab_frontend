@@ -1,4 +1,4 @@
-import { Lesson } from 'src/app/lesson/lesson.service.interface';
+import { Lesson } from 'src/app/models/lesson.model.';
 
 export const lessonTestData: Lesson[] = [
     { id: 2, user: 'User1', title: 'Unit 2', language_a: 'English', language_b: 'Deutsch', numberVocables: 30, numberDueVocables: 2 },

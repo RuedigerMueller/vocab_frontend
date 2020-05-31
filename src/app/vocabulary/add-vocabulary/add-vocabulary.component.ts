@@ -1,10 +1,10 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { VocabularyService } from '../vocabulary.service';
+import { VocabularyService } from '../../services/vocabulary.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Vocabulary } from '../vocabulary.service.interface';
-import { Lesson } from 'src/app/lesson/lesson.service.interface';
-import { LessonService } from 'src/app/lesson/lesson.service';
+import { Vocabulary } from '../../models/vocabulary.model';
+import { Lesson } from 'src/app/models/lesson.model.';
+import { LessonService } from 'src/app/services/lesson.service';
 import { frontend } from 'src/app/resource.identifiers';
 
 @Component({

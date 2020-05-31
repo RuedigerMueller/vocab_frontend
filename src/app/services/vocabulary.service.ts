@@ -2,15 +2,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-import { backend } from '../resource.identifiers';
-import { Vocabulary } from './vocabulary.service.interface';
+import { Vocabulary } from '../models/vocabulary.model';
+import { backend, baseURL } from '../resource.identifiers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VocabularyService {
-  baseURL: string;
   lessons: Vocabulary[];
   httpOptions = {
     headers: new HttpHeaders({
@@ -18,24 +16,17 @@ export class VocabularyService {
     })
   };
 
-  constructor(private http: HttpClient) {
-    const backendURL: string = environment.backendUrl;
-    if ( backendURL.charAt(backendURL.length - 1) === '/') {
-      this.baseURL = backendURL.slice(0, -1);
-    } else {
-      this.baseURL = backendURL;
-    }
-   }
+  constructor(private http: HttpClient) { }
 
   createVocabulary(vocabulary: Vocabulary): Observable<Vocabulary> {
-    return this.http.post<Vocabulary>(`${this.baseURL}/${backend.vocabulary}`, JSON.stringify(vocabulary), this.httpOptions)
+    return this.http.post<Vocabulary>(`${baseURL}/${backend.vocabulary}`, JSON.stringify(vocabulary), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
       );
   }
   getLessonVocabulary(lessonID: string): Observable<Vocabulary[]>{
-    return this.http.get<Vocabulary[]>(`${this.baseURL}/${backend.lessons}/${lessonID}/${backend.vocabulary}`)
+    return this.http.get<Vocabulary[]>(`${baseURL}/${backend.lessons}/${lessonID}/${backend.vocabulary}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -43,7 +34,7 @@ export class VocabularyService {
   }
 
   getVocabulary(vocabularyID: string): Observable<Vocabulary>{
-    return this.http.get<Vocabulary>(`${this.baseURL}/${backend.vocabulary}/${vocabularyID}`)
+    return this.http.get<Vocabulary>(`${baseURL}/${backend.vocabulary}/${vocabularyID}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -51,7 +42,7 @@ export class VocabularyService {
   }
 
   getDueLessonVocabulary(lessonID: string): Observable<Vocabulary[]> {
-    return this.http.get<Vocabulary[]>(`${this.baseURL}/${backend.lessons}/${lessonID}/${backend.dueLessonVocabulary}`)
+    return this.http.get<Vocabulary[]>(`${baseURL}/${backend.lessons}/${lessonID}/${backend.dueLessonVocabulary}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -59,7 +50,7 @@ export class VocabularyService {
   }
 
   updateVocabulary(id: string, vocabulary: Vocabulary): Observable<Vocabulary> {
-    return this.http.patch<Vocabulary>(`${this.baseURL}/${backend.vocabulary}/${id}`, JSON.stringify(vocabulary), this.httpOptions)
+    return this.http.patch<Vocabulary>(`${baseURL}/${backend.vocabulary}/${id}`, JSON.stringify(vocabulary), this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -67,7 +58,7 @@ export class VocabularyService {
   }
 
   deleteVocabulary(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseURL}/${backend.vocabulary}/${id}`)
+    return this.http.delete<void>(`${baseURL}/${backend.vocabulary}/${id}`)
       .pipe(
         retry(1),
         catchError(this.errorHandler)
@@ -75,7 +66,7 @@ export class VocabularyService {
   }
 
   vocababularyKnown(id: string): Observable<void> {
-    return this.http.put<void>(`${this.baseURL}/${backend.vocabulary}/${backend.vocabularyKnown}/${id}`, '')
+    return this.http.put<void>(`${baseURL}/${backend.vocabulary}/${backend.vocabularyKnown}/${id}`, '')
     .pipe(
       retry(1),
       catchError(this.errorHandler)
@@ -83,7 +74,7 @@ export class VocabularyService {
   }
 
   vocababularyUnknown(id: string): Observable<void> {
-    return this.http.put<void>(`${this.baseURL}/${backend.vocabulary}/${backend.vocabularyUnknown}/${id}`, '')
+    return this.http.put<void>(`${baseURL}/${backend.vocabulary}/${backend.vocabularyUnknown}/${id}`, '')
     .pipe(
       retry(1),
       catchError(this.errorHandler)

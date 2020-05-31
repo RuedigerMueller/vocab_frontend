@@ -1,10 +1,10 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LessonService } from 'src/app/lesson/lesson.service';
-import { Lesson } from 'src/app/lesson/lesson.service.interface';
+import { LessonService } from 'src/app/services/lesson.service';
+import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
-import { VocabularyService } from '../vocabulary.service';
-import { Vocabulary } from '../vocabulary.service.interface';
+import { VocabularyService } from '../../services/vocabulary.service';
+import { Vocabulary } from '../../models/vocabulary.model';
 
 
 @Component({

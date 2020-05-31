@@ -1,8 +1,8 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LessonService } from '../lesson.service';
-import { Lesson } from '../lesson.service.interface';
+import { LessonService } from '../../services/lesson.service';
+import { Lesson } from '../../models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 
 @Component({

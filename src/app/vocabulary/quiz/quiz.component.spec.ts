@@ -7,13 +7,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormModule, ButtonModule, LayoutGridModule, PanelModule } from '@fundamental-ngx/core';
 import { of } from 'rxjs/internal/observable/of';
 import { routes } from 'src/app/app-routing.module';
-import { Lesson } from 'src/app/lesson/lesson.service.interface';
+import { Lesson } from 'src/app/models/lesson.model.';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
-import { VocabularyService } from '../vocabulary.service';
-import { Vocabulary } from '../vocabulary.service.interface';
+import { VocabularyService } from '../../services/vocabulary.service';
+import { Vocabulary } from '../../models/vocabulary.model';
 import { QuizComponent } from './quiz.component';
-import { LessonService } from 'src/app/lesson/lesson.service';
+import { LessonService } from 'src/app/services/lesson.service';
 import { FormsModule } from '@angular/forms';
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { Lesson } from '../lesson.service.interface';
-import { LessonService } from '../lesson.service';
+import { Lesson } from '../../models/lesson.model.';
+import { LessonService } from '../../services/lesson.service';
 import { Router } from '@angular/router';
 import { frontend } from 'src/app/resource.identifiers';
 
