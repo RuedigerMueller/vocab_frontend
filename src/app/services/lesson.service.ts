@@ -20,9 +20,6 @@ export class LessonService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   createLesson(lesson: Lesson): Observable<Lesson> {
-    // ToDo: send user or determine in backend?
-    lesson.user = this.authService.currentUserValue.username;
-
     return this.http.post<Lesson>(`${baseURL}/${backend.lessons}`, JSON.stringify(lesson), this.httpOptions)
       .pipe(
         retry(1),

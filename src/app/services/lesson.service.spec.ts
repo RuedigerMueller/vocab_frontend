@@ -41,7 +41,7 @@ describe('LessonService', () => {
     expect(lesssonService).toBeTruthy();
   });
 
-  xit('should create a lesson', () => {
+  it('should create a lesson', () => {
     const expectedLesson: Lesson = testLessons[0];
     lesssonService.createLesson(expectedLesson).subscribe(
       lesson => expect(lesson).toEqual(expectedLesson, 'expected lesson'),
