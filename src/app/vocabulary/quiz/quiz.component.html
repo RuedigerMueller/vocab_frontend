@@ -1,10 +1,11 @@
 <fd-layout-grid [col]="3">
     <P></P>
     <P style="text-align:center; vertical-align: bottom">{{questionedVocabulary}}/{{numberDueVocabularies}}</P>
-    <p style="text-align:right"><button fd-button [glyph]="'sys-cancel'" id="quiz-cancel" (click)=cancel()></button></p>
+    <p style="text-align:right"><button fd-button [glyph]="'sys-cancel'" id="quiz-cancel" (click)=cancel()></button>
+    </p>
 </fd-layout-grid>
 <P></P>
-<fd-layout-grid [col]="3" *ngIf="vocabulary">
+<fd-layout-grid [col]="3" *ngIf="vocabulary && lesson">
     <fd-panel>
         <fd-panel-body>
             <div fd-form-item>
@@ -31,7 +32,7 @@
                 <button *ngIf="displayInvalidateResponseButton" fd-button id="quiz-invalidResponse"
                     (click)=invalidResponse()>Invalid
                     response</button>
-                <button *ngIf="displayNextButton" fd-button id="quiz-next" (click)=next()>Next</button>
+                <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" id="quiz-next" (click)=next()>Next</button>
             </div>
         </fd-panel-body>
     </fd-panel>

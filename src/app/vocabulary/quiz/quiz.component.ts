@@ -23,6 +23,7 @@ export class QuizComponent implements OnInit {
   displayValidateResponseButton = false;
   displayInvalidateResponseButton = false;
   displayNextButton = false;
+  nextButtonType = '';
   enteredResponse = '';
   correctResponse = '';
 
@@ -87,12 +88,14 @@ export class QuizComponent implements OnInit {
       this.displayValidateResponseButton = false;
       this.displayInvalidateResponseButton = false;
       this.displayNextButton = true;
+      this.nextButtonType = 'positive';
     } else {
       this.entryFieldState = 'error';
       this.displayCheckResponseButton = false;
       this.displayValidateResponseButton = true;
       this.displayInvalidateResponseButton = false;
       this.displayNextButton = true;
+      this.nextButtonType = '';
     }
   }
 
@@ -127,6 +130,7 @@ export class QuizComponent implements OnInit {
     this.displayValidateResponseButton = false;
     this.displayInvalidateResponseButton = false;
     this.displayNextButton = false;
+    this.nextButtonType = '';
 
     // In case we are not yet at the end of th quiz: move to next vocabulary; otherwise return to lesson list
     if (this.questionedVocabulary < this.numberDueVocabularies) {
