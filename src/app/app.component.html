@@ -5,6 +5,7 @@
     <fd-shellbar-title>
         {{ title }}
     </fd-shellbar-title>
+    <fd-shellbar-actions *ngIf="currentUser" [user]="shellbarUser" [userMenu]="userMenu" [closePopoverOnSelect]="true"></fd-shellbar-actions>
 </fd-shellbar>
 
 <router-outlet></router-outlet>
