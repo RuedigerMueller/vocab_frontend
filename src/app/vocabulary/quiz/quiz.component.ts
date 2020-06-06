@@ -1,10 +1,11 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { frontend } from 'src/app/resource.identifiers';
 import { VocabularyService } from '../../services/vocabulary.service';
 import { Vocabulary } from '../../models/vocabulary.model';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { LessonService } from 'src/app/services/lesson.service';
+import { ButtonComponent, InputGroupTextareaDirective } from '@fundamental-ngx/core';
 
 @Component({
   selector: 'app-quiz',
@@ -12,6 +13,14 @@ import { LessonService } from 'src/app/services/lesson.service';
   styleUrls: ['./quiz.component.scss']
 })
 export class QuizComponent implements OnInit {
+
+  constructor(
+    private vocabularyService: VocabularyService,
+    private lessonService: LessonService,
+    private ngZone: NgZone,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
   dueVocabulary: ReadonlyArray<Vocabulary>;
   vocabulary: Vocabulary;
   lessonID: string;
@@ -27,13 +36,8 @@ export class QuizComponent implements OnInit {
   enteredResponse = '';
   correctResponse = '';
 
-  constructor(
-    private vocabularyService: VocabularyService,
-    private lessonService: LessonService,
-    private ngZone: NgZone,
-    private router: Router,
-    private route: ActivatedRoute
-  ) { }
+  @ViewChild('nextButton') nextButton: ButtonComponent;
+  @ViewChild('quizLearnedLanguage') quizLearnedLanguageTextArea: ElementRef;
 
   ngOnInit(): void {
     this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
@@ -78,7 +82,6 @@ export class QuizComponent implements OnInit {
 
     return vocabulary;
   }
-
   checkResponse(): void {
     this.correctResponse = this.vocabulary.language_b;
 
@@ -97,6 +100,11 @@ export class QuizComponent implements OnInit {
       this.displayNextButton = true;
       this.nextButtonType = '';
     }
+
+    // this will make the execution after the above values have changed
+    setTimeout(() => {
+      this.nextButton.elementRef().nativeElement.focus();
+    }, 0);
   }
 
   validResponse(): void {
@@ -105,6 +113,11 @@ export class QuizComponent implements OnInit {
     this.displayValidateResponseButton = false;
     this.displayInvalidateResponseButton = true;
     this.displayNextButton = true;
+    
+    // this will make the execution after the above values have changed
+    setTimeout(() => {
+      this.nextButton.elementRef().nativeElement.focus();
+    }, 0);
   }
 
   invalidResponse(): void {
@@ -113,6 +126,11 @@ export class QuizComponent implements OnInit {
     this.displayValidateResponseButton = true;
     this.displayInvalidateResponseButton = false;
     this.displayNextButton = true;
+
+    // this will make the execution after the above values have changed
+    setTimeout(() => {
+      this.nextButton.elementRef().nativeElement.focus();
+    }, 0);
   }
 
   next(): void {
@@ -140,6 +158,11 @@ export class QuizComponent implements OnInit {
     } else {
       this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
     }
+
+    // this will make the execution after the above values have changed
+    setTimeout(() => {
+      this.quizLearnedLanguageTextArea.nativeElement.focus();
+    }, 0);
   }
 
   cancel(): void {

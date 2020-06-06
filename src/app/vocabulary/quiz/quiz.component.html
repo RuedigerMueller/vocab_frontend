@@ -19,12 +19,12 @@
         <fd-panel-body>
             <div fd-form-item>
                 <label fd-form-label for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
-                <textarea fd-form-control id="quiz-learnedLanguage" rows="10" [state]="entryFieldState"
+                <textarea fd-form-control autofocus #quizLearnedLanguage id="quiz-learnedLanguage" rows="10" [state]="entryFieldState"
                     [(ngModel)]="enteredResponse" (keyup.enter)="checkResponse()"></textarea>
             </div>
             <div>
                 <button *ngIf="displayCheckResponseButton" fd-button id="quiz-checkResponse"
-                    (click)=checkResponse()>Check
+                    (click)="checkResponse()">Check
                     response</button>
                 <button *ngIf="displayValidateResponseButton" fd-button id="quiz-validResponse"
                     (click)=validResponse()>Valid
@@ -32,7 +32,7 @@
                 <button *ngIf="displayInvalidateResponseButton" fd-button id="quiz-invalidResponse"
                     (click)=invalidResponse()>Invalid
                     response</button>
-                <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" id="quiz-next" (click)=next()>Next</button>
+                <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" #nextButton id="quiz-next" (click)=next()>Next</button>
             </div>
         </fd-panel-body>
     </fd-panel>

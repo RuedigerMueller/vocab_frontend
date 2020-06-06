@@ -3,7 +3,7 @@
 <form *ngIf="editLessonForm" [formGroup]="editLessonForm" (ngSubmit)="submitForm()" novalidate>
     <div fd-form-item>
         <label fd-form-label for="edit-lesson-title">Title</label>
-        <input fd-form-control type="text" formControlName="title" maxlength="20" value="{{ lesson.title }}" id="edit-lesson-title">
+        <input fd-form-control autofocus type="text" formControlName="title" maxlength="20" value="{{ lesson.title }}" id="edit-lesson-title">
     </div>
     <div fd-form-item>
         <label fd-form-label for="edit-lesson-language_a">Learned language</label>

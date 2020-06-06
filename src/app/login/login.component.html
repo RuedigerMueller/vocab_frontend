@@ -3,7 +3,7 @@
 <form *ngIf="loginForm" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
     <div fd-form-item>
         <label fd-form-label for="login-eMail">e-Mail</label>
-        <input fd-form-control type="text" formControlName="eMail" maxlength="20" id="login-userEmail">
+        <input fd-form-control autofocus type="text" formControlName="eMail" maxlength="20" id="login-userEmail">
     </div>
     <div fd-form-item>
         <label fd-form-label for="login-password">Password</label>

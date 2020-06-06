@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, Input, ElementRef } from '@angular/core';
 import { VocabularyService } from '../../services/vocabulary.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -15,6 +15,8 @@ import { frontend } from 'src/app/resource.identifiers';
 export class AddVocabularyComponent implements OnInit {
   lesson: Lesson;
   addVocabularyForm: FormGroup;
+
+  @ViewChild('addVocabularyLanguageA') addVocabularyLanguageAInput: ElementRef;
 
   constructor(
     private vocabularyService: VocabularyService,
@@ -46,6 +48,7 @@ export class AddVocabularyComponent implements OnInit {
       language_a: [''],
       language_b: ['']
     });
+    this.addVocabularyLanguageAInput.nativeElement.focus();
   }
 
   cancel(): void {
