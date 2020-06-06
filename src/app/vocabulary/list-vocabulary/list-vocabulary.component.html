@@ -1,5 +1,6 @@
 <h3 *ngIf="lesson">{{ lesson.title}}</h3>
 <button fd-button id="list-vocabulary-createAction" (click)=createVocabulary()>Create</button>
+<button fd-button id="list-vocabulary-closeLessonAction" (click)=closeLesson()>Close Lesson</button>
 <table *ngIf="lesson" fd-table>
     <thead fd-table-header>
         <tr fd-table-row>

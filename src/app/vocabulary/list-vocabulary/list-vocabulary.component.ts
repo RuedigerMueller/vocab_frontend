@@ -56,6 +56,10 @@ export class ListVocabularyComponent implements OnInit {
       this.getVocabulary(this.lessonID);
     });
   }
+
+  closeLesson(): void {
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
+  }
 }
 
 

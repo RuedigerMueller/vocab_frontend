@@ -154,7 +154,7 @@ describe('ListVocabulariesComponent', () => {
     it('should have required buttons', () => {
       let success = true;
 
-      const expectedActions: ReadonlyArray<string> = ['Create', 'Edit'];
+      const expectedActions: ReadonlyArray<string> = ['Create', 'Close Lesson', 'Edit'];
 
       const actions: NodeListOf<HTMLButtonElement> = fixture.nativeElement.querySelectorAll('button');
 
@@ -208,6 +208,14 @@ describe('ListVocabulariesComponent', () => {
       tick();
 
       expect(location.path()).toBe(`/${frontend.lessons}/${component.lesson.id}/${frontend.addVocabulary}`);
+    }));
+
+    it('should navigate to list-lessons component when clicking "Close Lesson"', fakeAsync(() => {
+      const createButton: HTMLButtonElement = fixture.nativeElement.querySelector('#list-vocabulary-closeLessonAction');
+      createButton.click();
+      tick();
+
+      expect(location.path()).toBe(`/${frontend.lessons}`);
     }));
 
     it('should navigate edit-vocabulary component when clicking "Edit"', fakeAsync(() => {
