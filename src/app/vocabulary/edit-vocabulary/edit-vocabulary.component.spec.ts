@@ -149,10 +149,12 @@ describe('EditVocabularyComponent', () => {
       expect(location.path()).toBe(`/${frontend.lessons}/${component.lesson.id}/${frontend.vocabulary}`, 'should nav to listVocabulary');
     }));
   });
-  
-  describe('should support keyboard navigation', () => {
-    xit('should have test to keyboad navigation', () => {
 
+  describe('should support keyboard navigation', () => {
+    it('languaga_a should have autofocus', () => {
+      const inputDE: DebugElement = fixture.debugElement.query(By.css('#edit-vocabulary-language_a'));
+      const inputElement: HTMLInputElement = inputDE.nativeElement;
+      expect (inputElement.autofocus).toBeTrue();
     });
   });
 });

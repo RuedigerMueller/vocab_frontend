@@ -150,8 +150,22 @@ describe('AddVocabularyComponent', () => {
   });
 
   describe('should support keyboard navigation', () => {
-    xit('should have test to keyboad navigation', () => {
-
+    it('language_a should have autofocus', () => {
+      const inputDE: DebugElement = fixture.debugElement.query(By.css('#add-vocabulary-language_a'));
+      const inputElement: HTMLInputElement = inputDE.nativeElement;
+      expect (inputElement.autofocus).toBeTrue();
     });
+
+    it('should have focus on add-vocabulary-language_a field after clicking "Add"', fakeAsync(() => {
+      const inputDE: DebugElement = fixture.debugElement.query(By.css('#add-vocabulary-language_a'));
+      const inputElement: HTMLLinkElement = inputDE.nativeElement;
+      spyOn(inputElement, 'focus');
+
+      const addButton: HTMLButtonElement = fixture.nativeElement.querySelector('#add-vocabulary-addButton');
+      addButton.click();
+      tick();
+
+      expect(inputElement.focus).toHaveBeenCalled();
+    }));
   });
 });

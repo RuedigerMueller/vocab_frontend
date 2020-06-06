@@ -5,6 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { routes } from '../app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -39,8 +41,10 @@ describe('LoginComponent', () => {
   });
 
   describe('should support keyboard navigation', () => {
-    xit('should have test to keyboad navigation', () => {
-
+    it('lesson user e-Mail should have autofocus', () => {
+      const inputDE: DebugElement = fixture.debugElement.query(By.css('#login-userEmail'));
+      const inputElement: HTMLInputElement = inputDE.nativeElement;
+      expect (inputElement.autofocus).toBeTrue();
     });
   });
 });

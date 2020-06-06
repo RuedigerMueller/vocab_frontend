@@ -15,6 +15,8 @@ import { Vocabulary } from '../../models/vocabulary.model';
 import { QuizComponent } from './quiz.component';
 import { LessonService } from 'src/app/services/lesson.service';
 import { FormsModule } from '@angular/forms';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 
 const testLesson: Lesson = lessonTestData[0];
@@ -90,8 +92,10 @@ describe('QuizComponent', () => {
   });
 
   describe('should support keyboard navigation', () => {
-    xit('should have test to keyboad navigation', () => {
-
+    it('learned language should have autofocus', () => {
+      const inputDE: DebugElement = fixture.debugElement.query(By.css('#quiz-learnedLanguage'));
+      const inputElement: HTMLInputElement = inputDE.nativeElement;
+      expect (inputElement.autofocus).toBeTrue();
     });
   });
 });

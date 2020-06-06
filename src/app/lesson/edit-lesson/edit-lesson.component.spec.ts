@@ -151,8 +151,10 @@ describe('EditLessonComponent', () => {
   });
 
   describe('should support keyboard navigation', () => {
-    xit('should have test to keyboad navigation', () => {
-
+    it('lesson title should have autofocus', () => {
+      const inputDE: DebugElement = fixture.debugElement.query(By.css('#edit-lesson-title'));
+      const inputElement: HTMLInputElement = inputDE.nativeElement;
+      expect (inputElement.autofocus).toBeTrue();
     });
   });
 });

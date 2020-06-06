@@ -13,7 +13,7 @@ import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { LessonService } from '../../services/lesson.service';
 import { AddLessonComponent } from './add-lesson.component';
-import { DebugElement } from '@angular/core';
+import { DebugElement, Input } from '@angular/core';
 import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 
 const testAddLesson = lessonTestData[0];
@@ -146,8 +146,10 @@ describe('AddLessonComponent', () => {
   });
 
   describe('should support keyboard navigation', () => {
-    xit('should have test to keyboad navigation', () => {
-
+    it('lesson title should have autofocus', () => {
+      const inputDE: DebugElement = fixture.debugElement.query(By.css('#add-lesson-title'));
+      const inputElement: HTMLInputElement = inputDE.nativeElement;
+      expect (inputElement.autofocus).toBeTrue();
     });
   });
 });
