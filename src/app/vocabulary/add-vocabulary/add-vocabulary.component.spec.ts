@@ -148,4 +148,10 @@ describe('AddVocabularyComponent', () => {
       expect(location.path()).toBe(`/${frontend.lessons}/${component.lesson.id}/${frontend.vocabulary}`, 'should nav to listVocabulary');
     }));
   });
+
+  describe('should support keyboard navigation', () => {
+    xit('should have test to keyboad navigation', () => {
+
+    });
+  });
 });

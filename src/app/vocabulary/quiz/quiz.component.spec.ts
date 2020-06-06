@@ -83,7 +83,15 @@ describe('QuizComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xdescribe('should be unit tested', () => {
+  describe('should be unit tested', () => {
+    xit('should be unit tested', () => {
 
+    })
+  });
+
+  describe('should support keyboard navigation', () => {
+    xit('should have test to keyboad navigation', () => {
+
+    });
   });
 });

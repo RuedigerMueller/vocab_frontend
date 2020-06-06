@@ -149,4 +149,10 @@ describe('EditLessonComponent', () => {
       expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to listLessons');
     }));
   });
+
+  describe('should support keyboard navigation', () => {
+    xit('should have test to keyboad navigation', () => {
+
+    });
+  });
 });

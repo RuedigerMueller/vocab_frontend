@@ -32,7 +32,15 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xdescribe('should be unit testes', () => {
+  describe('should be unit testes', () => {
+    xit('should be unit tested', () => {
 
+    });
+  });
+
+  describe('should support keyboard navigation', () => {
+    xit('should have test to keyboad navigation', () => {
+
+    });
   });
 });
