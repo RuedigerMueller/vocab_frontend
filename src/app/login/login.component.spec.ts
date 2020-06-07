@@ -14,14 +14,14 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
+      declarations: [LoginComponent],
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes(routes),
         ReactiveFormsModule,
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -44,7 +44,16 @@ describe('LoginComponent', () => {
     it('lesson user e-Mail should have autofocus', () => {
       const inputDE: DebugElement = fixture.debugElement.query(By.css('#login-userEmail'));
       const inputElement: HTMLInputElement = inputDE.nativeElement;
-      expect (inputElement.autofocus).toBeTrue();
+      expect(inputElement.autofocus).toBeTrue();
+    });
+
+    it('should only have one autofocus element', () => {
+      const items: ReadonlyArray<HTMLElement> = fixture.nativeElement.getElementsByTagName('*');
+      let counter = 0;
+      for (let i = items.length; i--;) {
+        if (items[i].autofocus === true) { counter++; }
+      }
+      expect(counter).toEqual(1);
     });
   });
 });

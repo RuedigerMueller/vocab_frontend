@@ -97,5 +97,14 @@ describe('QuizComponent', () => {
       const inputElement: HTMLInputElement = inputDE.nativeElement;
       expect (inputElement.autofocus).toBeTrue();
     });
+
+    it('should only have one autofocus element', () => {
+      const items: ReadonlyArray<HTMLElement> = fixture.nativeElement.getElementsByTagName('*');
+      let counter = 0;
+      for (let i = items.length; i--;) {
+        if (items[i].autofocus === true) { counter++; }
+      }
+      expect(counter).toEqual(1);
+    });
   });
 });
