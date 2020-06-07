@@ -10,6 +10,7 @@ export const frontend = {
     lessonID: 'lessonID',
     vocabularyID: 'vocabularyID',
     quiz: 'quiz',
+    login: 'login',
 };
 
 export const backend = {

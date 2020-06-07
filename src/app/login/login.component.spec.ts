@@ -17,13 +17,13 @@ describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let location: Location;
-  let getAuthSpy: any;
+  let authServiceSpy: any;
 
   const user_1: User = userTestData[0];
 
   beforeEach(async(() => {
     const authService: any = jasmine.createSpyObj('AuthService', ['login']);
-    getAuthSpy = authService.login.and.returnValue(of(user_1));
+    authServiceSpy = authService.login.and.returnValue(of(user_1));
 
 
     TestBed.configureTestingModule({
@@ -67,7 +67,6 @@ describe('LoginComponent', () => {
       const loginButton: HTMLButtonElement = fixture.nativeElement.querySelector('#login-loginButton');
       loginButton.click();
       tick();
-      
       expect(location.path()).toBe(component.returnUrl, 'should nav to return URL');
     }));
   });
