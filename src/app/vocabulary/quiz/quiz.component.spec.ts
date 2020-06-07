@@ -1,26 +1,22 @@
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormModule, ButtonModule, LayoutGridModule, PanelModule } from '@fundamental-ngx/core';
+import { ButtonModule, FormModule, LayoutGridModule, PanelModule } from '@fundamental-ngx/core';
 import { of } from 'rxjs/internal/observable/of';
 import { routes } from 'src/app/app-routing.module';
 import { Lesson } from 'src/app/models/lesson.model.';
+import { LessonService } from 'src/app/services/lesson.service';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
-import { VocabularyService } from '../../services/vocabulary.service';
 import { Vocabulary } from '../../models/vocabulary.model';
+import { VocabularyService } from '../../services/vocabulary.service';
 import { QuizComponent } from './quiz.component';
-import { LessonService } from 'src/app/services/lesson.service';
-import { FormsModule } from '@angular/forms';
-import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
-
-
-const testLesson: Lesson = lessonTestData[0];
-const testVocabularyList: ReadonlyArray<Vocabulary> = vocabularyTestData;
 
 describe('QuizComponent', () => {
   let httpClient: HttpClient;
@@ -33,6 +29,9 @@ describe('QuizComponent', () => {
 
   let getDueLessonVocabularySpy: any;
   let getLessonsSpy: any;
+
+  const testLesson: Lesson = lessonTestData[0];
+  const testVocabularyList: ReadonlyArray<Vocabulary> = vocabularyTestData;
 
   beforeEach(async(() => {
     const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getDueLessonVocabulary']);

@@ -10,16 +10,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 import { of } from 'rxjs';
 import { routes } from 'src/app/app-routing.module';
-import { LessonService } from 'src/app/services/lesson.service';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 import { frontend } from 'src/app/resource.identifiers';
+import { LessonService } from 'src/app/services/lesson.service';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { VocabularyService } from '../../services/vocabulary.service';
 import { EditVocabularyComponent } from './edit-vocabulary.component';
-import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
-
-const testLesson = lessonTestData[0];
-const testVocabularyList = vocabularyTestData;
 
 describe('EditVocabularyComponent', () => {
   let httpClient: HttpClient;
@@ -34,6 +31,9 @@ describe('EditVocabularyComponent', () => {
   let updateVocabularySpy: any;
   let getLessonsSpy: any;
   let canActivateSpy: any;
+
+  const testLesson = lessonTestData[0];
+  const testVocabularyList = vocabularyTestData;
 
   beforeEach(async(() => {
     const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getVocabulary', 'updateVocabulary']);

@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -9,14 +10,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 import { of } from 'rxjs';
 import { routes } from 'src/app/app-routing.module';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { LessonService } from '../../services/lesson.service';
 import { AddLessonComponent } from './add-lesson.component';
-import { DebugElement, Input } from '@angular/core';
-import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
-
-const testAddLesson = lessonTestData[0];
 
 describe('AddLessonComponent', () => {
   let httpClient: HttpClient;
@@ -29,6 +27,7 @@ describe('AddLessonComponent', () => {
 
   let addLessonSpy: any;
   let canActivateSpy: any;
+  const testAddLesson = lessonTestData[0];
 
   beforeEach(async(() => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['createLesson']);

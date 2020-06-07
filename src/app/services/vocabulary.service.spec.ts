@@ -1,27 +1,19 @@
-import { TestBed } from '@angular/core/testing';
-
-import { VocabularyService } from './vocabulary.service';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { Vocabulary } from '../models/vocabulary.model';
-import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
+import { TestBed } from '@angular/core/testing';
 import { lessonTestData } from 'test/lesson.testdata.spec';
+import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { Lesson } from '../models/lesson.model.';
-import { environment } from 'src/environments/environment';
-import { backend } from '../resource.identifiers';
+import { Vocabulary } from '../models/vocabulary.model';
+import { backend, baseURL } from '../resource.identifiers';
+import { VocabularyService } from './vocabulary.service';
 
-const testLesson: Lesson = lessonTestData[0];
-const testVocabulary = vocabularyTestData;
-
-let backendURL: string;
-if (environment.backendUrl.charAt(environment.backendUrl.length - 1) === '/') {
-  backendURL = environment.backendUrl.slice(0, -1);
-} else {
-  backendURL = environment.backendUrl;
-}
 
 describe('VocabularyService', () => {
   let httpTestingController: HttpTestingController;
   let vocabularyService: VocabularyService;
+  const testLesson: Lesson = lessonTestData[0];
+  const testVocabulary = vocabularyTestData;
+  const backendURL: string = baseURL;
 
   const requestCheck = async (url: string, method: string, testData: any) => {
     const req: TestRequest = httpTestingController.expectOne(url);

@@ -4,7 +4,7 @@ import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { userTestData } from 'test/user.testdata.spec';
@@ -13,13 +13,13 @@ import { AuthService } from '../helpers/auth.service';
 import { User } from '../models/user.model';
 import { LoginComponent } from './login.component';
 
-const user_1: User = userTestData[0];
-
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let location: Location;
   let getAuthSpy: any;
+
+  const user_1: User = userTestData[0];
 
   beforeEach(async(() => {
     const authService: any = jasmine.createSpyObj('AuthService', ['login']);

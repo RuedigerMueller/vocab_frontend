@@ -20,9 +20,6 @@ import { Vocabulary } from '../../models/vocabulary.model';
 import { VocabularyService } from '../../services/vocabulary.service';
 import { AddVocabularyComponent } from './add-vocabulary.component';
 
-const testLesson: Lesson = lessonTestData[0];
-const testVocabulary: Vocabulary = vocabularyTestData[0];
-
 describe('AddVocabularyComponent', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
@@ -35,6 +32,9 @@ describe('AddVocabularyComponent', () => {
   let getLessonsSpy: any;
   let createVocabularySpy: any;
   let canActivateSpy: any;
+
+  const testLesson: Lesson = lessonTestData[0];
+  const testVocabulary: Vocabulary = vocabularyTestData[0];
 
   beforeEach(async(() => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson']);

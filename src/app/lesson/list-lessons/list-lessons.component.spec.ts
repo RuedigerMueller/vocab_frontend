@@ -7,14 +7,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonModule, MenuModule, SplitButtonModule, TableModule } from '@fundamental-ngx/core';
 import { Observable, of } from 'rxjs';
 import { routes } from 'src/app/app-routing.module';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
+import { Lesson } from '../../models/lesson.model.';
 import { LessonService } from '../../services/lesson.service';
 import { ListLessonsComponent } from './list-lessons.component';
-import { Lesson } from '../../models/lesson.model.';
-import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
-
-const testLessonList: ReadonlyArray<Lesson> = lessonTestData;
 
 describe('ListLessonsComponent', () => {
   let httpClient: HttpClient;
@@ -28,6 +26,8 @@ describe('ListLessonsComponent', () => {
   let getLessonsSpy: any;
   let deleteLessonSpy: any;
   let canActivateSpy: any;
+
+  const testLessonList: ReadonlyArray<Lesson> = lessonTestData;
 
   const expandSplitButton = () => {
     const expandableButton: HTMLButtonElement = fixture.nativeElement.querySelector('.sap-icon--slim-arrow-down');

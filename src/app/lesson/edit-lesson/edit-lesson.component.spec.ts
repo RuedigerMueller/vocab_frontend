@@ -16,8 +16,6 @@ import { lessonTestData } from 'test/lesson.testdata.spec';
 import { LessonService } from '../../services/lesson.service';
 import { EditLessonComponent } from './edit-lesson.component';
 
-const testEditLesson = lessonTestData[0];
-
 describe('EditLessonComponent', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
@@ -30,6 +28,8 @@ describe('EditLessonComponent', () => {
   let getLessonSpy: any;
   let updateLessonSpy: any;
   let canActivateSpy: any;
+
+  const testEditLesson = lessonTestData[0];
 
   beforeEach(async(() => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson', 'updateLesson']);
