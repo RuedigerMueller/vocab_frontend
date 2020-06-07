@@ -10,12 +10,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 import { of } from 'rxjs';
 import { routes } from 'src/app/app-routing.module';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { LessonService } from '../../services/lesson.service';
 import { EditLessonComponent } from './edit-lesson.component';
-import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
-import { AuthService } from 'src/app/helpers/auth.service';
 
 const testEditLesson = lessonTestData[0];
 

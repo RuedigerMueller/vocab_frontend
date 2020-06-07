@@ -27,7 +27,10 @@ describe('PageNotFoundComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xdescribe('should be unit testes', () => {
-
+  describe('should render UI elements', () => {
+    it('should display "Page not found"', () => {
+      const paragraph: HTMLParagraphElement = fixture.nativeElement.querySelector('p.fd-message-strip__text');
+      expect(paragraph.innerHTML).toContain('Page not found');
+    });
   });
 });

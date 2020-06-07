@@ -1,24 +1,15 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-
-import { LessonService } from './lesson.service';
-import { Lesson } from '../models/lesson.model.';
-import { environment } from 'src/environments/environment';
+import { TestBed } from '@angular/core/testing';
 import { lessonTestData } from 'test/lesson.testdata.spec';
-import { backend } from '../resource.identifiers';
-
-const testLessons: ReadonlyArray<Lesson> = lessonTestData;
-
-let backendURL: string;
-if (environment.backendUrl.charAt(environment.backendUrl.length - 1) === '/') {
-  backendURL = environment.backendUrl.slice(0, -1);
-} else {
-  backendURL = environment.backendUrl;
-}
+import { Lesson } from '../models/lesson.model.';
+import { backend, baseURL } from '../resource.identifiers';
+import { LessonService } from './lesson.service';
 
 describe('LessonService', () => {
-  let httpTestingController: HttpTestingController;
   let lesssonService: LessonService;
+  let httpTestingController: HttpTestingController;
+  const testLessons: ReadonlyArray<Lesson> = lessonTestData;
+  const backendURL: string = baseURL;
   const lessonsURI: string = backend.lessons;
 
   const requestCheck = async (url: string, method: string, testData: any) => {
@@ -78,7 +69,7 @@ describe('LessonService', () => {
       fail
     );
 
-    requestCheck(backendURL + '/' +  lessonsURI + '/' +  updatedLesson.id, 'PATCH', updatedLesson);
+    requestCheck(backendURL + '/' + lessonsURI + '/' + updatedLesson.id, 'PATCH', updatedLesson);
   });
 
   it('should delete a lesson', () => {

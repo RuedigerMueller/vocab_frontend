@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { async, TestBed, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ShellbarModule } from '@fundamental-ngx/core';
 import { AppComponent } from './app.component';
@@ -9,7 +9,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        ShellbarModule, 
+        ShellbarModule,
         HttpClientTestingModule,
       ],
       declarations: [
@@ -44,5 +44,22 @@ describe('AppComponent', () => {
 
       expect(titleElement.textContent).toContain(app.title);
     });
+  });
+
+  describe('should have required actions', () => {
+    xit('should have link "Logout"', () => {
+      /* const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
+      expect(button.textContent).toContain('Save'); */
+    });
+  });
+
+  describe('should route correctly on actions', () => {
+    xit('should navigate to login component when clicking "Logout"', fakeAsync(() => {
+      /* const saveButton: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
+      saveButton.click();
+      tick();
+
+      expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to listLessons'); */
+    }));
   });
 });
