@@ -1,6 +1,6 @@
 <fd-layout-grid [col]="3">
     <P></P>
-    <P style="text-align:center; vertical-align: bottom">{{questionedVocabulary}}/{{numberDueVocabularies}}</P>
+    <P style="text-align:center; vertical-align: bottom" id="quiz-progress">{{questionedVocabulary}}/{{numberDueVocabularies}}</P>
     <p style="text-align:right"><button fd-button [glyph]="'sys-cancel'" id="quiz-cancel" (click)=cancel()></button>
     </p>
 </fd-layout-grid>

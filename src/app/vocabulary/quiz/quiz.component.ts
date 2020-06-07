@@ -113,7 +113,7 @@ export class QuizComponent implements OnInit {
     this.displayValidateResponseButton = false;
     this.displayInvalidateResponseButton = true;
     this.displayNextButton = true;
-    
+
     // this will make the execution after the above values have changed
     setTimeout(() => {
       this.nextButton.elementRef().nativeElement.focus();
