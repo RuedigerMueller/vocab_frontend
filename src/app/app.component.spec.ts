@@ -3,15 +3,28 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ShellbarModule } from '@fundamental-ngx/core';
 import { AppComponent } from './app.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { User } from './models/user.model';
+import { userTestData } from 'test/user.testdata.spec';
+import { of } from 'rxjs';
+import { AuthService } from './helpers/auth.service';
 
 describe('AppComponent', () => {
+  /* let authCurrentUserSpy: any;
+  const testUser: User = userTestData[0]; */
+
   beforeEach(async(() => {
+    /* const authService: any = jasmine.createSpyObj('AuthService', ['currentUser']);
+    authCurrentUserSpy = authService.currentUser.and.returnValue(of(testUser)); */
+
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
         ShellbarModule,
         HttpClientTestingModule,
       ],
+     /*  providers: [
+        { provide: AuthService, useValue: authService }
+      ], */
       declarations: [
         AppComponent
       ],

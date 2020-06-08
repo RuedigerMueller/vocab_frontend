@@ -17,8 +17,7 @@ import { Vocabulary } from '../../models/vocabulary.model';
 import { ListVocabularyComponent } from './list-vocabulary.component';
 import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 
-const testLesson: Lesson = lessonTestData[0];
-const testVocabularyList: ReadonlyArray<Vocabulary> = vocabularyTestData;
+
 
 describe('ListVocabulariesComponent', () => {
   let httpClient: HttpClient;
@@ -33,6 +32,9 @@ describe('ListVocabulariesComponent', () => {
   let deleteVocabularySpy: any;
   let getLessonsSpy: any;
   let canActivateSpy: any;
+
+  const testLesson: Lesson = lessonTestData[0];
+  const testVocabularyList: ReadonlyArray<Vocabulary> = vocabularyTestData;
 
   const expandSplitButton = () => {
     const expandableButton: HTMLButtonElement = fixture.nativeElement.querySelector('.sap-icon--slim-arrow-down');

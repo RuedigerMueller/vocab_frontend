@@ -23,7 +23,11 @@ export class AppComponent {
     this.authenticationService.currentUser.subscribe((user: User) => {
       this.currentUser = user;
       if ( this.currentUser) {
-        this.shellbarUser.initials = user.firstName[0] + user.lastName[0];
+        if ((this.currentUser.firstName) && (this.currentUser.lastName)) {
+          this.shellbarUser.initials = this.currentUser.firstName[0] + this.currentUser.lastName[0];
+        } else {
+          this.shellbarUser.initials = '';
+        }
       }
     });
   }
