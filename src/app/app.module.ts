@@ -20,6 +20,7 @@ import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocab
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 import { QuizComponent } from './vocabulary/quiz/quiz.component';
 import { ErrorInterceptor } from './helpers/error.interceptor';
+import { VocabFocusDirective } from './directives/vocab-focus.directive';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
     EditVocabularyComponent,
     PageNotFoundComponent,
     QuizComponent,
-    LoginComponent
+    LoginComponent,
+    VocabFocusDirective
   ],
   imports: [
     BrowserModule,

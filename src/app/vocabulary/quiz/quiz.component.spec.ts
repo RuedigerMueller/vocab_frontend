@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
@@ -17,6 +17,8 @@ import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { Vocabulary } from '../../models/vocabulary.model';
 import { VocabularyService } from '../../services/vocabulary.service';
 import { QuizComponent } from './quiz.component';
+import { frontend } from 'src/app/resource.identifiers';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 
 describe('QuizComponent', () => {
   let httpClient: HttpClient;
@@ -29,6 +31,7 @@ describe('QuizComponent', () => {
 
   let getDueLessonVocabularySpy: any;
   let getLessonsSpy: any;
+  let authGuardSpy: any;
 
   const testLesson: Lesson = lessonTestData[0];
   const testVocabularyList: ReadonlyArray<Vocabulary> = vocabularyTestData;
@@ -39,6 +42,9 @@ describe('QuizComponent', () => {
 
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
+
+    const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate', 'deleteVocabulary']);
+    authGuardSpy = authGuardService.deleteVocabulary.and.returnValue(true);
 
     TestBed.configureTestingModule({
       declarations: [QuizComponent],
@@ -54,6 +60,7 @@ describe('QuizComponent', () => {
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },
         { provide: LessonService, useValue: lessonService },
+        { provide: AuthGuardService, useValue: authGuardService },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -95,7 +102,7 @@ describe('QuizComponent', () => {
 
     xit('should increase the progress counter when moving to a new vocabulary', () => {
 
-    })
+    });
   });
 
   describe('should render UI elements', () => {
@@ -174,28 +181,78 @@ describe('QuizComponent', () => {
     });
   });
 
+  // text areas and labels are fix
+  // only need to check buttons, button/textarea colors and content of correct response text area
   describe('should hide/show & focus content depending on the response', () => {
     it('should display the correct elements initially', () => {
+      const checkResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-checkResponse`);
+      const validResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-validResponse`);
+      const invalidResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-invalidResponse`);
+      const nextButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-next`);
+      const knownLanguageTextArea: HTMLTextAreaElement = fixture.nativeElement.querySelector(`#quiz-knownLanguage`);
+      const learnedLanguageTextArea: HTMLTextAreaElement = fixture.nativeElement.querySelector(`#quiz-learnedLanguage`);
+      const correctResponseTextArea: HTMLTextAreaElement = fixture.nativeElement.querySelector(`#quiz-correctResponse`);
 
+      expect(checkResponseButton).toBeDefined();
+      expect(validResponseButton).toBeFalsy();
+      expect(invalidResponseButton).toBeFalsy();
+      expect(nextButton).toBeFalsy();
+      expect(knownLanguageTextArea.textContent).toEqual(component.dueVocabulary[0].language_a);
+      expect(learnedLanguageTextArea.textContent).toEqual('');
+      expect(correctResponseTextArea.textContent).toEqual('');
     });
 
     it('should display the correct elements for correct answers', () => {
-
+      component.enteredResponse = component.vocabulary.language_b;
+      component.checkResponse();
+      expect(component.entryFieldState).toEqual('success');
+      expect(component.displayCheckResponseButton).toBeFalse();
+      expect(component.displayValidateResponseButton).toBeFalse();
+      expect(component.displayInvalidateResponseButton).toBeFalse();
+      expect(component.displayNextButton).toBeTrue();
+      expect(component.nextButtonType).toEqual('positive');
     });
 
     it('should display the correct elements for incorrect answers', () => {
-
+      component.enteredResponse = 'incorrect response';
+      component.checkResponse();
+      expect(component.entryFieldState).toEqual('error');
+      expect(component.displayCheckResponseButton).toBeFalse();
+      expect(component.displayValidateResponseButton).toBeTrue();
+      expect(component.displayInvalidateResponseButton).toBeFalse();
+      expect(component.displayNextButton).toBeTrue();
+      expect(component.nextButtonType).toEqual('');
     });
 
     it('should display the correct elements for corected incorrect answers', () => {
+      component.validResponse();
+      expect(component.entryFieldState).toEqual('success');
+      expect(component.displayCheckResponseButton).toBeFalse();
+      expect(component.displayValidateResponseButton).toBeFalse();
+      expect(component.displayInvalidateResponseButton).toBeTrue();
+      expect(component.displayNextButton).toBeTrue();
+      expect(component.nextButtonType).toEqual('');
+    });
 
+    it('should display the correct elements for invalided corrected answers', () => {
+      component.invalidResponse();
+      expect(component.entryFieldState).toEqual('error');
+      expect(component.displayCheckResponseButton).toBeFalse();
+      expect(component.displayValidateResponseButton).toBeTrue();
+      expect(component.displayInvalidateResponseButton).toBeFalse();
+      expect(component.displayNextButton).toBeTrue();
+      expect(component.nextButtonType).toEqual('');
     });
   });
 
   describe('should route correctly on actions', () => {
-    it('should return to the list-lessons component when closing the quiz', () => {
+    xit('should return to the list-lessons component when closing the quiz', fakeAsync(() => {
+      const closeButton: HTMLButtonElement = fixture.nativeElement.querySelector('#quiz-cancel');
+      closeButton.click();
+      tick();
 
-    });
+      expect(location.path()).toBe(`/${frontend.lessons}`);
+    }));
 
     it('should return to the list-lessons component at the end of the quiz', () => {
 
