@@ -45,7 +45,7 @@ describe('AuthService', () => {
   });
 
   describe('logout', () => {
-    xit('should logout the user', () => {
+    it('should logout the user', () => {
       authService.logout();
       expect(authService.currentUserValue).toBeNull();
     });

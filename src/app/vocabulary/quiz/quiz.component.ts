@@ -132,9 +132,9 @@ export class QuizComponent implements OnInit, AfterViewChecked {
   next(): void {
     // Update backend
     if (this.entryFieldState === 'success') {
-      this.vocabularyService.vocababularyKnown(this.vocabulary.id.toString()).subscribe(() => { });
+      this.vocabularyService.vocabularyKnown(this.vocabulary.id.toString()).subscribe(() => { });
     } else {
-      this.vocabularyService.vocababularyUnknown(this.vocabulary.id.toString()).subscribe(() => { });
+      this.vocabularyService.vocabularyUnknown(this.vocabulary.id.toString()).subscribe(() => { });
     }
 
     // Reset states and buttons for next vocabulary

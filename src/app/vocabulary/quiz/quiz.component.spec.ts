@@ -30,6 +30,8 @@ describe('QuizComponent', () => {
   let fixture: ComponentFixture<QuizComponent>;
 
   let getDueLessonVocabularySpy: any;
+  let vocabularyKnownSpy: any;
+  let vocabularyUnknownSpy: any;
   let getLessonsSpy: any;
   let authGuardSpy: any;
 
@@ -37,8 +39,10 @@ describe('QuizComponent', () => {
   const testVocabularyList: ReadonlyArray<Vocabulary> = vocabularyTestData;
 
   beforeEach(async(() => {
-    const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getDueLessonVocabulary']);
+    const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getDueLessonVocabulary', 'vocabularyKnown', 'vocabularyUnknown']);
     getDueLessonVocabularySpy = vocabularyService.getDueLessonVocabulary.and.returnValue(of(testVocabularyList));
+    vocabularyKnownSpy = vocabularyService.vocabularyKnown.and.returnValue(of());
+    vocabularyUnknownSpy = vocabularyService.vocabularyUnknown.and.returnValue(of());
 
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
@@ -89,20 +93,6 @@ describe('QuizComponent', () => {
 
   it('should create component', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('preparing the quiz', () => {
-    xit('should only include due vocabularies in the quiz', () => {
-
-    });
-
-    xit('should shuffle the due vocabularies', () => {
-
-    });
-
-    xit('should increase the progress counter when moving to a new vocabulary', () => {
-
-    });
   });
 
   describe('should render UI elements', () => {
@@ -243,22 +233,54 @@ describe('QuizComponent', () => {
       expect(component.displayNextButton).toBeTrue();
       expect(component.nextButtonType).toEqual('');
     });
+
+    it('should display the correct elements after clicking next', () => {
+      const currentCount: number = component.questionedVocabulary;
+      component.next();
+      expect(component.correctResponse).toEqual('', 'correctResponse should be empty');
+      expect(component.entryFieldState).toEqual('', 'entryFieldState should be empty');
+      expect(component.displayCheckResponseButton).toBeTrue();
+      expect(component.displayValidateResponseButton).toBeFalse();
+      expect(component.displayInvalidateResponseButton).toBeFalse();
+      expect(component.displayNextButton).toBeFalse();
+      expect(component.nextButtonType).toEqual('', 'nextButtonType should be empty');
+      expect(component.enteredResponse).toEqual('', 'enteredResponse should be empty');
+      expect(currentCount + 1).toEqual(component.questionedVocabulary, 'counter should have increased');
+      // index starts with 0, count with 1
+      expect(component.vocabulary).toEqual(component.dueVocabulary[currentCount], 'next vocabulary should should have been pulled');
+    });
   });
+
+  describe('backend updates', () => {
+    it('should correctly update the backend when the vocabulary was known', () => {
+      component.entryFieldState = 'success';
+      component.next();
+      expect(vocabularyKnownSpy).toHaveBeenCalled();
+    });
+
+    it('should correctly update the backend when the vocabulary was unknwon', () => {
+      component.entryFieldState = 'error';
+      component.next();
+      expect(vocabularyUnknownSpy).toHaveBeenCalled();
+    });
+  })
 
   describe('should route correctly on actions', () => {
     xit('should return to the list-lessons component when closing the quiz', fakeAsync(() => {
-      const closeButton: HTMLButtonElement = fixture.nativeElement.querySelector('#quiz-cancel');
-      closeButton.click();
+      const cancelButton: HTMLButtonElement = fixture.nativeElement.querySelector('#quiz-cancel');
+      cancelButton.click();
       tick();
 
-      expect(location.path()).toBe(`/${frontend.lessons}`);
+      expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to lessons');
     }));
 
-    it('should return to the list-lessons component at the end of the quiz', () => {
-
+    xit('should return to the list-lessons component at the end of the quiz', () => {
+      component.questionedVocabulary = component.numberDueVocabularies;
+      component.next();
+      expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to lessons');
     });
 
-    it('should stay on the quiz for all other acions', () => {
+    xit('should stay on the quiz for all other acions', () => {
 
     });
 
