@@ -1,11 +1,11 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { Vocabulary } from '../../models/vocabulary.model';
-import { Router, ActivatedRoute } from '@angular/router';
-import { VocabularyService } from '../../services/vocabulary.service';
-import { LessonService } from 'src/app/services/lesson.service';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
+import { LessonService } from 'src/app/services/lesson.service';
+import { Vocabulary } from '../../models/vocabulary.model';
+import { VocabularyService } from '../../services/vocabulary.service';
 
 @Component({
   selector: 'app-edit-vocabulary',

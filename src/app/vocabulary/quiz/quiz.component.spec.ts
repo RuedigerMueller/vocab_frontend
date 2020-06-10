@@ -2,23 +2,23 @@ import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ButtonModule, FormModule, LayoutGridModule, PanelModule } from '@fundamental-ngx/core';
+import { ButtonModule, FormModule, LayoutGridModule, MessageStripModule, PanelModule } from '@fundamental-ngx/core';
 import { of } from 'rxjs/internal/observable/of';
 import { routes } from 'src/app/app-routing.module';
+import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 import { Lesson } from 'src/app/models/lesson.model.';
+import { frontend } from 'src/app/resource.identifiers';
 import { LessonService } from 'src/app/services/lesson.service';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { Vocabulary } from '../../models/vocabulary.model';
 import { VocabularyService } from '../../services/vocabulary.service';
 import { QuizComponent } from './quiz.component';
-import { frontend } from 'src/app/resource.identifiers';
-import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 
 describe('QuizComponent', () => {
   let httpClient: HttpClient;
@@ -47,8 +47,8 @@ describe('QuizComponent', () => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLesson']);
     getLessonsSpy = lessonService.getLesson.and.returnValue(of(testLesson));
 
-    const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate', 'deleteVocabulary']);
-    authGuardSpy = authGuardService.deleteVocabulary.and.returnValue(true);
+    const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate']);
+    authGuardSpy = authGuardService.canActivate.and.returnValue(true);
 
     TestBed.configureTestingModule({
       declarations: [QuizComponent],
@@ -60,6 +60,7 @@ describe('QuizComponent', () => {
         ButtonModule,
         FormsModule,
         FormModule,
+        MessageStripModule,
       ],
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },
@@ -166,9 +167,13 @@ describe('QuizComponent', () => {
       expect(component.numberDueVocabularies).toEqual(testVocabularyList.length)
     });
 
-    xit('should display an error message when the quiz was started without due vocabulary', () => {
-
-    });
+    it('should display an error message when the quiz was started without due vocabulary', fakeAsync(() => {
+      component.vocabulary = null;
+      fixture.detectChanges();
+      //const paragraph: HTMLParagraphElement = fixture.nativeElement.querySelector('#quiz-noDueVocabularyMessage');
+      const paragraph: HTMLParagraphElement = fixture.nativeElement.querySelector('fd-message-strip');
+      expect(paragraph.innerHTML).toContain('No due vocabulary in lesson');
+    }));
   });
 
   // text areas and labels are fix
@@ -266,7 +271,7 @@ describe('QuizComponent', () => {
   })
 
   describe('should route correctly on actions', () => {
-    xit('should return to the list-lessons component when closing the quiz', fakeAsync(() => {
+    it('should return to the list-lessons component when closing the quiz', fakeAsync(() => {
       const cancelButton: HTMLButtonElement = fixture.nativeElement.querySelector('#quiz-cancel');
       cancelButton.click();
       tick();
@@ -274,16 +279,28 @@ describe('QuizComponent', () => {
       expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to lessons');
     }));
 
-    xit('should return to the list-lessons component at the end of the quiz', () => {
+    it('should return to the list-lessons component at the end of the quiz', fakeAsync(() => {
       component.questionedVocabulary = component.numberDueVocabularies;
       component.next();
+      tick();
       expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to lessons');
-    });
+    }));
 
-    xit('should stay on the quiz for all other acions', () => {
+    it('should stay on the quiz for all other acions', fakeAsync(() => {
+      const expectedPath = location.path();
 
-    });
+      component.checkResponse();
+      tick();
+      expect(location.path()).toBe(expectedPath, 'checkResponse should not navigate from quiz');
 
+      component.validResponse();
+      tick();
+      expect(location.path()).toBe(expectedPath, 'validResponse should not navigate from quiz');
+
+      component.invalidResponse();
+      tick();
+      expect(location.path()).toBe(expectedPath, 'invalidResponse should not navigate from quiz');
+    }));
   });
 
   describe('should support keyboard navigation', () => {
