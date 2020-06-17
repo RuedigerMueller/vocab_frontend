@@ -1,31 +1,28 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
 import { userTestData } from 'test/user.testdata.spec';
 import { routes } from '../app-routing.module';
+import { AuthGuardService } from '../helpers/auth-guard.service';
 import { AuthService } from '../helpers/auth.service';
 import { User } from '../models/user.model';
+import { backend, baseURL } from '../resource.identifiers';
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let httpTestingController: HttpTestingController;
   let location: Location;
-  let authServiceSpy: any;
 
   const user_1: User = userTestData[0];
 
   beforeEach(async(() => {
-    const authService: any = jasmine.createSpyObj('AuthService', ['login']);
-    authServiceSpy = authService.login.and.returnValue(of(user_1));
-
-
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
       imports: [
@@ -34,7 +31,8 @@ describe('LoginComponent', () => {
         ReactiveFormsModule,
       ],
       providers: [
-        { provide: AuthService, useValue: authService },
+        AuthGuardService,
+        AuthService,
         {
           provide: ActivatedRoute,
           useValue: {
@@ -55,6 +53,7 @@ describe('LoginComponent', () => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('should create', () => {
@@ -62,10 +61,18 @@ describe('LoginComponent', () => {
   });
 
   describe('should route correctly on actions', () => {
-    // Issue is in the test only - actualy coding is working... for some reason  the location path is "one behind"
-    xit('should navigate to return URL component when clicking "Login"', fakeAsync(() => {
+    it('should navigate to return URL component when clicking "Login"', fakeAsync(() => {
+      component.loginForm.value.eMail = user_1.email;
+      component.loginForm.value.password = user_1.password;
       const loginButton: HTMLButtonElement = fixture.nativeElement.querySelector('#login-loginButton');
       loginButton.click();
+
+      // Mock request to backend
+      const req: TestRequest = httpTestingController.expectOne(`${baseURL}/${backend.login}`);
+      expect(req.request.method).toBe('POST');
+      req.flush({username: user_1.email, password: user_1.password});
+      httpTestingController.verify();
+
       tick();
       expect(location.path()).toBe(component.returnUrl, 'should nav to return URL');
     }));
