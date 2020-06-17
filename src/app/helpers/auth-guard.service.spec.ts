@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
@@ -9,10 +9,11 @@ import { User } from '../models/user.model';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthService } from './auth.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { frontend } from '../resource.identifiers';
+import { frontend, baseURL, backend } from '../resource.identifiers';
 import { first } from 'rxjs/operators';
 
 describe('AuthGuardService', () => {
+  let httpTestingController: HttpTestingController;
   let authGuardService: AuthGuardService;
   let authService: AuthService;
   let location: Location;
@@ -37,47 +38,49 @@ describe('AuthGuardService', () => {
     authGuardService = TestBed.inject(AuthGuardService);
     authService = TestBed.inject(AuthService);
     location = TestBed.inject(Location);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
     expect(authGuardService).toBeTruthy();
   });
 
-  xdescribe('canActivate', () => {
-    xit('should return true when a user is logged in', fakeAsync(() => {
+  describe('canActivate', () => {
+    it('should return true when a user is logged in', fakeAsync(() => {
       const route: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       const mockSnapshot: any = jasmine.createSpyObj('RouterStateSnapshot', ['toString']);
+
       authService.login(user_1.email, user_1.password)
         .pipe(first())
-        .subscribe(
-          (user: User) => {
-            // this.router.navigate([this.returnUrl]);
-            this.ngZone.run(() => this.router.navigateByUrl(this.returnUrl));
-          },
-          error => {
-            this.error = error;
-          }
-        );
+        .subscribe();
+
+      // Mock request to backend
+      const req: TestRequest = httpTestingController.expectOne(`${baseURL}/${backend.login}`);
+      expect(req.request.method).toBe('POST');
+      req.flush({ username: user_1.email, password: user_1.password });
+      httpTestingController.verify();
+
+      tick();
       expect(authGuardService.canActivate(route, mockSnapshot)).toBeTrue();
     }));
 
-    xit('should return false when no user is logged in', () => {
-      // authServiceSpy.and.returnValue(null);
+    it('should return false when no user is logged in', () => {
       const route: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       const mockSnapshot: RouterStateSnapshot = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
       authService.logout();
       expect(authGuardService.canActivate(route, mockSnapshot)).toBeFalse();
     });
 
-    xit('should navigate to login componente when no user is logged in', () => {
+    it('should navigate to login componente when no user is logged in', fakeAsync(() => {
       // authServiceSpy.and.returnValue(null);
       const route: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       const mockSnapshot: any = jasmine.createSpyObj('RouterStateSnapshot', ['url']);
       mockSnapshot.url.and.returnValue('lessons');
-
+      authService.logout();
       authGuardService.canActivate(route, mockSnapshot);
+      tick();
 
-      expect(location.path()).toBe(`/${frontend.login}`, 'should nav to listLessons');
-    });
+      expect(location.path()).toBe(`/${frontend.login}`, 'should nav to login');
+    }));
   });
 });
