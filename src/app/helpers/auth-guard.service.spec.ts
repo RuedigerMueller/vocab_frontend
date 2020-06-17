@@ -1,16 +1,15 @@
 import { Location } from '@angular/common';
-import { HttpClientTestingModule, TestRequest, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { userTestData } from 'test/user.testdata.spec';
 import { routes } from '../app-routing.module';
 import { User } from '../models/user.model';
+import { backend, baseURL, frontend } from '../resource.identifiers';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthService } from './auth.service';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { frontend, baseURL, backend } from '../resource.identifiers';
-import { first } from 'rxjs/operators';
 
 describe('AuthGuardService', () => {
   let httpTestingController: HttpTestingController;
@@ -18,19 +17,13 @@ describe('AuthGuardService', () => {
   let authService: AuthService;
   let location: Location;
   const user_1: User = userTestData[0];
-  /* let authServiceSpy: any;
-  const authService: any = jasmine.createSpyObj('AuthService', ['currentUserValue']);
-  authServiceSpy = authService.currentUserValue.and.returnValue(user_1);
- */
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes(routes),
       ],
-      /* providers: [
-        { provide: AuthService, useValue: authService },
-      ] */
       providers: [
         AuthService
       ]
@@ -72,7 +65,6 @@ describe('AuthGuardService', () => {
     });
 
     it('should navigate to login componente when no user is logged in', fakeAsync(() => {
-      // authServiceSpy.and.returnValue(null);
       const route: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       const mockSnapshot: any = jasmine.createSpyObj('RouterStateSnapshot', ['url']);
       mockSnapshot.url.and.returnValue('lessons');
