@@ -60,7 +60,12 @@ describe('AppComponent', () => {
   });
 
   describe('should have required actions', () => {
-    xit('should have link "Logout"', () => {
+    xit('should not have user menu if no user is logged in', () => {
+      /* const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
+      expect(button.textContent).toContain('Save'); */
+    });
+
+    xit('should have link "Logout" if a user is logged in', () => {
       /* const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
       expect(button.textContent).toContain('Save'); */
     });
