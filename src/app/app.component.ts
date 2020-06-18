@@ -4,6 +4,7 @@ import { User } from './models/user.model';
 import { Router } from '@angular/router';
 import { AuthService } from './helpers/auth.service';
 import { ShellbarUser, ShellbarUserMenu } from '@fundamental-ngx/core';
+import { frontend } from './resource.identifiers';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ export class AppComponent {
   title = 'Vocab TS';
 
   currentUser: User;
+  ngZone: any;
 
   constructor(
     private router: Router,
@@ -43,8 +45,9 @@ export class AppComponent {
   ];
 
 
-  logout() {
+  logout(): void {
     this.authenticationService.logout();
-    this.router.navigate(['/login']);
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.login}`));
+    // this.router.navigate(['/login']);
   }
 }

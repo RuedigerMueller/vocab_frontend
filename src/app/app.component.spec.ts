@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { async, TestBed, fakeAsync, ComponentFixture } from '@angular/core/testing';
+import { async, TestBed, fakeAsync, ComponentFixture, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ShellbarModule } from '@fundamental-ngx/core';
 import { AppComponent } from './app.component';
@@ -10,6 +10,7 @@ import { of } from 'rxjs';
 import { AuthService } from './helpers/auth.service';
 import { routes } from './app-routing.module';
 import { Router } from '@angular/router';
+import { frontend } from './resource.identifiers';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -88,11 +89,12 @@ describe('AppComponent', () => {
 
   describe('should route correctly on actions', () => {
     xit('should navigate to login component when clicking "Logout"', fakeAsync(() => {
-      /* const saveButton: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
-      saveButton.click();
+      expandUserMenu();
+      const listElement: HTMLLIElement = fixture.nativeElement.querySelector('li.fd-menu__item');
+      listElement.click();
       tick();
 
-      expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to listLessons'); */
+      expect(location.path()).toBe(`/${frontend.login}`, 'should nav to login');
     }));
   });
 });
