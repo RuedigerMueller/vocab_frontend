@@ -20,7 +20,7 @@ export class AppComponent {
     private router: Router,
     private authenticationService: AuthService
   ) {
-    this.authenticationService.currentUser.subscribe((user: User) => {
+    this.authenticationService.getCurrentUser().subscribe((user: User) => {
       this.currentUser = user;
       if ( this.currentUser) {
         if ((this.currentUser.firstName) && (this.currentUser.lastName)) {

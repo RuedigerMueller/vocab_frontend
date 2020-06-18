@@ -1,4 +1,5 @@
-import { async, TestBed, fakeAsync } from '@angular/core/testing';
+import { Location } from '@angular/common';
+import { async, TestBed, fakeAsync, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ShellbarModule } from '@fundamental-ngx/core';
 import { AppComponent } from './app.component';
@@ -7,49 +8,62 @@ import { User } from './models/user.model';
 import { userTestData } from 'test/user.testdata.spec';
 import { of } from 'rxjs';
 import { AuthService } from './helpers/auth.service';
+import { routes } from './app-routing.module';
+import { Router } from '@angular/router';
 
 describe('AppComponent', () => {
-  /* let authCurrentUserSpy: any;
-  const testUser: User = userTestData[0]; */
+  let fixture: ComponentFixture<AppComponent>;
+  let app: AppComponent;
+  let location: Location;
+  let router: Router;
+
+  let authCurrentUserSpy: any;
+  const testUser: User = userTestData[0];
+
+  const expandUserMenu = () => {
+    const expandableButton: HTMLButtonElement = fixture.nativeElement.querySelector('.fd-identifier.fd-identifier--xs');
+    expandableButton.click();
+    fixture.detectChanges();
+  };
 
   beforeEach(async(() => {
-    /* const authService: any = jasmine.createSpyObj('AuthService', ['currentUser']);
-    authCurrentUserSpy = authService.currentUser.and.returnValue(of(testUser)); */
-
+    const authService: any = jasmine.createSpyObj('AuthService', ['getCurrentUser']);
+    authCurrentUserSpy = authService.getCurrentUser.and.returnValue(of(testUser));
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(routes),
         ShellbarModule,
         HttpClientTestingModule,
       ],
-     /*  providers: [
+     providers: [
         { provide: AuthService, useValue: authService }
-      ], */
+      ],
       declarations: [
         AppComponent
       ],
     }).compileComponents();
   }));
 
+  beforeEach(() => {
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
+    fixture = TestBed.createComponent(AppComponent);
+    app = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
   describe('should create application', () => {
     it('should create the app', () => {
-      const fixture = TestBed.createComponent(AppComponent);
-      const app = fixture.componentInstance;
       expect(app).toBeTruthy();
     });
   });
 
   describe('should render UI elements', () => {
     it(`should have as title 'Vocab TS'`, () => {
-      const fixture = TestBed.createComponent(AppComponent);
-      const app = fixture.componentInstance;
       expect(app.title).toEqual(app.title);
     });
 
     it('should render title', async () => {
-      const fixture = TestBed.createComponent(AppComponent);
-      const app = fixture.componentInstance;
-
       fixture.detectChanges();
 
       const appElement: HTMLElement = fixture.nativeElement;
@@ -65,9 +79,10 @@ describe('AppComponent', () => {
       expect(button.textContent).toContain('Save'); */
     });
 
-    xit('should have link "Logout" if a user is logged in', () => {
-      /* const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
-      expect(button.textContent).toContain('Save'); */
+    it('should have link "Logout" if a user is logged in', () => {
+      expandUserMenu();
+      const listElement: HTMLLIElement = fixture.nativeElement.querySelector('li.fd-menu__item');
+      expect(listElement.textContent).toContain('Logout');
     });
   });
 
