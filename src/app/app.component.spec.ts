@@ -1,18 +1,22 @@
 import { Location } from '@angular/common';
-import { async, TestBed, fakeAsync, ComponentFixture, tick } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ShellbarModule } from '@fundamental-ngx/core';
-import { AppComponent } from './app.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { User } from './models/user.model';
-import { userTestData } from 'test/user.testdata.spec';
 import { of } from 'rxjs';
-import { AuthService } from './helpers/auth.service';
+import { userTestData } from 'test/user.testdata.spec';
 import { routes } from './app-routing.module';
-import { Router } from '@angular/router';
+import { AppComponent } from './app.component';
+import { AuthService } from './helpers/auth.service';
+import { User } from './models/user.model';
 import { frontend } from './resource.identifiers';
 
 describe('AppComponent', () => {
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
   let fixture: ComponentFixture<AppComponent>;
   let app: AppComponent;
   let location: Location;
@@ -21,6 +25,8 @@ describe('AppComponent', () => {
   let authCurrentUserSpy: any;
   const testUser: User = userTestData[0];
 
+  let authService: any;
+
   const expandUserMenu = () => {
     const expandableButton: HTMLButtonElement = fixture.nativeElement.querySelector('.fd-identifier.fd-identifier--xs');
     expandableButton.click();
@@ -28,21 +34,25 @@ describe('AppComponent', () => {
   };
 
   beforeEach(async(() => {
-    const authService: any = jasmine.createSpyObj('AuthService', ['getCurrentUser']);
+    authService = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'logout']);
     authCurrentUserSpy = authService.getCurrentUser.and.returnValue(of(testUser));
+
     TestBed.configureTestingModule({
+      declarations: [AppComponent],
       imports: [
+        HttpClientTestingModule,
         RouterTestingModule.withRoutes(routes),
         ShellbarModule,
-        HttpClientTestingModule,
+        // required because we are navigating to the loginComponent in a test and this required it
+        ReactiveFormsModule,
       ],
      providers: [
         { provide: AuthService, useValue: authService }
       ],
-      declarations: [
-        AppComponent
-      ],
     }).compileComponents();
+
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
   }));
 
   beforeEach(() => {
@@ -88,7 +98,7 @@ describe('AppComponent', () => {
   });
 
   describe('should route correctly on actions', () => {
-    xit('should navigate to login component when clicking "Logout"', fakeAsync(() => {
+    it('should navigate to login component when clicking "Logout"', fakeAsync(() => {
       expandUserMenu();
       const listElement: HTMLLIElement = fixture.nativeElement.querySelector('li.fd-menu__item');
       listElement.click();

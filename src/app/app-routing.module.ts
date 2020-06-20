@@ -15,6 +15,11 @@ import { AuthGuardService as AuthGuard } from './helpers/auth-guard.service';
 
 export const routes: Routes = [
   {
+    // path: 'login',
+    path: `${frontend.login}`,
+    component: LoginComponent
+  },
+  {
     path: frontend.lessons,
     component: ListLessonsComponent,
     canActivate: [AuthGuard]
@@ -53,10 +58,6 @@ export const routes: Routes = [
     path: '',
     redirectTo: frontend.lessons,
     pathMatch: 'full'
-  },
-  {
-    path: 'login',
-    component: LoginComponent
   },
   {
     path: '**',

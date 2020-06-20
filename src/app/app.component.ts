@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { LessonService } from './services/lesson.service';
-import { User } from './models/user.model';
+import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './helpers/auth.service';
 import { ShellbarUser, ShellbarUserMenu } from '@fundamental-ngx/core';
+import { AuthService } from './helpers/auth.service';
+import { User } from './models/user.model';
 import { frontend } from './resource.identifiers';
+import { LessonService } from './services/lesson.service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +16,9 @@ export class AppComponent {
   title = 'Vocab TS';
 
   currentUser: User;
-  ngZone: any;
 
   constructor(
+    private ngZone: NgZone,
     private router: Router,
     private authenticationService: AuthService
   ) {
@@ -48,6 +48,5 @@ export class AppComponent {
   logout(): void {
     this.authenticationService.logout();
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.login}`));
-    // this.router.navigate(['/login']);
   }
 }
