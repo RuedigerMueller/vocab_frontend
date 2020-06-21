@@ -13,7 +13,6 @@ import { AppComponent } from './app.component';
 import { AuthService } from './helpers/auth.service';
 import { User } from './models/user.model';
 import { frontend } from './resource.identifiers';
-import { ExpectedConditions } from 'protractor';
 
 describe('AppComponent - logged in', () => {
   let httpClient: HttpClient;
@@ -134,8 +133,6 @@ describe('AppComponent - logged out', () => {
         HttpClientTestingModule,
         RouterTestingModule.withRoutes(routes),
         ShellbarModule,
-        /* // required because we are navigating to the loginComponent in a test and this required it
-        ReactiveFormsModule, */
       ],
      providers: [
         { provide: AuthService, useValue: authService }
