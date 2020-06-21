@@ -43,7 +43,7 @@ export class QuizComponent implements OnInit, AfterViewChecked {
     this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
     this.getLesson(this.lessonID);
     this.getDueVocabulary(this.lessonID);
-    this.questionedVocabulary = 1;
+    this.questionedVocabulary = this.numberDueVocabularies > 0 ? 1 : 0 ;
   }
 
   ngAfterViewChecked(): void {

@@ -1,6 +1,9 @@
 <fd-layout-grid [col]="3">
-    <P></P>
-    <P style="text-align:center; vertical-align: bottom" id="quiz-progress">{{questionedVocabulary}}/{{numberDueVocabularies}}</P>
+    <p></p>
+    <div>
+        <p *ngIf="numberDueVocabularies>0" style="text-align:center; vertical-align: bottom" id="quiz-progress">
+            {{questionedVocabulary}}/{{numberDueVocabularies}}</p>
+    </div>
     <p style="text-align:right"><button fd-button [glyph]="'sys-cancel'" id="quiz-cancel" (click)=cancel()></button>
     </p>
 </fd-layout-grid>
@@ -19,8 +22,8 @@
         <fd-panel-body>
             <div fd-form-item>
                 <label fd-form-label for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
-                <textarea fd-form-control autofocus #quizLearnedLanguage id="quiz-learnedLanguage" rows="10" [state]="entryFieldState"
-                    [(ngModel)]="enteredResponse" (keyup.enter)="checkResponse()"></textarea>
+                <textarea fd-form-control autofocus #quizLearnedLanguage id="quiz-learnedLanguage" rows="10"
+                    [state]="entryFieldState" [(ngModel)]="enteredResponse" (keyup.enter)="checkResponse()"></textarea>
             </div>
             <div>
                 <button *ngIf="displayCheckResponseButton" fd-button id="quiz-checkResponse"
@@ -32,7 +35,8 @@
                 <button *ngIf="displayInvalidateResponseButton" fd-button id="quiz-invalidResponse"
                     (click)=invalidResponse()>Invalid
                     response</button>
-                <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" #nextButton id="quiz-next" (click)=next() >Next</button>
+                <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" #nextButton id="quiz-next"
+                    (click)=next()>Next</button>
             </div>
         </fd-panel-body>
     </fd-panel>
