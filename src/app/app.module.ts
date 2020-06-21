@@ -4,12 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  ButtonModule, FormModule, LayoutGridModule, MenuModule,
+  ButtonModule, DialogModule, FormModule, LayoutGridModule, MenuModule,
   MessageStripModule, PanelModule, ShellbarModule, SplitButtonModule, TableModule
 } from '@fundamental-ngx/core';
-import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ErrorInterceptor } from './helpers/error.interceptor';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { AddLessonComponent } from './lesson/add-lesson/add-lesson.component';
 import { EditLessonComponent } from './lesson/edit-lesson/edit-lesson.component';
 import { ListLessonsComponent } from './lesson/list-lessons/list-lessons.component';
@@ -19,7 +20,6 @@ import { AddVocabularyComponent } from './vocabulary/add-vocabulary/add-vocabula
 import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocabulary.component';
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 import { QuizComponent } from './vocabulary/quiz/quiz.component';
-import { ErrorInterceptor } from './helpers/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -51,6 +51,7 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
     LayoutGridModule,
     PanelModule,
     FormModule,
+    DialogModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

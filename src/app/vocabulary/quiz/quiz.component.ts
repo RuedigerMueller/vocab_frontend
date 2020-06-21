@@ -1,6 +1,6 @@
-import { AfterViewChecked, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, NgZone, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ButtonComponent } from '@fundamental-ngx/core';
+import { ButtonComponent, DialogService } from '@fundamental-ngx/core';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { LessonService } from 'src/app/services/lesson.service';
@@ -19,7 +19,8 @@ export class QuizComponent implements OnInit, AfterViewChecked {
     private lessonService: LessonService,
     private ngZone: NgZone,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialogService: DialogService
   ) { }
   dueVocabulary: ReadonlyArray<Vocabulary>;
   vocabulary: Vocabulary;
@@ -35,6 +36,7 @@ export class QuizComponent implements OnInit, AfterViewChecked {
   nextButtonType = '';
   enteredResponse = '';
   correctResponse = '';
+  confirmationReason: string;
 
   @ViewChild('nextButton') nextButton: ButtonComponent;
   @ViewChild('quizLearnedLanguage') quizLearnedLanguageTextArea: ElementRef;
@@ -43,7 +45,7 @@ export class QuizComponent implements OnInit, AfterViewChecked {
     this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
     this.getLesson(this.lessonID);
     this.getDueVocabulary(this.lessonID);
-    this.questionedVocabulary = this.numberDueVocabularies > 0 ? 1 : 0 ;
+    this.questionedVocabulary = this.numberDueVocabularies > 0 ? 1 : 0;
   }
 
   ngAfterViewChecked(): void {
@@ -156,7 +158,18 @@ export class QuizComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  cancel(): void {
-    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
+  cancel(dialog: TemplateRef<any>): void {
+    const dialogRef = this.dialogService.open(dialog, { responsivePadding: true });
+
+    dialogRef.afterClosed.subscribe(
+      (result) => {
+        if (result === 'Yes') {
+          this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }
