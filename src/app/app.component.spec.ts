@@ -162,5 +162,5 @@ describe('AppComponent - logged out', () => {
       const userMenu: HTMLLIElement = fixture.nativeElement.querySelector('div.fd-user-menue');
       expect(userMenu).toBeNull();
     }));
-  })
+  });
 });
