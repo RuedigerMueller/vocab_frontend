@@ -36,7 +36,6 @@ export class QuizComponent implements OnInit, AfterViewChecked {
   nextButtonType = '';
   enteredResponse = '';
   correctResponse = '';
-  confirmationReason: string;
 
   @ViewChild('nextButton') nextButton: ButtonComponent;
   @ViewChild('quizLearnedLanguage') quizLearnedLanguageTextArea: ElementRef;
