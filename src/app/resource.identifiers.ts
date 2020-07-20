@@ -11,6 +11,7 @@ export const frontend = {
     vocabularyID: 'vocabularyID',
     quiz: 'quiz',
     login: 'login',
+    signup: 'signup',
 };
 
 export const backend = {

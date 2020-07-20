@@ -11,13 +11,17 @@ import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocab
 import { QuizComponent } from './vocabulary/quiz/quiz.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardService as AuthGuard } from './helpers/auth-guard.service';
+import { SignupComponent } from './signup/signup.component';
 
 
 export const routes: Routes = [
   {
-    // path: 'login',
     path: `${frontend.login}`,
     component: LoginComponent
+  },
+  {
+    path: `${frontend.signup}`,
+    component: SignupComponent
   },
   {
     path: frontend.lessons,

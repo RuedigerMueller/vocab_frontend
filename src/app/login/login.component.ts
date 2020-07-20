@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../helpers/auth.service';
 import { first } from 'rxjs/operators';
 import { User } from '../models/user.model';
+import { frontend } from 'src/app/resource.identifiers';
 
 @Component({
   selector: 'app-login',

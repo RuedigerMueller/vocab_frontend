@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ButtonModule, DialogModule, FormModule, LayoutGridModule, MenuModule,
-  MessageStripModule, PanelModule, ShellbarModule, SplitButtonModule, TableModule
+  MessageStripModule, PanelModule, ShellbarModule, SplitButtonModule, TableModule, LinkModule
 } from '@fundamental-ngx/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +20,7 @@ import { AddVocabularyComponent } from './vocabulary/add-vocabulary/add-vocabula
 import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocabulary.component';
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 import { QuizComponent } from './vocabulary/quiz/quiz.component';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { QuizComponent } from './vocabulary/quiz/quiz.component';
     PageNotFoundComponent,
     QuizComponent,
     LoginComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +54,7 @@ import { QuizComponent } from './vocabulary/quiz/quiz.component';
     PanelModule,
     FormModule,
     DialogModule,
+    LinkModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
