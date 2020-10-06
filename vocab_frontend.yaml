@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vocab-frontend
+spec:
+  selector:
+    matchLabels:
+      app: vocab
+      tier: frontend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: vocab
+        tier: frontend
+    spec:
+      containers:
+      - name: vocab
+        image: "ruedigermueller/vocab_frontend"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: vocab
+    tier: frontend
+  ports:
+  - protocol: "TCP"
+    port: 8080
+    targetPort: 8080
+  type: LoadBalancer
