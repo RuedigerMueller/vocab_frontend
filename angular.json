@@ -111,6 +111,24 @@
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "heroku": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.heroku.ts"
+                }
+              ]
+            }
+          },
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
