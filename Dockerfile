@@ -19,6 +19,7 @@ RUN npm run build
 
 FROM nginx:alpine
 
+# Copy a default nginx.conf -> can be overwritten via ConfigMap
 COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
 
 ## Remove default nginx index page
