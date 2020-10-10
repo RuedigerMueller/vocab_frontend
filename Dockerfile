@@ -13,8 +13,7 @@ WORKDIR /app-ui
 
 # Copy coding and build
 COPY . .
-#RUN npm run build-docker
-RUN npm run build
+RUN npm run build-k8s
 
 
 FROM nginx:alpine
