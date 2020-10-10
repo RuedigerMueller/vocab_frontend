@@ -6,9 +6,9 @@
     "start-dev": "ng serve",
     "start": "node server.js",
     "build": "ng build --prod --aot",
-    "build-heroku": "ng build --configuration=heroku",
+    "build-k8s": "ng build --configuration=k8s",
     "test": "ng test",
-    "test-heroku": "ng test --configuration=heroku",
+    "test-k8s": "ng test --configuration=k8s",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

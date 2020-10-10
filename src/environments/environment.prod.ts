@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backendUrl: '/backend',
+  backendUrl: 'https://vocabtsbe.herokuapp.com/backend',
 };

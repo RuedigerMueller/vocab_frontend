@@ -17,7 +17,8 @@ jobs:
           key: vocab_frontend-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
-      - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+      #- run: npm run test-heroku -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+      - run: npm run build-heroku
       - store_test_results:
           path: test-results
       #- run: npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js
