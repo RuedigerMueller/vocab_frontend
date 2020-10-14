@@ -31,4 +31,5 @@ COPY --from=builder /app-ui/dist /usr/share/nginx/html
 EXPOSE 4200 80
 
 # Run the app 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
