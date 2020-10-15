@@ -1,0 +1,8 @@
+namespace: default
+commonLabels:
+  app: vocab
+  tier: frontend
+resources:
+  - vocab_frontend.configMap.yaml
+  - vocab_frontend.service.yaml
+  - vocab_frontend.deployment.yaml

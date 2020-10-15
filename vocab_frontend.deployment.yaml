@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vocab-frontend
+  labels:
+    app: vocab
+    tier: frontend
+spec:
+  selector:
+    matchLabels:
+      app: vocab
+      tier: frontend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: vocab
+        tier: frontend
+    spec:
+      containers:
+      - name: vocab
+        image: "ruedigermueller/vocab_frontend"
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+          items:
+          - key: config
+            path: nginx.conf
