@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
 
   constructor(
-    private authService: AuthService, private route: ActivatedRoute, 
+    private authService: AuthService, private route: ActivatedRoute,
     private router: Router, public fb: FormBuilder, private ngZone: NgZone
     ) {
     // redirect to home if already logged in

@@ -1,1 +1,29 @@
-<p>signup works!</p>
+<!-- Form -->
+<h3>Sign up</h3>
+<form *ngIf="signupForm" [formGroup]="signupForm" (ngSubmit)="signup()" novalidate>
+    <div fd-form-item>
+        <label fd-form-label for="signup-username">User name</label>
+        <input fd-form-control autofocus type="text" formControlName="username" maxlength="20" id="signup-userName">
+    </div>
+    <div fd-form-item>
+        <label fd-form-label for="signup-password">Password</label>
+        <input fd-form-control autofocus type="text" formControlName="password" maxlength="20" id="signup-password">
+    </div>
+    <div fd-form-item>
+        <label fd-form-label for="signup-passwordRepeat">Password Confirmation</label>
+        <input fd-form-control autofocus type="text" formControlName="passwordRepeat" maxlength="20" id="signup-passwordRepeat">
+    </div>
+    <div fd-form-item>
+        <label fd-form-label for="signup-firstName">First name</label>
+        <input fd-form-control autofocus type="text" formControlName="firstName" maxlength="20" id="signup-firstName">
+    </div>
+    <div fd-form-item>
+        <label fd-form-label for="signup-lastName">Last name</label>
+        <input fd-form-control autofocus type="text" formControlName="lastName" maxlength="20" id="signup-lastName">
+    </div>
+    <div fd-form-item>
+        <label fd-form-label for="signup-email">e-Mail</label>
+        <input fd-form-control autofocus type="text" formControlName="email" maxlength="50" id="signup-email">
+    </div>
+    <button fd-button id="signup-signupButton" type="submit">Sign up</button>
+</form>
