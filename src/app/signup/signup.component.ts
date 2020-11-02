@@ -68,6 +68,6 @@ export class SignupComponent implements OnInit {
     user.firstName = this.signupForm.value.firstName,
     user.lastName = this.signupForm.value.lastName,
     user.email = this.signupForm.value.email;
-    this.signupService.signup(user);
+    this.signupService.signup(user).subscribe(res => { });
   }
 }
