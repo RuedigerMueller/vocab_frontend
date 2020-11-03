@@ -62,8 +62,10 @@ describe('LoginComponent', () => {
 
   describe('should route correctly on actions', () => {
     it('should navigate to return URL component when clicking "Login"', fakeAsync(() => {
-      component.loginForm.value.eMail = user_1.email;
-      component.loginForm.value.password = user_1.password;
+      component.loginForm.setValue({
+        eMail: user_1.email,
+        password: user_1.password
+      });
       const loginButton: HTMLButtonElement = fixture.nativeElement.querySelector('#login-loginButton');
       loginButton.click();
 
