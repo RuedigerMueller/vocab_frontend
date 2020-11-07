@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -35,7 +35,7 @@ describe('EditVocabularyComponent', () => {
   const testLesson = lessonTestData[0];
   const testVocabularyList = vocabularyTestData;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getVocabulary', 'updateVocabulary']);
     getVocabularySpy = vocabularyService.getVocabulary.and.returnValue(of(testVocabularyList[0]));
     updateVocabularySpy = vocabularyService.updateVocabulary.and.returnValue(of(testVocabularyList[0]));

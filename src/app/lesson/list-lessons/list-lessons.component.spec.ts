@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -24,8 +24,6 @@ describe('ListLessonsComponent', () => {
 
   let component: ListLessonsComponent;
   let fixture: ComponentFixture<ListLessonsComponent>;
- 
-  // Added for testing...
   let debugElement: DebugElement;
 
   let getLessonsSpy: any;
@@ -42,7 +40,7 @@ describe('ListLessonsComponent', () => {
     //fixture.detectChanges();
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['getLessons', 'deleteLesson']);
     getLessonsSpy = lessonService.getLessons.and.returnValue(of(testLessonList));
     deleteLessonSpy = lessonService.deleteLesson.and.returnValue(new Observable<void>());
@@ -75,8 +73,6 @@ describe('ListLessonsComponent', () => {
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
     fixture = TestBed.createComponent(ListLessonsComponent);
-    
-    // Added for testing
     debugElement = fixture.debugElement;
 
     component = fixture.componentInstance;
@@ -147,7 +143,7 @@ describe('ListLessonsComponent', () => {
     });
   });
 
-  describe('should have required actions',() => {
+  describe('should have required actions', () => {
     it('should have required buttons', () => {
       let success = true;
 
@@ -175,22 +171,14 @@ describe('ListLessonsComponent', () => {
     it('should have the required actions as part of the split button', fakeAsync(() => {
       let success = true;
 
-      // Added for test
       const splitButtonComponent = debugElement.query(By.directive(SplitButtonComponent));
       const splitButtonComponentInstance: SplitButtonComponent = splitButtonComponent.injector.get(SplitButtonComponent);
-
-      // expandSplitButton();
 
       const expectedActions: ReadonlyArray<string> = ['Edit', 'Delete', 'Vocabulary' ];
       const actions: NodeListOf<HTMLLIElement> = fixture.nativeElement.querySelectorAll('span');
 
       for (const expectedAction of expectedActions) {
         let found = false;
-        /* actions.forEach((action) => {
-          if (action.textContent.trim() === expectedAction) {
-            found = true;
-          }
-        }); */
         for (const menuItem of splitButtonComponentInstance.menu.menuItems) {
           if (menuItem.menuItemTitle.title.trim() === expectedAction) {
             found = true;

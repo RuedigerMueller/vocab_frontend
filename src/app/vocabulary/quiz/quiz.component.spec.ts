@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
@@ -38,7 +38,7 @@ describe('QuizComponent', () => {
   const testLesson: Lesson = lessonTestData[0];
   const testVocabularyList: ReadonlyArray<Vocabulary> = vocabularyTestData;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getDueLessonVocabulary', 'vocabularyKnown', 'vocabularyUnknown']);
     getDueLessonVocabularySpy = vocabularyService.getDueLessonVocabulary.and.returnValue(of(testVocabularyList));
     vocabularyKnownSpy = vocabularyService.vocabularyKnown.and.returnValue(of());

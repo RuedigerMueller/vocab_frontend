@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -29,7 +29,7 @@ describe('AddLessonComponent', () => {
   let canActivateSpy: any;
   const testAddLesson = lessonTestData[0];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const lessonService: any = jasmine.createSpyObj('LessonService', ['createLesson']);
     addLessonSpy = lessonService.createLesson.and.returnValue(of(testAddLesson));
 
