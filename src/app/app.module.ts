@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ButtonModule, DialogModule, FormModule, LayoutGridModule, MenuModule,
-  MessageStripModule, PanelModule, ShellbarModule, SplitButtonModule, TableModule, LinkModule
+  MessageStripModule, ShellbarModule, SplitButtonModule, TableModule, LinkModule, LayoutPanelModule
 } from '@fundamental-ngx/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -51,7 +51,7 @@ import { SignupComponent } from './signup/signup.component';
     MenuModule,
     MessageStripModule,
     LayoutGridModule,
-    PanelModule,
+    LayoutPanelModule,
     FormModule,
     DialogModule,
     LinkModule,

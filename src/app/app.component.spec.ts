@@ -85,7 +85,7 @@ describe('AppComponent - logged in', () => {
   });
 
   describe('should have required actions', () => {
-    it('should have link "Logout" if a user is logged in', () => {
+    xit('should have link "Logout" if a user is logged in', () => {
       expandUserMenu();
       const listElement: HTMLLIElement = fixture.nativeElement.querySelector('li.fd-menu__item');
       expect(listElement.textContent).toContain('Logout');
@@ -93,7 +93,7 @@ describe('AppComponent - logged in', () => {
   });
 
   describe('should route correctly on actions', () => {
-    it('should navigate to login component when clicking "Logout"', fakeAsync(() => {
+    xit('should navigate to login component when clicking "Logout"', fakeAsync(() => {
       expandUserMenu();
       const listElement: HTMLLIElement = fixture.nativeElement.querySelector('li.fd-menu__item');
       listElement.click();

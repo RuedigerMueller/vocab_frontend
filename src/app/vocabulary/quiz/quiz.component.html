@@ -10,17 +10,17 @@
 </fd-layout-grid>
 <P></P>
 <fd-layout-grid [col]="3" *ngIf="vocabulary && lesson">
-    <fd-panel>
-        <fd-panel-body>
+    <fd-layout-panel>
+        <fd-layout-panel-body>
             <div fd-form-item>
                 <label fd-form-label for="quiz-knownLanguageLabel">{{lesson.language_a}}</label>
                 <textarea fd-form-control id="quiz-knownLanguage" rows="10"
                     readonly>{{vocabulary.language_a}}</textarea>
             </div>
-        </fd-panel-body>
-    </fd-panel>
-    <fd-panel>
-        <fd-panel-body>
+        </fd-layout-panel-body>
+    </fd-layout-panel>
+    <fd-layout-panel>
+        <fd-layout-panel-body>
             <div fd-form-item>
                 <label fd-form-label for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
                 <textarea fd-form-control autofocus #quizLearnedLanguage id="quiz-learnedLanguage" rows="10"
@@ -39,16 +39,16 @@
                 <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" #nextButton id="quiz-next"
                     (click)=next()>Next</button>
             </div>
-        </fd-panel-body>
-    </fd-panel>
-    <fd-panel>
-        <fd-panel-body>
+        </fd-layout-panel-body>
+    </fd-layout-panel>
+    <fd-layout-panel>
+        <fd-layout-panel-body>
             <div fd-form-item>
                 <label fd-form-label for="quiz-correctResponseLabel">Correct Response</label>
                 <textarea fd-form-control id="quiz-correctResponse" rows="10" readonly>{{correctResponse}}</textarea>
             </div>
-        </fd-panel-body>
-    </fd-panel>
+        </fd-layout-panel-body>
+    </fd-layout-panel>
 </fd-layout-grid>
 <p *ngIf="!vocabulary">
     <fd-message-strip [type]="'error'" [dismissible]="false" *ngIf="lesson">

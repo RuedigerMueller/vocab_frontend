@@ -6,6 +6,7 @@ import { Vocabulary } from '../../models/vocabulary.model';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { LessonService } from 'src/app/services/lesson.service';
 import { frontend } from 'src/app/resource.identifiers';
+import { FormControlComponent } from '@fundamental-ngx/core';
 
 @Component({
   selector: 'app-add-vocabulary',
@@ -16,7 +17,7 @@ export class AddVocabularyComponent implements OnInit {
   lesson: Lesson;
   addVocabularyForm: FormGroup;
 
-  @ViewChild('addVocabularyLanguageA') addVocabularyLanguageAInput: ElementRef;
+  @ViewChild('addVocabularyLanguageA') addVocabularyLanguageAInput: FormControlComponent;
 
   constructor(
     private vocabularyService: VocabularyService,
@@ -48,7 +49,7 @@ export class AddVocabularyComponent implements OnInit {
       language_a: [''],
       language_b: ['']
     });
-    this.addVocabularyLanguageAInput.nativeElement.focus();
+    this.addVocabularyLanguageAInput.elementRef().nativeElement.focus();
   }
 
   cancel(): void {

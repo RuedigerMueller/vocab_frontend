@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ButtonComponent, DialogService } from '@fundamental-ngx/core';
+import { ButtonComponent, DialogService, FormControlComponent, InputGroupTextareaDirective } from '@fundamental-ngx/core';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { LessonService } from 'src/app/services/lesson.service';
@@ -42,7 +42,7 @@ export class QuizComponent implements OnInit {
 
 
   @ViewChild('nextButton') nextButton: ButtonComponent;
-  @ViewChild('quizLearnedLanguage') quizLearnedLanguageTextArea: ElementRef;
+  @ViewChild('quizLearnedLanguage') quizLearnedLanguageTextArea: FormControlComponent;
 
   ngOnInit(): void {
     this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
@@ -100,7 +100,7 @@ export class QuizComponent implements OnInit {
       if (this.nextButton.elementRef) { this.nextButton.elementRef().nativeElement.focus(); }
     }
     if (this.displayCheckResponseButton) {
-      if (this.quizLearnedLanguageTextArea) { this.quizLearnedLanguageTextArea.nativeElement.focus(); }
+      if (this.quizLearnedLanguageTextArea) { this.quizLearnedLanguageTextArea.elementRef().nativeElement.focus(); }
     }
   }
 
