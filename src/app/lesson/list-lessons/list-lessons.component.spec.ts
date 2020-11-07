@@ -216,7 +216,7 @@ describe('ListLessonsComponent', () => {
       expect(location.path()).toBe(`/${frontend.lessons}/${frontend.createLesson}`, 'should nav to createLesson');
     }));
 
-    xit('should navigate to edit-lesson component when clicking "Edit"', fakeAsync(() => {
+    it('should navigate to edit-lesson component when clicking "Edit"', fakeAsync(() => {
       expandSplitButton();
       const editButton: HTMLLIElement = fixture.nativeElement.querySelector('#list-lessons-editAction-0');
       editButton.click();
