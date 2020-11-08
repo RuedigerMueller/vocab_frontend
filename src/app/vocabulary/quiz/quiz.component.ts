@@ -178,7 +178,7 @@ export class QuizComponent implements OnInit {
       this.vocabulary = this.dueVocabulary[this.questionedVocabulary];
       this.questionedVocabulary += 1;
     } else {
-      // ToDo: Add quiz summary: known/unknown/total/percentage 
+      // ToDo: Add quiz summary: known/unknown/total/percentage
       this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
     }
   }

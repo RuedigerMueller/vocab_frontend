@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
@@ -165,13 +165,13 @@ describe('QuizComponent', () => {
       const progressParagraph: HTMLParagraphElement = fixture.nativeElement.querySelector(`#quiz-progress`);
       expect(progressParagraph).toBeDefined();
       expect(component.questionedVocabulary).toEqual(1);
-      expect(component.numberDueVocabularies).toEqual(testVocabularyList.length)
+      expect(component.numberDueVocabularies).toEqual(testVocabularyList.length);
     });
 
     it('should display an error message when the quiz was started without due vocabulary', fakeAsync(() => {
       component.vocabulary = null;
       fixture.detectChanges();
-      //const paragraph: HTMLParagraphElement = fixture.nativeElement.querySelector('#quiz-noDueVocabularyMessage');
+      // const paragraph: HTMLParagraphElement = fixture.nativeElement.querySelector('#quiz-noDueVocabularyMessage');
       const paragraph: HTMLParagraphElement = fixture.nativeElement.querySelector('fd-message-strip');
       expect(paragraph.innerHTML).toContain('No due vocabulary in lesson');
     }));
@@ -277,7 +277,7 @@ describe('QuizComponent', () => {
       expect(component.numberKnownVocabularies).toBe(0, 'number of known vocabularies should remain unchanged');
       expect(component.numberUnknownVocabularies).toBe(1, 'number of unknown vocabularies should have increased by 1');
     });
-  })
+  });
 
   describe('should route correctly on actions', () => {
     xit('should return to the list-lessons component when closing the quiz', fakeAsync(() => {

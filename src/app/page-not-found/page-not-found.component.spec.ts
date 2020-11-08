@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MessageStripModule } from '@fundamental-ngx/core';
 import { PageNotFoundComponent } from './page-not-found.component';
 

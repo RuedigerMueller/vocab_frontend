@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { async, ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonModule, MenuModule, SplitButtonComponent, SplitButtonModule, TableModule } from '@fundamental-ngx/core';
@@ -38,12 +38,6 @@ describe('ListVocabulariesComponent', () => {
 
   const testLesson: Lesson = lessonTestData[0];
   const testVocabularyList: ReadonlyArray<Vocabulary> = vocabularyTestData;
-
-  const expandSplitButton = () => {
-    const expandableButton: HTMLButtonElement = fixture.nativeElement.querySelector('.sap-icon--slim-arrow-down');
-    expandableButton.click();
-    fixture.detectChanges();
-  };
 
   beforeEach(waitForAsync(() => {
     const vocabularyService: any = jasmine.createSpyObj('VocabularyService', ['getLessonVocabulary', 'deleteVocabulary']);
@@ -212,35 +206,29 @@ describe('ListVocabulariesComponent', () => {
 
   describe('should route correctly on actions', () => {
     it('should navigate to add-vocabulary component when clicking "Create"', fakeAsync(() => {
-      const createButton: HTMLButtonElement = fixture.nativeElement.querySelector('#list-vocabulary-createAction');
-      createButton.click();
+      component.createVocabulary();
       tick();
 
       expect(location.path()).toBe(`/${frontend.lessons}/${component.lesson.id}/${frontend.addVocabulary}`);
     }));
 
     it('should navigate to list-lessons component when clicking "Close Lesson"', fakeAsync(() => {
-      const createButton: HTMLButtonElement = fixture.nativeElement.querySelector('#list-vocabulary-closeLessonAction');
-      createButton.click();
+      component.closeLesson();
       tick();
 
       expect(location.path()).toBe(`/${frontend.lessons}`);
     }));
 
-    xit('should navigate edit-vocabulary component when clicking "Edit"', fakeAsync(() => {
-      const splitButton: HTMLElement = fixture.nativeElement.querySelector('#list-vocabulary-editAction-0');
-      const editButton: HTMLButtonElement = splitButton.querySelectorAll('button')[0];
-      editButton.click();
+    it('should navigate edit-vocabulary component when clicking "Edit"', fakeAsync(() => {
+      component.updateVocabulary(component.vocabulary[0].id.toString());
       tick();
 
       expect(location.path()).toBe(`/${frontend.lessons}/${component.lesson.id}/${frontend.editVocabulary}/${component.vocabulary[0].id}`, 'should nav to editLesson for first lesson');
     }));
 
-    xit('should stay on list-vocabulary component when clicking "Delete"', fakeAsync(() => {
+    it('should stay on list-vocabulary component when clicking "Delete"', fakeAsync(() => {
       const currentPath: string = location.path();
-      expandSplitButton();
-      const deleteButton: HTMLButtonElement = fixture.nativeElement.querySelector('#list-vocabulary-deleteAction-0');
-      deleteButton.click();
+      component.deleteVocabulary(component.vocabulary[0].id.toString());
       tick();
 
       expect(location.path()).toBe(currentPath, 'should stay on vocabulary list');
