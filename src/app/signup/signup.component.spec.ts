@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MessageToastModule } from '@fundamental-ngx/core';
 import { routes } from '../app-routing.module';
 
 import { SignupComponent } from './signup.component';
@@ -20,6 +21,7 @@ describe('SignupComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule.withRoutes(routes),
         ReactiveFormsModule,
+        MessageToastModule,
       ],
     })
     .compileComponents();

@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ButtonModule, DialogModule, FormModule, LayoutGridModule, MenuModule,
-  MessageStripModule, ShellbarModule, SplitButtonModule, TableModule, LinkModule, LayoutPanelModule
+  MessageStripModule, ShellbarModule, SplitButtonModule, TableModule, LinkModule, LayoutPanelModule, MessageToastModule
 } from '@fundamental-ngx/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -55,6 +55,7 @@ import { SignupComponent } from './signup/signup.component';
     FormModule,
     DialogModule,
     LinkModule,
+    MessageToastModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

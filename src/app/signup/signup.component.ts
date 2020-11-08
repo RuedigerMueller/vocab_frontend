@@ -1,6 +1,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageToastService } from '@fundamental-ngx/core';
 import { SignupService } from '../helpers/signup.service';
 import { User } from '../models/user.model';
 
@@ -18,12 +19,14 @@ export class SignupComponent implements OnInit {
   email: string;
   signupForm: FormGroup;
   returnUrl: string;
+  error = '';
 
   constructor(public fb: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
               private ngZone: NgZone,
-              private signupService: SignupService) {
+              private signupService: SignupService,
+              public messageToastService: MessageToastService) {
 
   }
 
@@ -68,6 +71,17 @@ export class SignupComponent implements OnInit {
     user.firstName = this.signupForm.value.firstName,
     user.lastName = this.signupForm.value.lastName,
     user.email = this.signupForm.value.email;
-    this.signupService.signup(user).subscribe(res => { });
+    this.signupService.signup(user).subscribe(
+      res => {
+        const content = 'Message Toast created from string. Will disappear after 5000ms';
+        this.messageToastService.open(content, {
+            duration: 5000
+        });
+        this.ngZone.run(() => this.router.navigateByUrl(this.returnUrl));
+      },
+      error => {
+        this.error = error;
+      }
+    );
   }
 }
