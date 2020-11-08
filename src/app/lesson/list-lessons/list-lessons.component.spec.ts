@@ -167,7 +167,6 @@ describe('ListLessonsComponent', () => {
       const splitButtonComponentInstance: SplitButtonComponent = splitButtonComponent.injector.get(SplitButtonComponent);
 
       const expectedActions: ReadonlyArray<string> = ['Edit', 'Delete', 'Vocabulary' ];
-      const actions: NodeListOf<HTMLLIElement> = fixture.nativeElement.querySelectorAll('span');
 
       for (const expectedAction of expectedActions) {
         let found = false;

@@ -292,8 +292,9 @@ describe('QuizComponent', () => {
       expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to lessons');
     }));
 
-    xit('should return to the list-lessons component at the end of the quiz', fakeAsync(() => {
+    it('should return to the list-lessons component at the end of the quiz', fakeAsync(() => {
       component.questionedVocabulary = component.numberDueVocabularies;
+      fixture.detectChanges();
       component.next();
       tick();
       expect(location.path()).toBe(`/${frontend.lessons}`, 'should nav to lessons');
