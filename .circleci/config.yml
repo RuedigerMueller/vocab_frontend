@@ -35,21 +35,43 @@ jobs:
       # build and push Docker image
       - run:
       # Careful - will no longer work on Heroku as the Dockerfile buids for K8S!
-          name: Build Docker image
+          name: Build Docker image for Heroku
           command: |
-            TAG=0.1.$CIRCLE_BUILD_NUM
-            docker build --build-arg BUILD_SCRIPT=build -t ruedigermueller/vocab_frontend:$TAG -t target:Heroku .
+            TAG=Heroku
+            docker build --build-arg BUILD_SCRIPT=build -t ruedigermueller/vocab_frontend:$TAG .
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             docker push ruedigermueller/vocab_frontend:$TAG
             echo $HEROKU_API_KEY | docker login -u=_ --password-stdin registry.heroku.com
             docker tag ruedigermueller/vocab_frontend:$TAG registry.heroku.com/$HEROKU_APP_NAME
             docker push registry.heroku.com/$HEROKU_APP_NAME
+  
+  K8S_docker_build:
+    working_directory: ~/vocab_frontend
+    docker:
+      - image: circleci/node:12-browsers
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      # build and push Docker image
+      - run:
+      # Careful - will no longer work on Heroku as the Dockerfile buids for K8S!
+          name: Build Docker image for K8S
+          command: |
+            TAG=K8S
+            docker build --build-arg BUILD_SCRIPT=build -t ruedigermueller/vocab_frontend:$TAG .
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push ruedigermueller/vocab_frontend:$TAG
 
 workflows:
   deploy:
     jobs:
       - build
       - heroku_docker_build:
+          requires:
+             - build
+          context: vocab
+      - K8S_docker_build:
           requires:
              - build
           context: vocab
