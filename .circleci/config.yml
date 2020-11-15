@@ -11,23 +11,28 @@ jobs:
       - checkout
       - restore_cache:
           key: vocab_frontend-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: npm install
+      - run: 
+          name: Install
+          command: npm install
       - save_cache:
           key: vocab_frontend-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
-      - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+      - run: 
+          name: Run tests
+          command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - store_test_results:
           path: test-results
       - setup_remote_docker:
           version: 19.03.13
       # build and push Docker image
-      - run: |
-          TAG=0.1.$CIRCLE_BUILD_NUM
-          docker build -t ruedigermueller/vocab_frontend:$TAG .
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker push ruedigermueller/vocab_frontend:$TAG
-   
+      - run:
+          name: Build Docker image
+          command: |
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            docker build -t ruedigermueller/vocab_frontend:$TAG .
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push ruedigermueller/vocab_frontend:$TAG
 
 workflows:
   deploy:
