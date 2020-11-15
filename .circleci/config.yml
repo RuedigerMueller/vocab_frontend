@@ -42,8 +42,8 @@ jobs:
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             docker push ruedigermueller/vocab_frontend:$TAG
             echo $HEROKU_API_KEY | docker login -u=_ --password-stdin registry.heroku.com
-            docker tag ruedigermueller/vocab_frontend:$TAG registry.heroku.com/$HEROKU_APP_NAME
-            docker push registry.heroku.com/$HEROKU_APP_NAME
+            docker tag ruedigermueller/vocab_frontend:$TAG registry.heroku.com/$HEROKU_APP_NAME/web
+            docker push registry.heroku.com/$HEROKU_APP_NAME/web
   
   K8S_docker_build:
     working_directory: ~/vocab_frontend
@@ -59,7 +59,7 @@ jobs:
           name: Build Docker image for K8S
           command: |
             TAG=K8S
-            docker build --build-arg BUILD_SCRIPT=build -t ruedigermueller/vocab_frontend:$TAG .
+            docker build --build-arg BUILD_SCRIPT=build-k8s -t ruedigermueller/vocab_frontend:$TAG .
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             docker push ruedigermueller/vocab_frontend:$TAG
 
