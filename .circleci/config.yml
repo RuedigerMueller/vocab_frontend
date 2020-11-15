@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/vocab_frontend
     docker:
-      - image: circleci/node:14.15.0-browsers
+      - image: circleci/node:12-browsers
         environment:
           CHROME_BIN: "/usr/bin/google-chrome"
     steps:
@@ -31,6 +31,6 @@ jobs:
    
 
 workflows:
-  heroku_deploy:
+  deploy:
     jobs:
       - build
