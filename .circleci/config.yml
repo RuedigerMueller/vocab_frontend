@@ -8,7 +8,6 @@ jobs:
         environment:
           CHROME_BIN: "/usr/bin/google-chrome"
     steps:
-      - browser-tools/install-browsers
       - checkout
       - restore_cache:
           key: vocab_frontend-{{ .Branch }}-{{ checksum "package-lock.json" }}
