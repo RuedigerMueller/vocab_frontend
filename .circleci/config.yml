@@ -46,5 +46,6 @@ workflows:
     jobs:
       - build
       - dockerbuild:
-           requires:
+          requires:
              - build
+          context: vocab
