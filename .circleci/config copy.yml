@@ -7,7 +7,7 @@ jobs:
   build:
     working_directory: ~/vocab_frontend
     docker:
-      - image: cimg/node:14.15.0-browsers
+      - image: circleci/node:14.15.0-browsers
     steps:
       - checkout
       - restore_cache:
