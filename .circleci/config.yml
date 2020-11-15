@@ -23,6 +23,12 @@ jobs:
           command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - store_test_results:
           path: test-results
+
+  dockerbuild:
+    working_directory: ~/vocab_frontend
+    docker:
+      - image: circleci/node:12-browsers
+    steps:
       - setup_remote_docker:
           version: 19.03.13
       # build and push Docker image
@@ -38,3 +44,6 @@ workflows:
   deploy:
     jobs:
       - build
+      - dockerbuild:
+           requires:
+             - build
