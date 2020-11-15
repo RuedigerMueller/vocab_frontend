@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: vocab
-        image: "ruedigermueller/vocab_frontend"
+        image: "ruedigermueller/vocab_frontend:K8S"
         volumeMounts:
         - name: nginx-config
           mountPath: /etc/nginx/nginx.conf
