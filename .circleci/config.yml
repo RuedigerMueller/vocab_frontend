@@ -5,6 +5,8 @@ jobs:
     working_directory: ~/vocab_frontend
     docker:
       - image: cimg/node:14.15.0-browsers
+        environment:
+          CHROME_BIN: "/usr/bin/google-chrome"
     steps:
       - checkout
       - restore_cache:
