@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+   heroku: circleci/heroku@1.0.1 
+
 jobs:
   build:
     working_directory: ~/vocab_frontend
@@ -17,17 +20,15 @@ jobs:
       - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - store_test_results:
           path: test-results
-      - setup_remote_docker:
-          version: 19.03.13
-      # build and push Docker image
-      - run: |
-          TAG=0.1.$CIRCLE_BUILD_NUM
-          docker build -t ruedigermueller/vocab_frontend:$TAG .
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker push ruedigermueller/vocab_frontend:$TAG
-   
+      #- run: npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js
 
 workflows:
   heroku_deploy:
     jobs:
       - build
+      - heroku/deploy-via-git:
+           requires:
+             - build # only run deploy-via-git job if the build job has completed
+           filters:
+             branches:
+               only: master # only run deploy-via-git job on master branch
