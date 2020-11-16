@@ -29,7 +29,7 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app-ui/dist /usr/share/nginx/html
 
 #App will be on port 8080
-EXPOSE 4200 80
+EXPOSE 4200 8080
 
 # Run the app 
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
