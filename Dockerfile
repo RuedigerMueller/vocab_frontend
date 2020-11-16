@@ -35,4 +35,5 @@ COPY --from=builder /app-ui/dist /usr/share/nginx/html
 # Run the app 
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
 # CMD ["nginx", "-g", "daemon off;"]
-CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
+# CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
+CMD if [ "$BUILD_SCRIPT" = "build" ] ; then sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;' ; else sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'" ; fi
