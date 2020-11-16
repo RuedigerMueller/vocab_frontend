@@ -37,4 +37,4 @@ COPY ./startscripts /
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
 # CMD ["nginx", "-g", "daemon off;"]
 # CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
-RUN chmod u+x /startscripts/start.sh && /startscripts/start.sh $BUILD_SCRIPT
+CMD chmod u+x /startscripts/start.sh && /startscripts/start.sh $BUILD_SCRIPT
