@@ -33,7 +33,7 @@ COPY --from=builder /app-ui/dist /usr/share/nginx/html
 #EXPOSE 4200 8080
 
 # Run the app 
-COPY ./startscripts /
+COPY ./startscripts/start.sh /startscripts/start.sh
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
 # CMD ["nginx", "-g", "daemon off;"]
 # CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
