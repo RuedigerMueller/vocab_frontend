@@ -26,14 +26,15 @@ COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
 ## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy from the stahg 1
+# Copy from the stage 1
 COPY --from=builder /app-ui/dist /usr/share/nginx/html
 
 #App will be on port 8080
 #EXPOSE 4200 8080
 
 # Run the app 
+#COPY ./startscripts /
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
 # CMD ["nginx", "-g", "daemon off;"]
-# CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
-CMD if [ "$BUILD_SCRIPT" = "build" ] ; then sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;' ; else sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'" ; fi
+CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
+#CMD if [ "$BUILD_SCRIPT" = "build" ] ; then CMD chmod u+x /startscripts/start_heroku.sh && /tmp/bash.sh $arg /startscripts/start_heroku ; else /startscripts/start_K8S ; fi
