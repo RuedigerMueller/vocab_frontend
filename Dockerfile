@@ -1,4 +1,5 @@
 FROM node:12-alpine as builder
+ENV PORT=8080
 ARG BUILD_SCRIPT=build-k8s
 
 # Install app dependencies
@@ -29,7 +30,7 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app-ui/dist /usr/share/nginx/html
 
 #App will be on port 8080
-EXPOSE 4200 8080
+#EXPOSE 4200 8080
 
 # Run the app 
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
