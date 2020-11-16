@@ -47,4 +47,4 @@ COPY --from=builder /app-ui/dist /usr/share/nginx/html
 # CMD chmod u+x /startscripts/start.sh && /startscripts/start.sh $BUILD_SCRIPT
 # CMD startscripts/start.sh $BUILD_SCRIPT
 
-CMD if test $$BUILD_SCRIPT = 'build-k8s' ; then nginx -g 'daemon off;'; else sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; fi
+CMD if test $BUILD_SCRIPT = 'build-k8s' ; then nginx -g 'daemon off;'; else sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; fi
