@@ -34,7 +34,9 @@ COPY --from=builder /app-ui/dist /usr/share/nginx/html
 
 # Run the app 
 COPY ./startscripts/start.sh /startscripts/start.sh
+RUN chmod u+x startscripts/start.sh
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
 # CMD ["nginx", "-g", "daemon off;"]
 # CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
-CMD chmod u+x /startscripts/start.sh && /startscripts/start.sh $BUILD_SCRIPT
+# CMD chmod u+x /startscripts/start.sh && /startscripts/start.sh $BUILD_SCRIPT
+CMD startscripts/start.sh $BUILD_SCRIPT
