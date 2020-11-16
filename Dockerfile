@@ -33,10 +33,18 @@ COPY --from=builder /app-ui/dist /usr/share/nginx/html
 #EXPOSE 4200 8080
 
 # Run the app 
-COPY ./startscripts/start.sh /startscripts/start.sh
-RUN chmod u+x startscripts/start.sh
+
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
+# Original  working on K8S 
 # CMD ["nginx", "-g", "daemon off;"]
+
+# Works for Heroku
 # CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
+
+# COPY ./startscripts/start.sh /startscripts/start.sh
+# RUN chmod u+x startscripts/start.sh
 # CMD chmod u+x /startscripts/start.sh && /startscripts/start.sh $BUILD_SCRIPT
-CMD startscripts/start.sh $BUILD_SCRIPT
+# CMD startscripts/start.sh $BUILD_SCRIPT
+
+CMD if test $$BUILD_SCRIPT = 'build-k8s' ; then nginx -g 'daemon off;'; else sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; fi
