@@ -33,8 +33,8 @@ COPY --from=builder /app-ui/dist /usr/share/nginx/html
 #EXPOSE 4200 8080
 
 # Run the app 
-#COPY ./startscripts /
+COPY ./startscripts /
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
 # CMD ["nginx", "-g", "daemon off;"]
-CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
-#CMD if [ "$BUILD_SCRIPT" = "build" ] ; then CMD chmod u+x /startscripts/start_heroku.sh && /tmp/bash.sh $arg /startscripts/start_heroku ; else /startscripts/start_K8S ; fi
+# CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
+RUN chmod u+x /startscripts/start.sh && /startscripts/start.sh $BUILD_SCRIPT
