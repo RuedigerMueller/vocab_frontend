@@ -24,7 +24,22 @@ jobs:
       - store_test_results:
           path: test-results
 
-  heroku_docker_build:
+  docker_build:
+    working_directory: ~/vocab_frontend
+    docker:
+      - image: circleci/node:12-browsers
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run:
+          name: Build Docker image
+          command: |
+            docker build --build-arg BUILD_SCRIPT=build -t ruedigermueller/vocab_frontend .
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push ruedigermueller/vocab_frontend
+  
+  heroku_deploy:
     working_directory: ~/vocab_frontend
     docker:
       - image: circleci/node:12-browsers
@@ -35,42 +50,21 @@ jobs:
       - run:
           name: Build Docker image for Heroku
           command: |
-            TAG=Heroku
-            docker build --build-arg BUILD_SCRIPT=build -t ruedigermueller/vocab_frontend:$TAG .
-            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            docker push ruedigermueller/vocab_frontend:$TAG
             echo $HEROKU_API_KEY | docker login -u=_ --password-stdin registry.heroku.com
-            docker tag ruedigermueller/vocab_frontend:$TAG registry.heroku.com/$HEROKU_DOCKER_APP_NAME/web
+            docker tag ruedigermueller/vocab_frontend registry.heroku.com/$HEROKU_DOCKER_APP_NAME/web
             docker push registry.heroku.com/$HEROKU_DOCKER_APP_NAME/web
 
 # heroku container:release web --app $HEROKU_DOCKER_APP_NAME
-  
-  K8S_docker_build:
-    working_directory: ~/vocab_frontend
-    docker:
-      - image: circleci/node:12-browsers
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 19.03.13
-      - run:
-          name: Build Docker image for K8S
-          command: |
-            TAG=K8S
-            docker build --build-arg BUILD_SCRIPT=build-k8s -t ruedigermueller/vocab_frontend:$TAG .
-            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            docker push ruedigermueller/vocab_frontend:$TAG
-#           No pushing to GKE as this costs money :-)
 
 workflows:
   deploy:
     jobs:
       - build
-      - heroku_docker_build:
+      - docker_build:
           requires:
              - build
           context: vocab
-      - K8S_docker_build:
+      - heroku_deploy:
           requires:
-             - build
+             - docker_build
           context: vocab
