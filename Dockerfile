@@ -48,4 +48,4 @@ COPY --from=builder /app-ui/dist /usr/share/nginx/html
 # CMD startscripts/start.sh $BUILD_SCRIPT
 
 #CMD if test $BUILD_SCRIPT = 'build-k8s' ; then nginx -g 'daemon off;'; else sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; fi
-CMD if test $BUILD_SCRIPT = 'build-k8s' ; then sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; else nginx -g 'daemon off;'; fi
+CMD if test $PLATFORM = 'Heroku' ; then sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; else nginx -g 'daemon off;'; fi
