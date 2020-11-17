@@ -1,6 +1,5 @@
 FROM node:12-alpine as builder
 ENV PORT=8080
-ARG BUILD_SCRIPT=build
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -15,7 +14,7 @@ WORKDIR /app-ui
 
 # Copy coding and build
 COPY . .
-RUN npm run $BUILD_SCRIPT
+RUN npm run build
 
 
 FROM nginx:alpine
