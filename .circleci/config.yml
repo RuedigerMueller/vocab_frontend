@@ -90,5 +90,5 @@ workflows:
             - heroku_deploy
       - heroku_release:
           requires:
-            - heroku_deploy
+            - hold
           context: vocab
