@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: vocab
-        image: "ruedigermueller/vocab_frontend:K8S"
+        image: "ruedigermueller/vocab_frontend"
         env:
         - name: PLATFORM
           value: "K8S"
