@@ -2,7 +2,6 @@ version: 2.1
 
 jobs:
   build_and_test:
-    #working_directory: ~/vocab_frontend
     docker:
       - image: circleci/node:14.15-browsers
         environment:
@@ -25,7 +24,6 @@ jobs:
           path: test-results
 
   docker_build:
-    #working_directory: ~/vocab_frontend
     docker:
       - image: circleci/node:14.15
     steps:
@@ -40,7 +38,6 @@ jobs:
             docker push ruedigermueller/vocab_frontend
   
   heroku_deploy:
-    #working_directory: ~/vocab_frontend
     docker:
       - image: circleci/node:14.15
     steps:
@@ -55,7 +52,6 @@ jobs:
             docker push registry.heroku.com/$HEROKU_DOCKER_APP_NAME/web
       
   heroku_release:
-    #working_directory: ~/vocab_frontend
     docker:
       - image: circleci/node:14.15
     steps:
@@ -78,17 +74,17 @@ workflows:
     jobs:
       - build_and_test
       - docker_build:
+          requires:
+            - build_and_test
           context: vocab
       - heroku_deploy:
           requires:
-             - build_and_test
              - docker_build
           context: vocab
-      - hold:
-          type: approval
-          requires:
-            - heroku_deploy
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - heroku_deploy
       - heroku_release:
           requires:
-            - hold
-          context: vocab
+            - heroku_deploy
