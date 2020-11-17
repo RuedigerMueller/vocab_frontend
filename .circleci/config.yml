@@ -5,7 +5,6 @@ version: 2.1
 
 jobs:
   test_build:
-    name: Build and test deployment
     #working_directory: ~/vocab_frontend
     docker:
       - image: circleci/node:14.15-browsers
@@ -29,7 +28,6 @@ jobs:
           path: test-results
 
   docker_build:
-    name: Build Docker image
     #working_directory: ~/vocab_frontend
     docker:
       - image: circleci/node:14.15
@@ -45,7 +43,6 @@ jobs:
             docker push ruedigermueller/vocab_frontend
   
   heroku_deploy:
-    name: Deploy Docker image to Heroku
     #working_directory: ~/vocab_frontend
     docker:
       - image: circleci/node:14.15
@@ -59,6 +56,14 @@ jobs:
             docker pull ruedigermueller/vocab_frontend
             docker tag ruedigermueller/vocab_frontend registry.heroku.com/$HEROKU_DOCKER_APP_NAME/web
             docker push registry.heroku.com/$HEROKU_DOCKER_APP_NAME/web
+      
+  heroku_release:
+    #working_directory: ~/vocab_frontend
+    docker:
+      - image: circleci/node:14.15
+    steps:
+      - setup_remote_docker:
+          version: 19.03.13
       - run:
           name: Install Heroku CLI (If not installed)
           command: |
@@ -83,3 +88,6 @@ workflows:
           requires:
              - docker_build
           context: vocab
+      - heroku_release:
+          requires:
+            - heroku_deploy
