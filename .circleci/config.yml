@@ -4,7 +4,6 @@ jobs:
   build:
     working_directory: ~/vocab_frontend
     docker:
-#      - image: circleci/node:12-browsers
       - image: circleci/node:14.15-browsers
         environment:
           CHROME_BIN: "/usr/bin/google-chrome"
@@ -28,7 +27,7 @@ jobs:
   docker_build:
     working_directory: ~/vocab_frontend
     docker:
-      - image: circleci/node:12-browsers
+      - image: circleci/node:14.15
     steps:
       - checkout
       - setup_remote_docker:
@@ -43,7 +42,7 @@ jobs:
   heroku_deploy:
     working_directory: ~/vocab_frontend
     docker:
-      - image: circleci/node:12-browsers
+      - image: circleci/node:14.15
     steps:
       # - checkout
       - setup_remote_docker:
