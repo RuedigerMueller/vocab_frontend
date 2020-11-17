@@ -82,7 +82,7 @@ workflows:
       - test_build
       - docker_build:
           requires:
-             - build
+             - test_build
           context: vocab
       - heroku_deploy:
           requires:
