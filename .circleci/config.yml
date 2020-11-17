@@ -1,10 +1,7 @@
 version: 2.1
 
-# orbs:
-#   heroku: circleci/heroku@1.2.3
-
 jobs:
-  test_build:
+  build_and_test:
     #working_directory: ~/vocab_frontend
     docker:
       - image: circleci/node:14.15-browsers
@@ -79,15 +76,19 @@ jobs:
 workflows:
   deploy:
     jobs:
-      - test_build
+      - build_and_test
       - docker_build:
-          requires:
-             - test_build
           context: vocab
       - heroku_deploy:
           requires:
+             - build_and_test
              - docker_build
           context: vocab
+      - hold:
+          type: approval
+          requires:
+            - heroku_deploy
       - heroku_release:
           requires:
             - heroku_deploy
+          context: vocab
