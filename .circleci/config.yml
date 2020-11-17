@@ -4,7 +4,8 @@ jobs:
   build:
     working_directory: ~/vocab_frontend
     docker:
-      - image: circleci/node:12-browsers
+#      - image: circleci/node:12-browsers
+      - image: circleci/node:14.15-browsers
         environment:
           CHROME_BIN: "/usr/bin/google-chrome"
     steps:
