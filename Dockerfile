@@ -32,19 +32,14 @@ COPY --from=builder /app-ui/dist /usr/share/nginx/html
 EXPOSE 4200 8080
 
 # Run the app 
-
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
-# Original  working on K8S 
-# CMD ["nginx", "-g", "daemon off;"]
-
-# Works for Heroku
-# CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
-
-#CMD if test $PLATFORM = 'Heroku' ; then sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; else nginx -g 'daemon off;'; fi
-#PORT environemnt variable will automatically and dynamically be filled by Heroku
-#BACKEND_SERVICE_URL environmnet variable has to be maintained for Heroku deployment
-#     For sed to work the / has to be entered as \/
-#     Example: https:\/\/vocabdockerbackend.herokuapp.com\/backend
-#CMD if test $PLATFORM = 'Heroku' ; then sed -i -e 's/$PORT/'"$PORT"'/g; s/$BACKEND_SERVICE_URL/'"$BACKEND_SERVICE_URL"'/' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; else nginx -g 'daemon off;'; fi
-CMD if test $PLATFORM = 'Heroku' ; then sed -i -e 's,$PORT,'"$PORT"',g; s,$BACKEND_SERVICE_URL,'"$BACKEND_SERVICE_URL"',' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; else nginx -g 'daemon off;'; fi
+# PORT environemnt variable will automatically and dynamically be filled by Heroku
+# BACKEND_SERVICE_URL environmnet variable has to be maintained for Heroku deployment
+CMD if test $PLATFORM = 'Heroku' ; then \
+        sed -i \
+            -e 's,$PORT,'"$PORT"',g; s,$BACKEND_SERVICE_URL,'"$BACKEND_SERVICE_URL"',' \
+            /etc/nginx/nginx.conf \
+        && \
+        nginx -g 'daemon off;'; \
+    else \
+        nginx -g 'daemon off;'; \
+    fi
