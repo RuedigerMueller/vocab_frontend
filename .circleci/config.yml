@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build_and_test:
+  install_and_test:
     docker:
       - image: circleci/node:14.15-browsers
         environment:
@@ -10,14 +10,14 @@ jobs:
       - checkout
       - restore_cache:
           key: vocab_frontend-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: 
+      - run:
           name: Install
           command: npm install
       - save_cache:
           key: vocab_frontend-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
-      - run: 
+      - run:
           name: Run tests
           command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - store_test_results:
@@ -36,7 +36,7 @@ jobs:
             docker build -t ruedigermueller/vocab_frontend .
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             docker push ruedigermueller/vocab_frontend
-  
+
   heroku_deploy:
     docker:
       - image: circleci/node:14.15
@@ -50,7 +50,7 @@ jobs:
             docker pull ruedigermueller/vocab_frontend
             docker tag ruedigermueller/vocab_frontend registry.heroku.com/$HEROKU_DOCKER_APP_NAME/web
             docker push registry.heroku.com/$HEROKU_DOCKER_APP_NAME/web
-      
+
   heroku_release:
     docker:
       - image: circleci/node:14.15
@@ -70,14 +70,14 @@ jobs:
 workflows:
   deploy:
     jobs:
-      - build_and_test
+      - install_and_test
       - docker_build:
           requires:
-            - build_and_test
+            - install_and_test
           context: vocab
       - heroku_deploy:
           requires:
-             - docker_build
+            - docker_build
           context: vocab
       # - hold:
       #     type: approval
