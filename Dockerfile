@@ -41,4 +41,10 @@ EXPOSE 4200 8080
 # Works for Heroku
 # CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
 
-CMD if test $PLATFORM = 'Heroku' ; then sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; else nginx -g 'daemon off;'; fi
+#CMD if test $PLATFORM = 'Heroku' ; then sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf  && nginx -g 'daemon off;'; else nginx -g 'daemon off;'; fi
+#PORT environemnt variable will automatically and dynamically be filled by Heroku
+#BACKEND_SERVICE_URL environmnet variable has to be maintained for Heroku deployment
+#     For sed to work the / has to be entered as \/
+#     Exporting to environment removes the \; therefore the environment variable has to doube \\ the /
+#     Example: https:\\/\\/vocabdockerbackend.herokuapp.com\\/backend
+CMD if test $PLATFORM = 'Heroku' ; then sed -i -e 's/$PORT/'"$PORT"'/; s/$BACKEND_SERVICE_URL/'"$BACKEND_SERVICE_URL"'/'  && nginx -g 'daemon off;'; else nginx -g 'daemon off;'; fi
