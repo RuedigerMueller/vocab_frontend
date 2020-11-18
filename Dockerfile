@@ -1,4 +1,4 @@
-FROM node:12-alpine as builder
+FROM node:14.15.0-alpine as builder
 ENV PORT=8080
 
 # Install app dependencies
