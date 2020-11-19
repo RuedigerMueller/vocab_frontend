@@ -22,6 +22,8 @@ Run `ng e2e` or `npm run e2e` to execute the end-to-end tests via [Protractor](h
 
 ## Further help
 
-You can also use the ready to run Docker Image[ruedigermueller/vocab_frontend](https://hub.docker.com/repository/docker/ruedigermueller/vocab_frontend) to run the application. In order to setup the connection to the backend you will have to provide the URL to the backend service via the environment variable `BACKEND_SERVICE_URL`.
+You can also use the ready to run Docker Image[ruedigermueller/vocab_frontend](https://hub.docker.com/repository/docker/ruedigermueller/vocab_frontend) to run the application. 
+
+In order to setup the connection to the backend you will have to provide the URL to the backend service via the environment variable `BACKEND_SERVICE_URL`. This is not required in case you are running frontend and backend on a Kubernetes cluster as in such an environment the connection is setup via the .yaml files provide in this repository.
 
 In case you want to play around with the app, you can access it at https://vocabdocker.herokuapp.com/
