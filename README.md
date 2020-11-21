@@ -30,5 +30,5 @@ The app is running on [Heroku](https://www.heroku.com/home):
 * [Test](https://vocabfetest.herokuapp.com/)
 * [Prod](https://vocabfeprod.herokuapp.com/)
 
-A version of the app (frontend & backend) leveraging [Kubernetes](https://kubernetes.io) is running at [Okteto](https://okteto.com/):
+An instance of the app (frontend & backend) leveraging [Kubernetes](https://kubernetes.io) is running at [Okteto](https://okteto.com/):
 * [Vocab TS](https://vocab-frontend-ruedigermueller.cloud.okteto.net/)
