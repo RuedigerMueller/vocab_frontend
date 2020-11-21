@@ -37,7 +37,7 @@ jobs:
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             docker push ruedigermueller/vocab_frontend:undertest
 
-  heroku_deploy_test:
+  heroku_deploy_to_test:
     docker:
       - image: circleci/node:14.15
     steps:
@@ -51,7 +51,7 @@ jobs:
             docker tag ruedigermueller/vocab_frontend:undertest registry.heroku.com/$HEROKU_TEST/web
             docker push registry.heroku.com/$HEROKU_TEST/web
 
-  heroku_release_test:
+  heroku_release_for_test:
     docker:
       - image: circleci/node:14.15
     steps:
@@ -67,7 +67,7 @@ jobs:
           name: Release on Heroku test environment
           command: heroku container:release web --app $HEROKU_TEST
 
-  heroku_deploy_prod:
+  heroku_deploy_to_prod:
     docker:
       - image: circleci/node:14.15
     steps:
@@ -76,14 +76,15 @@ jobs:
       - run:
           name: Deploy image to Heroku prod environment
           command: |
-            echo $HEROKU_API_KEY | docker login -u=_ --password-stdin registry.heroku.com
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             docker pull ruedigermueller/vocab_frontend:undertest
             docker tag ruedigermueller/vocab_frontend:undertest ruedigermueller/vocab_frontend:released
             docker push ruedigermueller/vocab_frontend:released
+            echo $HEROKU_API_KEY | docker login -u=_ --password-stdin registry.heroku.com
             docker tag ruedigermueller/vocab_frontend:released registry.heroku.com/$HEROKU_PROD/web
             docker push registry.heroku.com/$HEROKU_PROD/web
 
-  heroku_release_prod:
+  heroku_release_for_prod:
     docker:
       - image: circleci/node:14.15
     steps:
@@ -107,21 +108,21 @@ workflows:
           requires:
             - install_and_test
           context: vocab
-      - heroku_deploy_test:
+      - heroku_deploy_to_test:
           requires:
             - docker_build
           context: vocab
-      - heroku_release_test:
+      - heroku_release_for_test:
           requires:
-            - heroku_deploy_test
+            - heroku_deploy_to_test
       - approve_for_prod:
           type: approval
           requires:
-            - heroku_release_test
-      - heroku_deploy_prod:
+            - heroku_release_for_test
+      - heroku_deploy_to_prod:
           requires:
             - approve_for_prod
           context: vocab
-      - heroku_release_prod:
+      - heroku_release_for_prod:
           requires:
-            - heroku_deploy_prod
+            - heroku_deploy_to_prod
