@@ -33,9 +33,9 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t ruedigermueller/vocab_frontend .
+            docker build -t ruedigermueller/vocab_frontend:undertest .
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            docker push ruedigermueller/vocab_frontend
+            docker push ruedigermueller/vocab_frontend:undertest
 
   heroku_deploy_test:
     docker:
@@ -47,8 +47,8 @@ jobs:
           name: Deploy image to Heroku test environment
           command: |
             echo $HEROKU_API_KEY | docker login -u=_ --password-stdin registry.heroku.com
-            docker pull ruedigermueller/vocab_frontend
-            docker tag ruedigermueller/vocab_frontend registry.heroku.com/$HEROKU_TEST/web
+            docker pull ruedigermueller/vocab_frontend:undertest
+            docker tag ruedigermueller/vocab_frontend:undertest registry.heroku.com/$HEROKU_TEST/web
             docker push registry.heroku.com/$HEROKU_TEST/web
 
   heroku_release_test:
@@ -77,8 +77,10 @@ jobs:
           name: Deploy image to Heroku prod environment
           command: |
             echo $HEROKU_API_KEY | docker login -u=_ --password-stdin registry.heroku.com
-            docker pull ruedigermueller/vocab_frontend
-            docker tag ruedigermueller/vocab_frontend registry.heroku.com/$HEROKU_PROD/web
+            docker pull ruedigermueller/vocab_frontend:undertest
+            docker tag ruedigermueller/vocab_frontend:undertest ruedigermueller/vocab_frontend:released
+            docker push ruedigermueller/vocab_frontend:released
+            docker tag ruedigermueller/vocab_frontend:released registry.heroku.com/$HEROKU_PROD/web
             docker push registry.heroku.com/$HEROKU_PROD/web
 
   heroku_release_prod:
