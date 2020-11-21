@@ -26,4 +26,9 @@ You can also use the ready to run Docker Image[ruedigermueller/vocab_frontend](h
 
 In order to setup the connection to the backend you will have to provide the URL to the backend service via the environment variable `BACKEND_SERVICE_URL`. This is not required in case you are running frontend and backend on a Kubernetes cluster as in such an environment the connection is setup via the .yaml files provide in this repository.
 
-In case you want to play around with the app, you can access it at https://vocabdocker.herokuapp.com/
+The app is running on [Heroku](https://www.heroku.com/home):
+* [Test](https://vocabfetest.herokuapp.com/)
+* [Prod](https://vocabfeprod.herokuapp.com/)
+
+A version of the app (frontend & backend) leveraging [Kubernetes](https://kubernetes.io) is running at [Okteto](https://okteto.com/):
+* [Vocab TS](https://vocab-frontend-ruedigermueller.cloud.okteto.net/)
