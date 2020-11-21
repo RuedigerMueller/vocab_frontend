@@ -1,9 +1,12 @@
 <fd-shellbar>
-    <fd-shellbar-logo>
-        <a href="#" class="fd-shellbar__logo fd-shellbar__logo--image-replaced" aria-label="SAP"></a>
+     <fd-shellbar-logo>
+       <!-- <a href="#" class="fd-shellbar__logo fd-shellbar__logo--image-replaced" aria-label="Vocab"></a> -->
+       <a href="#" aria-label="Vocab">
+            <img src="../assets/logo.png" width="32" height="32">
+        </a>
     </fd-shellbar-logo>
     <fd-shellbar-title>
-        {{ title }}
+        &nbsp;&nbsp;{{ title }}
     </fd-shellbar-title>
     <fd-shellbar-actions *ngIf="currentUser" [user]="shellbarUser" [userMenu]="userMenu" [closePopoverOnSelect]="true"></fd-shellbar-actions>
 </fd-shellbar>
