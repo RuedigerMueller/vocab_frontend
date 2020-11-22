@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageToastService } from '@fundamental-ngx/core';
-import { SignupService } from '../helpers/signup.service';
+import { SignupService } from '../services/signup.service';
 import { User } from '../models/user.model';
 
 @Component({
@@ -81,6 +81,10 @@ export class SignupComponent implements OnInit {
       },
       error => {
         this.error = error;
+        const content = `Could not create user: ${error}`;
+        this.messageToastService.open(content, {
+            duration: 5000
+        });
       }
     );
   }
