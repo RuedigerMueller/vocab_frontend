@@ -73,7 +73,7 @@ export class SignupComponent implements OnInit {
     user.email = this.signupForm.value.email;
     this.signupService.signup(user).subscribe(
       res => {
-        const content = 'Message Toast created from string. Will disappear after 5000ms';
+        const content = 'User created - you can now log in!';
         this.messageToastService.open(content, {
             duration: 5000
         });
