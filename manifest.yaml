@@ -1,0 +1,5 @@
+---
+applications:
+- name: vocab_frontend
+  random-route: true
+  memory: 128MB

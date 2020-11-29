@@ -21,7 +21,8 @@ export const backend = {
     vocabularyKnown: 'vocabKnown',
     vocabularyUnknown: 'vocabUnknown',
     login: 'auth/login',
-    signup: 'users'
+    signup: 'users',
+    users: 'users'
 };
 
 export const baseURL: string = (environment.backendUrl.charAt(environment.backendUrl.length - 1) === '/')

@@ -30,5 +30,4 @@ The app is running on [Heroku](https://www.heroku.com/home):
 * [Test](https://vocabfetest.herokuapp.com/)
 * [Prod](https://vocabfeprod.herokuapp.com/)
 
-An instance of the app (frontend & backend) leveraging [Kubernetes](https://kubernetes.io) is running at [Okteto](https://okteto.com/):
-* [Vocab TS](https://vocab-frontend-ruedigermueller.cloud.okteto.net/)
+It is easy to run the application leveraging [Kubernetes](https://kubernetes.io) locally on Minikube  or in the public cloud on a free account like [Okteto](https://okteto.com/). While I am playing around with the app it e.g. available at [Vocab TS](https://vocab-frontend-ruedigermueller.cloud.okteto.net/).

@@ -2,28 +2,59 @@
 <h3>Sign up</h3>
 <form *ngIf="signupForm" [formGroup]="signupForm" (ngSubmit)="signup()" novalidate>
     <div fd-form-item>
-        <label fd-form-label for="signup-username">User name</label>
+        <label fd-form-label [required]="true" for="signup-username">User name</label>
         <input fd-form-control autofocus type="text" formControlName="username" maxlength="20" id="signup-userName">
+        <div *ngIf="f.username.invalid && (f.username.dirty || f.username.touched)">
+            <div *ngIf="f.username.errors.required">
+                User name is required.
+            </div>
+        </div>
     </div>
     <div fd-form-item>
-        <label fd-form-label for="signup-password">Password</label>
+        <label fd-form-label [required]="true" for="signup-password">Password</label>
         <input fd-form-control autofocus type="password" formControlName="password" maxlength="20" id="signup-password">
+        <div *ngIf="f.password.invalid && (f.password.dirty || f.password.touched)">
+            <div *ngIf="f.password.errors.required">
+                Passwords is required
+            </div>
+        </div>
     </div>
     <div fd-form-item>
-        <label fd-form-label for="signup-passwordRepeat">Password Confirmation</label>
-        <input fd-form-control autofocus type="password" formControlName="passwordRepeat" maxlength="20" id="signup-passwordRepeat">
+        <label fd-form-label [required]="true" for="signup-passwordRepeat">Password Confirmation</label>
+        <input fd-form-control autofocus type="password" formControlName="passwordRepeat" maxlength="20"
+            id="signup-passwordRepeat">
+        <div *ngIf="f.passwordRepeat.invalid && (f.passwordRepeat.dirty || f.passwordRepeat.touched)">
+            <div *ngIf="f.passwordRepeat.errors.required">
+                Password repeat is required.
+            </div>
+        </div>
     </div>
     <div fd-form-item>
-        <label fd-form-label for="signup-firstName">First name</label>
+        <label fd-form-label [required]="true" for="signup-firstName">First name</label>
         <input fd-form-control autofocus type="text" formControlName="firstName" maxlength="20" id="signup-firstName">
+        <div *ngIf="f.firstName.invalid && (f.firstName.dirty || f.firstName.touched)">
+            <div *ngIf="f.firstName.errors.required">
+                First name is required.
+            </div>
+        </div>
     </div>
     <div fd-form-item>
-        <label fd-form-label for="signup-lastName">Last name</label>
+        <label fd-form-label [required]="true" for="signup-lastName">Last name</label>
         <input fd-form-control autofocus type="text" formControlName="lastName" maxlength="20" id="signup-lastName">
+        <div *ngIf="f.lastName.invalid && (f.lastName.dirty || f.lastName.touched)">
+            <div *ngIf="f.lastName.errors.required">
+                Last name is required.
+            </div>
+        </div>
     </div>
     <div fd-form-item>
-        <label fd-form-label for="signup-email">e-Mail</label>
+        <label fd-form-label [required]="true" for="signup-email">e-Mail</label>
         <input fd-form-control autofocus type="text" formControlName="email" maxlength="50" id="signup-email">
+        <div *ngIf="f.email.invalid && (f.email.dirty || f.email.touched)">
+            <div *ngIf="f.email.errors.required">
+                e-Mail is required.
+            </div>
+        </div>
     </div>
     <button fd-button id="signup-signupButton" type="submit">Sign up</button>
 </form>
