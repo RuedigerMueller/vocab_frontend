@@ -21,6 +21,7 @@ import { EditVocabularyComponent } from './vocabulary/edit-vocabulary/edit-vocab
 import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocabulary.component';
 import { QuizComponent } from './vocabulary/quiz/quiz.component';
 import { SignupComponent } from './signup/signup.component';
+import { EMailValidatorDirective } from './validators/eMailValidator';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { SignupComponent } from './signup/signup.component';
     QuizComponent,
     LoginComponent,
     SignupComponent,
+    EMailValidatorDirective,
   ],
   imports: [
     BrowserModule,

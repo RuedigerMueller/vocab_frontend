@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageToastService } from '@fundamental-ngx/core';
 import { SignupService } from '../services/signup.service';
 import { User } from '../models/user.model';
+import { EMailValidator } from '../validators/eMailValidator';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -26,7 +28,8 @@ export class SignupComponent implements OnInit {
               private router: Router,
               private ngZone: NgZone,
               private signupService: SignupService,
-              public messageToastService: MessageToastService) {
+              public messageToastService: MessageToastService,
+              private http: HttpClient) {
 
   }
 
@@ -49,7 +52,10 @@ export class SignupComponent implements OnInit {
       passwordRepeat: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['',
+          [ Validators.required ],
+          [ EMailValidator(this.http) ]
+      ]
     },
     {
       validator: this.checkMatchValidator('password', 'passwordRepeat')
@@ -89,5 +95,5 @@ export class SignupComponent implements OnInit {
     );
   }
 
-  get f() { return this.signupForm.value; }
+  get f() { return this.signupForm.controls; }
 }

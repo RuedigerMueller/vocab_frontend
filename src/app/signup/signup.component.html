@@ -1,6 +1,6 @@
 <!-- Form -->
 <h3>Sign up</h3>
-<form *ngIf="signupForm" [formGroup]="signupForm" (ngSubmit)="signup()" novalidate>
+<form *ngIf="signupForm" [formGroup]="signupForm" (ngSubmit)="signup()">
     <div fd-form-item>
         <label fd-form-label [required]="true" for="signup-username">User name</label>
         <input fd-form-control autofocus type="text" formControlName="username" maxlength="20" id="signup-userName">
@@ -53,6 +53,9 @@
         <div *ngIf="f.email.invalid && (f.email.dirty || f.email.touched)">
             <div *ngIf="f.email.errors.required">
                 e-Mail is required.
+            </div>
+            <div *ngIf="f.email.errors.eMailTaken">
+                e-Mail is already taken.
             </div>
         </div>
     </div>
