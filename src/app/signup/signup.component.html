@@ -17,6 +17,9 @@
             <div *ngIf="f.password.errors.required">
                 Passwords is required
             </div>
+            <div *ngIf="f.password.errors.minlength">
+                Passwords has to have 8 characters
+            </div>
         </div>
     </div>
     <div fd-form-item>
@@ -26,6 +29,16 @@
         <div *ngIf="f.passwordRepeat.invalid && (f.passwordRepeat.dirty || f.passwordRepeat.touched)">
             <div *ngIf="f.passwordRepeat.errors.required">
                 Password repeat is required.
+            </div>
+            <div *ngIf="f.passwordRepeat.errors.minlength">
+                Passwords has to have 8 characters
+            </div>
+        </div>
+    </div>
+    <div fd-form-item>
+        <div>
+            <div *ngIf="signupForm.hasError('passwordMismatch')">
+                Passwords do not match
             </div>
         </div>
     </div>

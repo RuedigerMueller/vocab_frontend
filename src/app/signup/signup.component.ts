@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageToastService } from '@fundamental-ngx/core';
 import { SignupService } from '../services/signup.service';
@@ -36,27 +36,32 @@ export class SignupComponent implements OnInit {
       const field2Value = frm.get(field2).value;
 
       if (field1Value !== '' && field1Value !== field2Value) {
-        return { notMatch: `value ${field1Value} is not equal to ${field2}` };
+        return { passwordMismatch: true };
       }
       return null;
     };
   }
 
   ngOnInit(): void {
-    this.signupForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      passwordRepeat: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['',
-        [Validators.required],
-        [EMailValidator(this.signupService)]
-      ]
-    },
+    this.signupForm = this.fb.group(
       {
-        validator: this.checkMatchValidator('password', 'passwordRepeat')
-      });
+        username: ['', Validators.required],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        passwordRepeat: ['', [Validators.required, Validators.minLength(8)]],
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        email:
+          [
+            '',
+            [Validators.required],
+            [EMailValidator(this.signupService)],
+            // { updateOn: 'blur' }
+          ]
+      },
+      {
+        validators: this.checkMatchValidator('password', 'passwordRepeat')
+      }
+    );
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
