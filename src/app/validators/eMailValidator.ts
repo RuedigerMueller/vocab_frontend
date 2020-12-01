@@ -5,8 +5,10 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { backend, baseURL } from '../resource.identifiers';
+import { SignupService } from '../services/signup.service';
+import { UserService } from '../services/user.service';
 
-export function EMailValidator(http: HttpClient): AsyncValidatorFn {
+/* export function EMailValidator(http: HttpClient): AsyncValidatorFn {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
         const params = new HttpParams().set('email', control.value);
         const obs = http.get<User>(`${baseURL}/${backend.users}`, { params })
@@ -18,6 +20,12 @@ export function EMailValidator(http: HttpClient): AsyncValidatorFn {
             );
         return obs;
     };
+} */
+
+export function EMailValidator(signupService: SignupService): AsyncValidatorFn {
+    return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+        return signupService.checkEMailTaken(control.value);
+    };
 }
 
 @Directive({
@@ -28,9 +36,10 @@ export function EMailValidator(http: HttpClient): AsyncValidatorFn {
 })
 export class EMailValidatorDirective implements AsyncValidator {
 
-    constructor(private http: HttpClient) { }
+    constructor(private signupService: SignupService) { }
 
     validate(control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
-        return EMailValidator(this.http)(control);
+        // return EMailValidator(this.http)(control);
+        return EMailValidator(this.signupService)(control);
     }
 }

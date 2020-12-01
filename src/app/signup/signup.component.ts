@@ -5,7 +5,6 @@ import { MessageToastService } from '@fundamental-ngx/core';
 import { SignupService } from '../services/signup.service';
 import { User } from '../models/user.model';
 import { EMailValidator } from '../validators/eMailValidator';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -28,10 +27,8 @@ export class SignupComponent implements OnInit {
               private router: Router,
               private ngZone: NgZone,
               private signupService: SignupService,
-              public messageToastService: MessageToastService,
-              private http: HttpClient) {
-
-  }
+              public messageToastService: MessageToastService
+  ) { }
 
   checkMatchValidator(field1: string, field2: string) {
     return (frm: FormGroup) => {
@@ -53,13 +50,13 @@ export class SignupComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['',
-          [ Validators.required ],
-          [ EMailValidator(this.http) ]
+        [Validators.required],
+        [EMailValidator(this.signupService)]
       ]
     },
-    {
-      validator: this.checkMatchValidator('password', 'passwordRepeat')
-    });
+      {
+        validator: this.checkMatchValidator('password', 'passwordRepeat')
+      });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
@@ -75,13 +72,13 @@ export class SignupComponent implements OnInit {
     user.username = this.signupForm.value.username;
     user.password = this.signupForm.value.password;
     user.firstName = this.signupForm.value.firstName,
-    user.lastName = this.signupForm.value.lastName,
-    user.email = this.signupForm.value.email;
+      user.lastName = this.signupForm.value.lastName,
+      user.email = this.signupForm.value.email;
     this.signupService.signup(user).subscribe(
       res => {
         const content = 'User created - you can now log in!';
         this.messageToastService.open(content, {
-            duration: 5000
+          duration: 5000
         });
         this.ngZone.run(() => this.router.navigateByUrl(this.returnUrl));
       },
@@ -89,7 +86,7 @@ export class SignupComponent implements OnInit {
         this.error = error;
         const content = `Could not create user: ${error}`;
         this.messageToastService.open(content, {
-            duration: 5000
+          duration: 5000
         });
       }
     );

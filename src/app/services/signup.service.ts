@@ -1,7 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ValidationErrors } from '@angular/forms';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, map, retry } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { backend, baseURL } from '../resource.identifiers';
 
@@ -23,6 +24,18 @@ export class SignupService {
         retry(1),
         catchError(this.errorHandler)
       );
+  }
+
+  checkEMailTaken(email: string): Observable<ValidationErrors | null> {
+    const params = new HttpParams().set('email', email);
+    const obs = this.http.get<User>(`${baseURL}/${backend.users}`, { params })
+      .pipe(
+        map((user) => {
+          // null no error, object for error
+          return !user ? null : { eMailTaken: true };
+        })
+      );
+    return obs;
   }
 
   errorHandler(errorMessage: any) {
