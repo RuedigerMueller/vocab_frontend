@@ -3,16 +3,24 @@
 <form *ngIf="signupForm" [formGroup]="signupForm" (ngSubmit)="signup()">
     <div fd-form-item>
         <label fd-form-label [required]="true" for="signup-username">User name</label>
-        <input fd-form-control autofocus type="text" formControlName="username" maxlength="20" id="signup-userName">
+        <!-- <input fd-form-control autofocus type="text" formControlName="username" maxlength="20" id="signup-userName">
         <div *ngIf="f.username.invalid && (f.username.dirty || f.username.touched)">
             <div *ngIf="f.username.errors.required">
                 User name is required.
             </div>
-        </div>
+        </div> -->
+        <fd-form-input-message-group>
+            <input fd-form-control autofocus type="text" formControlName="username" maxlength="20" id="signup-userName" [state]="state.username" />
+            <div *ngIf="f.username.invalid && (f.username.dirty || f.username.touched)">
+                <fd-form-message [type]="'error'">
+                    User name is required.    
+                </fd-form-message>
+            </div>
+        </fd-form-input-message-group>
     </div>
     <div fd-form-item>
         <label fd-form-label [required]="true" for="signup-password">Password</label>
-        <input fd-form-control autofocus type="password" formControlName="password" maxlength="20" id="signup-password">
+        <input fd-form-control autofocus type="password" formControlName="password" maxlength="20" id="signup-password" [state]="state.password">
         <div *ngIf="f.password.invalid && (f.password.dirty || f.password.touched)">
             <div *ngIf="f.password.errors.required">
                 Passwords is required
@@ -24,8 +32,8 @@
     </div>
     <div fd-form-item>
         <label fd-form-label [required]="true" for="signup-passwordRepeat">Password Confirmation</label>
-        <input fd-form-control autofocus type="password" formControlName="passwordRepeat" maxlength="20"
-            id="signup-passwordRepeat">
+        <input fd-form-control autofocus type="password" formControlName="passwordRepeat" maxlength="20" 
+            id="signup-passwordRepeat" [state]="state.passwordRepeat">
         <div *ngIf="f.passwordRepeat.invalid && (f.passwordRepeat.dirty || f.passwordRepeat.touched)">
             <div *ngIf="f.passwordRepeat.errors.required">
                 Password repeat is required.
@@ -44,7 +52,7 @@
     </div>
     <div fd-form-item>
         <label fd-form-label [required]="true" for="signup-firstName">First name</label>
-        <input fd-form-control autofocus type="text" formControlName="firstName" maxlength="20" id="signup-firstName">
+        <input fd-form-control autofocus type="text" formControlName="firstName" maxlength="20" id="signup-firstName" [state]="state.firstName"> 
         <div *ngIf="f.firstName.invalid && (f.firstName.dirty || f.firstName.touched)">
             <div *ngIf="f.firstName.errors.required">
                 First name is required.
@@ -53,7 +61,7 @@
     </div>
     <div fd-form-item>
         <label fd-form-label [required]="true" for="signup-lastName">Last name</label>
-        <input fd-form-control autofocus type="text" formControlName="lastName" maxlength="20" id="signup-lastName">
+        <input fd-form-control autofocus type="text" formControlName="lastName" maxlength="20" id="signup-lastName" [state]="state.lastName">
         <div *ngIf="f.lastName.invalid && (f.lastName.dirty || f.lastName.touched)">
             <div *ngIf="f.lastName.errors.required">
                 Last name is required.
@@ -62,7 +70,7 @@
     </div>
     <div fd-form-item>
         <label fd-form-label [required]="true" for="signup-email">e-Mail</label>
-        <input fd-form-control autofocus type="text" formControlName="email" maxlength="50" id="signup-email">
+        <input fd-form-control autofocus type="text" formControlName="email" maxlength="50" id="signup-email" [state]="state.email">
         <div *ngIf="f.email.invalid && (f.email.dirty || f.email.touched)">
             <div *ngIf="f.email.errors.required">
                 e-Mail is required.

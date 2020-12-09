@@ -1,5 +1,5 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AfterViewChecked, Component, NgZone, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageToastService } from '@fundamental-ngx/core';
 import { SignupService } from '../services/signup.service';
@@ -11,7 +11,7 @@ import { EMailValidator } from '../validators/eMailValidator';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, AfterViewChecked {
   username: string;
   password: string;
   passwordRepeat: string;
@@ -21,6 +21,14 @@ export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   returnUrl: string;
   error = '';
+  state = {
+    username: '',
+    password: '',
+    passwordRepeat: '',
+    firstName: '',
+    lastName: '',
+    email: ''
+  }
 
   constructor(public fb: FormBuilder,
               private route: ActivatedRoute,
@@ -40,6 +48,15 @@ export class SignupComponent implements OnInit {
       }
       return null;
     };
+  }
+
+  ngAfterViewChecked() {
+    this.signupForm.controls.username.errors ? this.state.username = 'error' : this.state.username = '';
+    this.signupForm.controls.password.errors ? this.state.password = 'error' : this.state.password = '';
+    this.signupForm.controls.passwordRepeat.errors ? this.state.passwordRepeat = 'error' : this.state.passwordRepeat = '';
+    this.signupForm.controls.firstName.errors ? this.state.firstName = 'error' : this.state.firstName = '';
+    this.signupForm.controls.lastName.errors ? this.state.lastName = 'error' : this.state.lastName = '';
+    this.signupForm.controls.email.errors ? this.state.email = 'error' : this.state.email = '';
   }
 
   ngOnInit(): void {
