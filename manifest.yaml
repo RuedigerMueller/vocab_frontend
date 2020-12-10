@@ -2,4 +2,6 @@
 applications:
 - name: vocab_frontend
   random-route: true
-  memory: 128MB
+  memory: 512MB
+  buildpack: nodejs_buildpack
+  path: dist/frontend
