@@ -31,11 +31,11 @@ export class SignupComponent implements OnInit, AfterViewChecked {
   }
 
   constructor(public fb: FormBuilder,
-              private route: ActivatedRoute,
-              private router: Router,
-              private ngZone: NgZone,
-              private signupService: SignupService,
-              public messageToastService: MessageToastService
+    private route: ActivatedRoute,
+    private router: Router,
+    private ngZone: NgZone,
+    private signupService: SignupService,
+    public messageToastService: MessageToastService
   ) { }
 
   checkMatchValidator(field1: string, field2: string) {
@@ -51,12 +51,24 @@ export class SignupComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    this.signupForm.controls.username.errors ? this.state.username = 'error' : this.state.username = '';
-    this.signupForm.controls.password.errors ? this.state.password = 'error' : this.state.password = '';
-    this.signupForm.controls.passwordRepeat.errors ? this.state.passwordRepeat = 'error' : this.state.passwordRepeat = '';
-    this.signupForm.controls.firstName.errors ? this.state.firstName = 'error' : this.state.firstName = '';
-    this.signupForm.controls.lastName.errors ? this.state.lastName = 'error' : this.state.lastName = '';
-    this.signupForm.controls.email.errors ? this.state.email = 'error' : this.state.email = '';
+    if (this.state.username === 'error') {
+      this.signupForm.controls.username.errors ? this.state.username = 'error' : this.state.username = '';
+    }
+    if (this.state.password === 'error') {
+      this.signupForm.controls.password.errors ? this.state.password = 'error' : this.state.password = '';
+    }
+    if (this.state.passwordRepeat === 'error') {
+      this.signupForm.controls.passwordRepeat.errors ? this.state.passwordRepeat = 'error' : this.state.passwordRepeat = '';
+    }
+    if (this.state.firstName === 'error') {
+      this.signupForm.controls.firstName.errors ? this.state.firstName = 'error' : this.state.firstName = '';
+    }
+    if (this.state.lastName === 'error') {
+      this.signupForm.controls.lastName.errors ? this.state.lastName = 'error' : this.state.lastName = '';
+    }
+    if (this.state.email === 'error') {
+      this.signupForm.controls.email.errors ? this.state.email = 'error' : this.state.email = '';
+    }
   }
 
   ngOnInit(): void {
@@ -86,6 +98,12 @@ export class SignupComponent implements OnInit, AfterViewChecked {
   signup(): void {
     // stop here if form is invalid
     if (this.signupForm.invalid) {
+      this.signupForm.controls.username.errors ? this.state.username = 'error' : this.state.username = '';
+      this.signupForm.controls.password.errors ? this.state.password = 'error' : this.state.password = '';
+      this.signupForm.controls.passwordRepeat.errors ? this.state.passwordRepeat = 'error' : this.state.passwordRepeat = '';
+      this.signupForm.controls.firstName.errors ? this.state.firstName = 'error' : this.state.firstName = '';
+      this.signupForm.controls.lastName.errors ? this.state.lastName = 'error' : this.state.lastName = '';
+      this.signupForm.controls.email.errors ? this.state.email = 'error' : this.state.email = '';
       console.log('invalid');
       return;
     }
