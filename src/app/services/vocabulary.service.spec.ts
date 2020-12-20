@@ -1,9 +1,9 @@
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { requestCheck } from 'test/helpers.spec';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { Lesson } from '../models/lesson.model.';
-import { Vocabulary } from '../models/vocabulary.model';
 import { backend, baseURL } from '../resource.identifiers';
 import { VocabularyService } from './vocabulary.service';
 
@@ -14,14 +14,8 @@ describe('VocabularyService', () => {
   const testLesson: Lesson = lessonTestData[0];
   const testVocabulary = vocabularyTestData;
   const backendURL: string = baseURL;
-
-  const requestCheck = async (url: string, method: string, testData: any) => {
-    const req: TestRequest = httpTestingController.expectOne(url);
-    expect(req.request.method).toBe(method);
-
-    req.flush(testData);
-    httpTestingController.verify();
-  };
+  const vocabularyURI: string = backend.vocabulary;
+  const lessonURI: string = backend. lessons;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,39 +29,53 @@ describe('VocabularyService', () => {
     expect(vocabularyService).toBeTruthy();
   });
 
-  it('should create vocabulary', () => {
-    const expectedVocabulary: Vocabulary = testVocabulary[0];
-    vocabularyService.createVocabulary(expectedVocabulary).subscribe((vocabulary: Vocabulary) => { });
+  it('should POST to backend vocabulary service', () => {
+    const expectedURL: string = backendURL + '/' + vocabularyURI;
+    const expectedMethod = 'POST';
+    const expectedPayload: string = JSON.stringify(testVocabulary[0]);
 
-    requestCheck(`${backendURL}/${backend.vocabulary}`, 'POST', expectedVocabulary);
+    vocabularyService.createVocabulary(testVocabulary[0]).subscribe();
+
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  it('should get the lesson vocabulary', () => {
-    const expectedVocabulary = testVocabulary;
-    vocabularyService.getLessonVocabulary(testLesson.id.toString()).subscribe((vocabulary: Vocabulary[]) => { });
+  it('should GET lesson vocabulary from backend lesson service', () => {
+    const expectedURL: string = backendURL + '/' + lessonURI + '/' + testLesson.id + '/' + vocabularyURI;
+    const expectedMethod = 'GET';
+    const expectedPayload = null;
 
-    requestCheck(`${backendURL}/${backend.lessons}/${testLesson.id}/${backend.vocabulary}`, 'GET', expectedVocabulary);
+    vocabularyService.getLessonVocabulary(testLesson.id.toString()).subscribe();
+
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  it('should get a single vocabulary', () => {
-    const expectedVocabulary: Vocabulary = testVocabulary[0];
-    vocabularyService.getVocabulary(expectedVocabulary.id.toString()).subscribe((vocabulary: Vocabulary) => { });
+  it('should GET a single vocabulary from backend vocabulary service', () => {
+    const expectedURL: string = backendURL + '/' + vocabularyURI + '/' + testVocabulary[0].id;
+    const expectedMethod = 'GET';
+    const expectedPayload = null;
 
-    requestCheck(`${backendURL}/${backend.vocabulary}/${expectedVocabulary.id.toString()}`, 'GET', expectedVocabulary);
+    vocabularyService.getVocabulary(testVocabulary[0].id.toString()).subscribe();
+
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  it('should update a vocabulary', () => {
-    const expectedVocabulary: Vocabulary = testVocabulary[0];
-    vocabularyService.updateVocabulary(expectedVocabulary.id.toString(), expectedVocabulary).subscribe((vocabulary: Vocabulary) => { });
+  it('should PATCH vocabulary with ID at backend vocabulary service', () => {
+    const expectedURL: string = backendURL + '/' + vocabularyURI + '/' + testVocabulary[0].id;
+    const expectedMethod = 'PATCH';
+    const expectedPayload: string = JSON.stringify(testVocabulary[0]);
 
-    requestCheck(`${backendURL}/${backend.vocabulary}/${expectedVocabulary.id.toString()}`, 'PATCH', expectedVocabulary);
+    vocabularyService.updateVocabulary(testVocabulary[0].id.toString(), testVocabulary[0]).subscribe();
+
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  it('should delete vocabulary', () => {
-    const expectedVocabulary: Vocabulary = testVocabulary[0];
+  it('should DELETE vocabulary with ID at backend vocabulary service', () => {
+    const expectedURL: string = backendURL + '/' + vocabularyURI + '/' + testVocabulary[0].id;
+    const expectedMethod = 'DELETE';
+    const expectedPayload = null;
 
-    vocabularyService.deleteVocabulary(expectedVocabulary.id.toString()).subscribe(() => { });
+    vocabularyService.deleteVocabulary(testVocabulary[0].id.toString()).subscribe();
 
-    requestCheck(`${backendURL}/${backend.vocabulary}/${expectedVocabulary.id.toString()}`, 'DELETE', expectedVocabulary);
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 });

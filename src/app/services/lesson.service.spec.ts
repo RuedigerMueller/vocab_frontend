@@ -1,5 +1,6 @@
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { requestCheck } from 'test/helpers.spec';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { Lesson } from '../models/lesson.model.';
 import { backend, baseURL } from '../resource.identifiers';
@@ -11,14 +12,6 @@ describe('LessonService', () => {
   const testLessons: ReadonlyArray<Lesson> = lessonTestData;
   const backendURL: string = baseURL;
   const lessonsURI: string = backend.lessons;
-
-  const requestCheck = async (url: string, method: string, testData: any) => {
-    const req: TestRequest = httpTestingController.expectOne(url);
-    expect(req.request.method).toBe(method);
-
-    req.flush(testData);
-    httpTestingController.verify();
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -32,54 +25,53 @@ describe('LessonService', () => {
     expect(lesssonService).toBeTruthy();
   });
 
-  it('should create a lesson', () => {
-    const expectedLesson: Lesson = testLessons[0];
-    lesssonService.createLesson(expectedLesson).subscribe(
-      lesson => expect(lesson).toEqual(expectedLesson, 'expected lesson'),
-      fail
-    );
+  it('should POST to backend lesson service', () => {
+    const expectedURL: string = backendURL + '/' + lessonsURI;
+    const expectedMethod = 'POST';
+    const expectedPayload: string = JSON.stringify(testLessons[0]);
 
-    requestCheck(backendURL + '/' + lessonsURI, 'POST', expectedLesson);
+    lesssonService.createLesson(testLessons[0]).subscribe();
+
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  it('should get lessons', () => {
-    lesssonService.getLessons().subscribe((lessons: Lesson[]) => {
-      expect(lessons.length).toBe(testLessons.length);
-    });
+  it('should GET lessons from backend lesson service', () => {
+    const expectedURL: string = backendURL + '/' + lessonsURI;
+    const expectedMethod = 'GET';
+    const expectedPayload = null;
 
-    requestCheck(backendURL + '/' + lessonsURI, 'GET', testLessons);
+    lesssonService.getLessons().subscribe();
+
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  it('should get a lesson', () => {
-    const expectedLesson: Lesson = testLessons[0];
+  it('should GET lesson with ID from backend lesson service', () => {
+    const expectedURL: string = backendURL + '/' + lessonsURI + '/' + testLessons[0].id;
+    const expectedMethod = 'GET';
+    const expectedPayload = null;
 
-    lesssonService.getLesson(expectedLesson.id.toString()).subscribe(
-      lesson => expect(lesson).toEqual(expectedLesson, 'expected lesson'),
-      fail
-    );
+    lesssonService.getLesson(testLessons[0].id.toString()).subscribe();
 
-    requestCheck(backendURL + '/' + lessonsURI + '/' + expectedLesson.id, 'GET', expectedLesson);
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  it('should update a lesson', () => {
-    const updatedLesson: Lesson = testLessons[0];
+  it('should PATCH lesson with ID at backend lesson service', () => {
+    const expectedURL: string = backendURL + '/' + lessonsURI + '/' + testLessons[0].id;
+    const expectedMethod = 'PATCH';
+    const expectedPayload: string = JSON.stringify(testLessons[0]);
 
-    lesssonService.updateLesson(updatedLesson.id.toString(), updatedLesson).subscribe(
-      () => { },
-      fail
-    );
+    lesssonService.updateLesson(testLessons[0].id.toString(), testLessons[0]).subscribe();
 
-    requestCheck(backendURL + '/' + lessonsURI + '/' + updatedLesson.id, 'PATCH', updatedLesson);
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  it('should delete a lesson', () => {
-    const deletedLesson: Lesson = testLessons[0];
+  it('should DELETE lesson with ID at backend lesson service', () => {
+    const expectedURL: string = backendURL + '/' + lessonsURI + '/' + testLessons[0].id;
+    const expectedMethod = 'DELETE';
+    const expectedPayload = null;
 
-    lesssonService.deleteLesson(deletedLesson.id.toString()).subscribe(
-      () => { },
-      fail
-    );
+    lesssonService.deleteLesson(testLessons[0].id.toString()).subscribe();
 
-    requestCheck(backendURL + '/' + lessonsURI + '/' + deletedLesson.id, 'DELETE', deletedLesson);
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 });

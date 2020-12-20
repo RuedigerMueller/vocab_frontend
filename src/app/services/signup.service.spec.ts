@@ -1,11 +1,17 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { requestCheck } from 'test/helpers.spec';
+import { userTestData } from 'test/user.testdata.spec';
+import { backend, baseURL } from '../resource.identifiers';
 
 import { SignupService } from './signup.service';
 
 describe('SignupService', () => {
-  let service: SignupService;
+  let signUpService: SignupService;
   let httpTestingController: HttpTestingController;
+
+  const backendURL: string = baseURL;
+  const usersURI: string = backend.users;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -13,11 +19,31 @@ describe('SignupService', () => {
         HttpClientTestingModule,
       ],
     });
-    service = TestBed.inject(SignupService);
+    signUpService = TestBed.inject(SignupService);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(signUpService).toBeTruthy();
+  });
+
+  it('should POST user data to backend sign-up service', () => {
+    const expectedURL: string =  backendURL + '/' + usersURI;
+    const expectedMethod = 'POST';
+    const expectedPayload: string = JSON.stringify(userTestData[0]);
+
+    signUpService.signup(userTestData[0]).subscribe();
+
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
+  });
+
+  it('should GET information if an e-Mail address is taken from backend service', () => {
+    const expectedURL: string =  backendURL + '/' + usersURI + '?email=' + userTestData[0].email;
+    const expectedMethod = 'GET';
+    const expectedPayload = null;
+
+    signUpService.checkEMailTaken(userTestData[0].email).subscribe();
+
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 });
