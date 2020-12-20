@@ -104,10 +104,8 @@ export class SignupComponent implements OnInit, AfterViewChecked {
       this.signupForm.controls.firstName.errors ? this.state.firstName = 'error' : this.state.firstName = '';
       this.signupForm.controls.lastName.errors ? this.state.lastName = 'error' : this.state.lastName = '';
       this.signupForm.controls.email.errors ? this.state.email = 'error' : this.state.email = '';
-      console.log('invalid');
       return;
     }
-    console.log('valid');
     const user: User = new User();
     user.username = this.signupForm.value.username;
     user.password = this.signupForm.value.password;
