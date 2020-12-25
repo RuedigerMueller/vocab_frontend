@@ -2,6 +2,13 @@
 applications:
 - name: vocab_frontend
   random-route: true
-  memory: 512MB
-  buildpack: nodejs_buildpack
-  path: dist/frontend
+  # memory: 128MB
+  # buildpack: nodejs_buildpack
+  # path: dist/frontend
+  docker:
+    image: ruedigermueller/vocab_frontend:released
+  # command: sed -i \
+  #           -e 's,$PORT,'"$PORT"',g; s,$BACKEND_SERVICE_URL,'"$BACKEND_SERVICE_URL"',' \
+  #           /etc/nginx/nginx.conf \
+  #         && \
+  #         nginx -g 'daemon off;'; \
