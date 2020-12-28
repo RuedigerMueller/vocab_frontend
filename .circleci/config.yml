@@ -113,6 +113,19 @@ jobs:
             cf api https://api.cf.eu10.hana.ondemand.com
             cf auth "$SCP_USER" "$SCP_PASSWORD"
             cf target -o "$SCP_ORG" -s "$SCP_SPACE"
+      - checkout
+      - restore_cache:
+          key: vocab_frontend-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install
+          command: npm install
+      - save_cache:
+          key: vocab_frontend-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - "node_modules"
+      - run:
+          name: Build
+          command: npm run-script build
       - run:
           name: CF Deploy
           command: cf push
