@@ -9,7 +9,7 @@ applications:
   buildbacks:
   # - nginx-buildpack
   - staticfile_buildpack
-  path: ./dist/frontend
+  path: ./dist/frontend/public
   env:
     BACKEND_SERVICE_URL: https://vocab_backend-hilarious-hippopotamus-ua.cfapps.eu10.hana.ondemand.com/backend
 # properities:
