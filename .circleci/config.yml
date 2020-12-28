@@ -102,14 +102,13 @@ jobs:
   
   scp_deploy:
     docker:
-      - image: debian
+      - image: circleci/node:14.15
     steps:
       - run:
           name: Setup CF CLI
           command: |
-            wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
-            echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
-            cf -v
+            sudo curl -v -L -o cf-cli_amd64.deb 'https://cli.run.pivotal.io/stable?release=debian64&source=github'
+            sudo dpkg -i cf-cli_amd64.debcf -v
             cf api https://api.cf.eu10.hana.ondemand.com
             cf auth "$SCP_USER" "$SCP_PASSWORD"
             cf target -o "$SCP_ORG" -s "$SCP_SPACE"
