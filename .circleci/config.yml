@@ -145,3 +145,4 @@ workflows:
       - scp_deploy:
           requires:
             - approve_for_prod
+          context: vocab
