@@ -20,13 +20,13 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy a default nginx.conf -> can be overwritten via ConfigMap
-COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./.nginx/nginx_docker.conf /etc/nginx/nginx.conf
 
 ## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy from the stage 1
-COPY --from=builder /app-ui/dist /usr/share/nginx/html
+COPY --from=builder /app-ui/dist/frontend/public /usr/share/nginx/html
 
 #App will be on port 8080
 EXPOSE 4200 8080

@@ -1,14 +1,30 @@
 ---
 applications:
 - name: vocab_frontend
-  random-route: true
-  # memory: 128MB
+  #random-route: true
+  memory: 64MB
+  instances: 1
+  #buildpack: staticfile_buildpack
   # buildpack: nodejs_buildpack
-  # path: dist/frontend
-  docker:
-    image: ruedigermueller/vocab_frontend:released
-  # command: sed -i \
-  #           -e 's,$PORT,'"$PORT"',g; s,$BACKEND_SERVICE_URL,'"$BACKEND_SERVICE_URL"',' \
-  #           /etc/nginx/nginx.conf \
-  #         && \
-  #         nginx -g 'daemon off;'; \
+  buildbacks:
+  # - nginx-buildpack
+  - staticfile_buildpack
+  path: ./dist/frontend
+  env:
+    BACKEND_SERVICE_URL: https://vocab_backend-hilarious-hippopotamus-ua.cfapps.eu10.hana.ondemand.com/backend
+# properities:
+#    app_ssh:
+#       host_key_fingerprint: SHA256:7KDgglIgqfPi+Rh/M921Kts+ILoQh3QzYUAxEiG8GUk
+#       oauth_client_id: ssh-proxy
+#     cc:
+#       allow_app_ssh_access: true
+#       default_app_ssh_access: true
+#     uaa:
+#       clients:
+#         ssh-proxy:
+#           authorized-grant-types: authorization_code
+#           autoapprove: true
+#           override: true
+#           redirect-uri: /login
+#           scope: openid,cloud_controller.read,cloud_controller.write,cloud_controller.admin
+#           secret: theSecret
