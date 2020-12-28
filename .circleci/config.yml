@@ -99,6 +99,23 @@ jobs:
       - run:
           name: Release on Heroku prod environment
           command: heroku container:release web --app $HEROKU_PROD
+  
+  scp_deploy:
+    docker:
+      - image: debian
+    steps:
+      - run:
+          name: Setup CF CLI
+          command: |
+            wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+            echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+            cf -v
+            cf api https://api.cf.eu10.hana.ondemand.com
+            cf auth "$SCP_USER" "$SCP_PASSWORD"
+            cf target -o "$SCP_ORG" -s "$SCP_SPACE"
+      - run:
+          name: CF Deploy
+          command: cf push
 
 workflows:
   deploy:
@@ -126,3 +143,6 @@ workflows:
       - heroku_release_for_prod:
           requires:
             - heroku_deploy_to_prod
+      - scp_deploy:
+          requires:
+            - approve_for_prod
