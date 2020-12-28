@@ -33,11 +33,6 @@
                 "glob": "favicon.ico",
                 "input": "src/",
                 "output": "/"
-              },
-              {
-                "glob": "**/*",
-                "input": ".nginx",
-                "output": "/"
               }
             ],
             "styles": [
