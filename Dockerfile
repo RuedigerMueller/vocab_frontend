@@ -36,7 +36,8 @@ EXPOSE 4200 8080
 # BACKEND_SERVICE_URL environmnet variable has to be maintained for Heroku deployment
 CMD if test $PLATFORM = 'Heroku' ; then \
         sed -i \
-            -e 's,$PORT,'"$PORT"',g; s,$BACKEND_SERVICE_URL,'"$BACKEND_SERVICE_URL"',' \
+            # -e 's,$PORT,'"$PORT"',g; s,$BACKEND_SERVICE_URL,'"$BACKEND_SERVICE_URL"',' \
+            -e 's,'{{port}}','"$PORT"',g; s,'{{env "BACKEND_SERVICE_URL"}}','"$BACKEND_SERVICE_URL"',' \
             /etc/nginx/nginx.conf \
         && \
         nginx -g 'daemon off;'; \
