@@ -111,7 +111,7 @@ jobs:
       - run:
           name: Setup CF CLI
           command: |
-            sudo curl -v -L -o cf-cli_amd64.deb 'https://packages.cloudfoundry.org/stable?release=debian64&source=github&version=v6'
+            sudo curl -v -L -o cf-cli_amd64.deb 'https://packages.cloudfoundry.org/stable?release=debian64&source=github&version=v7'
             sudo dpkg -i cf-cli_amd64.deb
             cf -v
             cf api https://api.cf.eu10.hana.ondemand.com
