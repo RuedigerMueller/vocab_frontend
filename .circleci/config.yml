@@ -111,6 +111,8 @@ jobs:
     docker:
       - image: circleci/node:14.15.3
     steps:
+      - attach_workspace:
+          at: .
       - run:
           name: Setup CF CLI
           command: |
@@ -120,11 +122,9 @@ jobs:
             cf api https://api.cf.eu10.hana.ondemand.com
             cf auth "$SCP_USER" "$SCP_PASSWORD"
             cf target -o "$SCP_ORG" -s "$SCP_SPACE"
-      - attach_workspace:
-          at: .
-      - run:
-          name: Build frontend
-          command: npm run-script build
+      # - run:
+      #     name: Build frontend
+      #     command: npm run-script build
       - run:
           name: CF Deploy
           command: cf push
