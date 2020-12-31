@@ -10,4 +10,4 @@ applications:
     image: ruedigermueller/vocab_frontend:released
   env:
     BACKEND_SERVICE_URL: https://vocab_backend.cfapps.eu10.hana.ondemand.com/backend
-    PLATFORM: Heroku
+    RUNNING_ON_PLATFORM: true

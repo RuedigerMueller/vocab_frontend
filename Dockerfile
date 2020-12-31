@@ -30,7 +30,7 @@ COPY --from=builder /app-ui/dist/frontend/public /usr/share/nginx/html
 # Run the app 
 # PORT environemnt variable will automatically and dynamically be filled by Heroku
 # BACKEND_SERVICE_URL environmnet variable has to be maintained for Heroku deployment
-CMD if test $PLATFORM = 'Heroku' ; then \
+CMD if test $RUNNING_ON_PLATFORM = 'true' ; then \
         sed -i \
             -e 's,$PORT,'"$PORT"',g; s,$BACKEND_SERVICE_URL,'"$BACKEND_SERVICE_URL"',' \
             /etc/nginx/nginx.conf \
