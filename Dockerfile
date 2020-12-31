@@ -1,5 +1,4 @@
 FROM node:14.15.3-alpine as builder
-#ENV PORT=8080
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -27,9 +26,6 @@ RUN rm -rf /usr/share/nginx/html/*
 
 # Copy from the stage 1
 COPY --from=builder /app-ui/dist/frontend/public /usr/share/nginx/html
-
-#App will be on port 8080
-#EXPOSE 4200 8080
 
 # Run the app 
 # PORT environemnt variable will automatically and dynamically be filled by Heroku
