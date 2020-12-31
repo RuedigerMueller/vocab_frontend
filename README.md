@@ -24,10 +24,11 @@ Run `ng e2e` or `npm run e2e` to execute the end-to-end tests via [Protractor](h
 
 You can also use the ready to run Docker Image[ruedigermueller/vocab_frontend](https://hub.docker.com/repository/docker/ruedigermueller/vocab_frontend) to run the application. 
 
+You will have to set the enviroment variable `RUNNING_ON_PLATFORM`to true when running on a platform like Heroku or a Cloud Foundry based environment like SAP Cloud Platform. 
 In order to setup the connection to the backend you will have to provide the URL to the backend service via the environment variable `BACKEND_SERVICE_URL`. This is not required in case you are running frontend and backend on a Kubernetes cluster as in such an environment the connection is setup via the .yaml files provide in this repository.
 
 The app is running on [Heroku](https://www.heroku.com/home):
 * [Test](https://vocabfetest.herokuapp.com/)
 * [Prod](https://vocabfeprod.herokuapp.com/)
 
-It is easy to run the application leveraging [Kubernetes](https://kubernetes.io) locally on Minikube  or in the public cloud on a free account like [Okteto](https://okteto.com/). While I am playing around with the app it e.g. available at [Vocab TS](https://vocab-frontend-ruedigermueller.cloud.okteto.net/).
+It is easy to run the application leveraging [Kubernetes](https://kubernetes.io) locally on Minikube  or in the public cloud on a free account like [Okteto](https://okteto.com/). While I am playing around with the app it e.g. available at [Vocab TS](https://vocab-frontend-ruedigermueller.cloud.okteto.net/). A Cloud Foundry based version is also available on the [SAP Cloud Platform Trial](https://vocab_frontend.cfapps.eu10.hana.ondemand.com). As it is only a trial landscape, the app will be automatically shutdown after some time.

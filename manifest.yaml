@@ -2,10 +2,7 @@
 applications:
 - name: vocab_frontend
   memory: 64MB
-  instances: 1
-  # buildbacks:
-  # - nginx-buildpack
-  # path: ./dist/frontend
+  instances: 2
   docker:
     image: ruedigermueller/vocab_frontend:released
   env:
