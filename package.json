@@ -7,7 +7,7 @@
     "build": "ng build --prod --aot",
     "postbuild": "cp ./.nginx/*.* ./dist/frontend/",
     "start-dev": "ng serve",
-    "start": "node server.js 8080",
+    "start": "node server.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
