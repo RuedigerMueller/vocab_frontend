@@ -22,8 +22,8 @@ spec:
       - name: vocab
         image: "ruedigermueller/vocab_frontend:released"
         env:
-        - name: PLATFORM
-          value: "K8S"
+        - name: RUNNING_ON_PLATFORM
+          value: "false"
         volumeMounts:
         - name: nginx-config
           mountPath: /etc/nginx/nginx.conf
