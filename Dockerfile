@@ -27,8 +27,6 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy from the stage 1
 COPY --from=builder /app-ui/dist/frontend/public /usr/share/nginx/html
 
-EXPOSE 8080
-
 # Run the app 
 # PORT environemnt variable will automatically and dynamically be filled by Heroku
 # BACKEND_SERVICE_URL environmnet variable has to be maintained for Heroku deployment

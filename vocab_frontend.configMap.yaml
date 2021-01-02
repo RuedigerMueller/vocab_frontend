@@ -15,13 +15,16 @@ data:
       include /etc/nginx/mime.types;
       server {
         listen 8080;
-        location / {
-          root  /usr/share/nginx/html/frontend;
-          index index.html;
-          try_files $uri$args $uri$args/ /index.html;
-        }
+
+        root  /usr/share/nginx/html/frontend;
+        index index.html;
+
         location /backend {
           proxy_pass http://vocab-backend:3000;
+        }
+
+        location / {  
+          try_files $uri$args $uri$args/ /index.html;
         }
       }
     }
