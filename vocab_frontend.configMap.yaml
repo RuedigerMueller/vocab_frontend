@@ -8,6 +8,8 @@ metadata:
     app: vocab
     tier: frontend
 data:
+  # content below comes from .nginx/nginx_docker.conf
+  # port has to be exeplicitely set to 8080
   config: >
     worker_processes 4;
     events { worker_connections 1024; }
@@ -16,7 +18,7 @@ data:
       server {
         listen 8080;
 
-        root  /usr/share/nginx/html/frontend;
+        root /usr/share/nginx/html;
         index index.html;
 
         location /backend {
