@@ -1,54 +1,64 @@
-<fd-layout-grid [col]="3">
-    <p></p>
-    <div>
+<fd-layout-grid>
+    <div fdLayoutGridCol="4"></div>
+    <div fdLayoutGridCol="4">
         <p *ngIf="numberDueVocabularies>0" style="text-align:center; vertical-align: bottom" id="quiz-progress">
             {{questionedVocabulary}}/{{numberDueVocabularies}}</p>
     </div>
-    <p style="text-align:right"><button fd-button [glyph]="'sys-cancel'" id="quiz-cancel"
-            (click)=cancel(confirmationDialog)></button>
-    </p>
+    <div fdLayoutGridCol="4">
+        <p style="text-align:right"><button fd-button [glyph]="'sys-cancel'" id="quiz-cancel"
+                (click)=cancel(confirmationDialog)></button>
+        </p>
+    </div>
 </fd-layout-grid>
 <P></P>
-<fd-layout-grid [col]="3" *ngIf="vocabulary && lesson">
-    <fd-layout-panel>
-        <fd-layout-panel-body>
-            <div fd-form-item>
-                <label fd-form-label for="quiz-knownLanguageLabel">{{lesson.language_a}}</label>
-                <textarea fd-form-control id="quiz-knownLanguage" rows="10"
-                    readonly>{{vocabulary.language_a}}</textarea>
-            </div>
-        </fd-layout-panel-body>
-    </fd-layout-panel>
-    <fd-layout-panel>
-        <fd-layout-panel-body>
-            <div fd-form-item>
-                <label fd-form-label for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
-                <textarea fd-form-control autofocus #quizLearnedLanguage id="quiz-learnedLanguage" rows="10"
-                    [state]="entryFieldState" [(ngModel)]="enteredResponse" (keyup.enter)="checkResponse()"></textarea>
-            </div>
-            <div>
-                <button *ngIf="displayCheckResponseButton" fd-button id="quiz-checkResponse"
-                    (click)="checkResponse()">Check
-                    response</button>
-                <button *ngIf="displayValidateResponseButton" fd-button id="quiz-validResponse"
-                    (click)=validResponse()>Valid
-                    response</button>
-                <button *ngIf="displayInvalidateResponseButton" fd-button id="quiz-invalidResponse"
-                    (click)=invalidResponse()>Invalid
-                    response</button>
-                <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" #nextButton id="quiz-next"
-                    (click)=next()>Next</button>
-            </div>
-        </fd-layout-panel-body>
-    </fd-layout-panel>
-    <fd-layout-panel>
-        <fd-layout-panel-body>
-            <div fd-form-item>
-                <label fd-form-label for="quiz-correctResponseLabel">Correct Response</label>
-                <textarea fd-form-control id="quiz-correctResponse" rows="10" readonly>{{correctResponse}}</textarea>
-            </div>
-        </fd-layout-panel-body>
-    </fd-layout-panel>
+<fd-layout-grid *ngIf="vocabulary && lesson">
+    <div fdLayoutGridCol="4">
+        <fd-layout-panel>
+            <fd-layout-panel-body>
+                <div fd-form-item>
+                    <label fd-form-label for="quiz-knownLanguageLabel">{{lesson.language_a}}</label>
+                    <textarea fd-form-control id="quiz-knownLanguage" rows="10"
+                        readonly>{{vocabulary.language_a}}</textarea>
+                </div>
+            </fd-layout-panel-body>
+        </fd-layout-panel>
+    </div>
+    <div fdLayoutGridCol="4">
+        <fd-layout-panel>
+            <fd-layout-panel-body>
+                <div fd-form-item>
+                    <label fd-form-label for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
+                    <textarea fd-form-control autofocus #quizLearnedLanguage id="quiz-learnedLanguage" rows="10"
+                        [state]="entryFieldState" [(ngModel)]="enteredResponse"
+                        (keyup.enter)="checkResponse()"></textarea>
+                </div>
+                <div>
+                    <button *ngIf="displayCheckResponseButton" fd-button id="quiz-checkResponse"
+                        (click)="checkResponse()">Check
+                        response</button>
+                    <button *ngIf="displayValidateResponseButton" fd-button id="quiz-validResponse"
+                        (click)=validResponse()>Valid
+                        response</button>
+                    <button *ngIf="displayInvalidateResponseButton" fd-button id="quiz-invalidResponse"
+                        (click)=invalidResponse()>Invalid
+                        response</button>
+                    <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" #nextButton id="quiz-next"
+                        (click)=next()>Next</button>
+                </div>
+            </fd-layout-panel-body>
+        </fd-layout-panel>
+    </div>
+    <div fdLayoutGridCol="4">
+        <fd-layout-panel>
+            <fd-layout-panel-body>
+                <div fd-form-item>
+                    <label fd-form-label for="quiz-correctResponseLabel">Correct Response</label>
+                    <textarea fd-form-control id="quiz-correctResponse" rows="10"
+                        readonly>{{correctResponse}}</textarea>
+                </div>
+            </fd-layout-panel-body>
+        </fd-layout-panel>
+    </div>
 </fd-layout-grid>
 <p *ngIf="!vocabulary">
     <fd-message-strip [type]="'error'" [dismissible]="false" *ngIf="lesson">
@@ -69,14 +79,15 @@
 
         <fd-dialog-footer>
             <fd-dialog-footer-button>
-                <button fd-button  id="quiz-confirmLeaveQuiz" fdType="emphasized" fd-dialog-decisive-button [compact]="true"
-                    (click)="dialog.close('Yes')">
+                <button fd-button id="quiz-confirmLeaveQuiz" fdType="emphasized" fd-dialog-decisive-button
+                    [compact]="true" (click)="dialog.close('Yes')">
                     Yes
                 </button>
             </fd-dialog-footer-button>
 
             <fd-dialog-footer-button>
-                <button fd-button id="quiz-continueQuiz" fd-dialog-decisive-button [compact]="true" (click)="dialog.dismiss('No')">
+                <button fd-button id="quiz-continueQuiz" fd-dialog-decisive-button [compact]="true"
+                    (click)="dialog.dismiss('No')">
                     No
                 </button>
             </fd-dialog-footer-button>
