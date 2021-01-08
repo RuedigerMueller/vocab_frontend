@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ButtonModule, FormModule, MessageStripModule, LayoutPanelModule, LayoutGridModule, DialogModule } from '@fundamental-ngx/core';
+import { ButtonModule, FormModule, MessageStripModule, LayoutPanelModule, LayoutGridModule, DialogModule, TitleModule } from '@fundamental-ngx/core';
 import { of } from 'rxjs/internal/observable/of';
 import { routes } from 'src/app/app-routing.module';
 import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
@@ -62,6 +62,7 @@ describe('QuizComponent', () => {
         FormModule,
         MessageStripModule,
         DialogModule,
+        TitleModule,
       ],
       providers: [
         { provide: VocabularyService, useValue: vocabularyService },

@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ButtonModule, DialogModule, FormModule, LayoutGridModule, MenuModule,
-  MessageStripModule, ShellbarModule, SplitButtonModule, TableModule, LinkModule, LayoutPanelModule, MessageToastModule
+  MessageStripModule, ShellbarModule, SplitButtonModule, TableModule, LinkModule, LayoutPanelModule, MessageToastModule, TitleModule
 } from '@fundamental-ngx/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -58,6 +58,7 @@ import { EMailValidatorDirective } from './validators/eMailValidator';
     DialogModule,
     LinkModule,
     MessageToastModule,
+    TitleModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

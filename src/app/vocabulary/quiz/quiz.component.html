@@ -1,8 +1,8 @@
 <fd-layout-grid>
     <div fdLayoutGridCol="4"></div>
     <div fdLayoutGridCol="4">
-        <p *ngIf="numberDueVocabularies>0" style="text-align:center; vertical-align: bottom" id="quiz-progress">
-            {{questionedVocabulary}}/{{numberDueVocabularies}}</p>
+        <h4 *ngIf="numberDueVocabularies>0" style="text-align:center; vertical-align: bottom" fd-title id="quiz-progress">
+            {{questionedVocabulary}}/{{numberDueVocabularies}}</h4>
     </div>
     <div fdLayoutGridCol="4">
         <p style="text-align:right"><button fd-button [glyph]="'sys-cancel'" id="quiz-cancel"
@@ -13,51 +13,35 @@
 <P></P>
 <fd-layout-grid *ngIf="vocabulary && lesson">
     <div fdLayoutGridCol="4">
-        <fd-layout-panel>
-            <fd-layout-panel-body>
-                <div fd-form-item>
-                    <label fd-form-label for="quiz-knownLanguageLabel">{{lesson.language_a}}</label>
-                    <textarea fd-form-control id="quiz-knownLanguage" rows="10"
-                        readonly>{{vocabulary.language_a}}</textarea>
-                </div>
-            </fd-layout-panel-body>
-        </fd-layout-panel>
+        <div fd-form-item>
+            <label fd-form-header for="quiz-knownLanguageLabel">{{lesson.language_a}}</label>
+            <textarea fd-form-control id="quiz-knownLanguage" rows="10" readonly>{{vocabulary.language_a}}</textarea>
+        </div>
     </div>
     <div fdLayoutGridCol="4">
-        <fd-layout-panel>
-            <fd-layout-panel-body>
-                <div fd-form-item>
-                    <label fd-form-label for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
-                    <textarea fd-form-control autofocus #quizLearnedLanguage id="quiz-learnedLanguage" rows="10"
-                        [state]="entryFieldState" [(ngModel)]="enteredResponse"
-                        (keyup.enter)="checkResponse()"></textarea>
-                </div>
-                <div>
-                    <button *ngIf="displayCheckResponseButton" fd-button id="quiz-checkResponse"
-                        (click)="checkResponse()">Check
-                        response</button>
-                    <button *ngIf="displayValidateResponseButton" fd-button id="quiz-validResponse"
-                        (click)=validResponse()>Valid
-                        response</button>
-                    <button *ngIf="displayInvalidateResponseButton" fd-button id="quiz-invalidResponse"
-                        (click)=invalidResponse()>Invalid
-                        response</button>
-                    <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" #nextButton id="quiz-next"
-                        (click)=next()>Next</button>
-                </div>
-            </fd-layout-panel-body>
-        </fd-layout-panel>
+        <div fd-form-item>
+            <label fd-form-header for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
+            <textarea fd-form-control autofocus #quizLearnedLanguage id="quiz-learnedLanguage" rows="10"
+                [state]="entryFieldState" [(ngModel)]="enteredResponse" (keyup.enter)="checkResponse()"></textarea>
+        </div>
+        <div>
+            <button *ngIf="displayCheckResponseButton" fd-button id="quiz-checkResponse" (click)="checkResponse()">Check
+                response</button>
+            <button *ngIf="displayValidateResponseButton" fd-button id="quiz-validResponse"
+                (click)=validResponse()>Valid
+                response</button>
+            <button *ngIf="displayInvalidateResponseButton" fd-button id="quiz-invalidResponse"
+                (click)=invalidResponse()>Invalid
+                response</button>
+            <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" #nextButton id="quiz-next"
+                (click)=next()>Next</button>
+        </div>
     </div>
     <div fdLayoutGridCol="4">
-        <fd-layout-panel>
-            <fd-layout-panel-body>
-                <div fd-form-item>
-                    <label fd-form-label for="quiz-correctResponseLabel">Correct Response</label>
-                    <textarea fd-form-control id="quiz-correctResponse" rows="10"
-                        readonly>{{correctResponse}}</textarea>
-                </div>
-            </fd-layout-panel-body>
-        </fd-layout-panel>
+        <div fd-form-item>
+            <label fd-form-header for="quiz-correctResponseLabel">Correct Response</label>
+            <textarea fd-form-control id="quiz-correctResponse" rows="10" readonly>{{correctResponse}}</textarea>
+        </div>
     </div>
 </fd-layout-grid>
 <p *ngIf="!vocabulary">
