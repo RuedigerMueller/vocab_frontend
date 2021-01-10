@@ -30,7 +30,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "~6.6.3",
     "tslib": "^2.1.0",
-    "zone.js": "~0.11.3"
+    "zone.js": "^0.11.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1002.1",
@@ -42,7 +42,7 @@
     "codelyzer": "^6.0.1",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~6.0.0",
-    "karma": "~5.2.3",
+    "karma": "^5.2.3",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~4.0.1",
