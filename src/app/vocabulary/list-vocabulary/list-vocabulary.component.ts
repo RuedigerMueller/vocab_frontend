@@ -5,6 +5,7 @@ import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { VocabularyService } from '../../services/vocabulary.service';
 import { Vocabulary } from '../../models/vocabulary.model';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -13,9 +14,12 @@ import { Vocabulary } from '../../models/vocabulary.model';
   styleUrls: ['./list-vocabulary.component.scss']
 })
 export class ListVocabularyComponent implements OnInit {
-  vocabulary: ReadonlyArray<Vocabulary>;
+  //vocabulary: ReadonlyArray<Vocabulary>;
+  vocabulary$: Observable<ReadonlyArray<Vocabulary>>;
+
   lessonID: string;
   lesson: Lesson;
+  lesson$: Observable<Lesson>;
 
   constructor(
     private vocabularyService: VocabularyService,
@@ -27,33 +31,35 @@ export class ListVocabularyComponent implements OnInit {
 
   ngOnInit(): void {
     this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
-    this.getLesson(this.lessonID);
-    this.getVocabulary(this.lessonID);
+    //this.getLesson(this.lessonID);
+    //this.getVocabulary(this.lessonID);
+    this.lesson$ = this.lessonService.getLesson(this.lessonID);
+    this.vocabulary$ = this.vocabularyService.getLessonVocabulary(this.lessonID);
   }
 
   createVocabulary(): void {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.addVocabulary}`));
   }
 
-  getLesson(id: string): void  {
+  /* getLesson(id: string): void  {
     this.lessonService.getLesson(id).subscribe((lesson: Lesson) => {
       this.lesson = lesson;
     });
-  }
+  } */
 
-  getVocabulary(id: string): void {
+  /* getVocabulary(id: string): void {
     this.vocabularyService.getLessonVocabulary(id).subscribe((vocabulary: Vocabulary[]) => {
       this.vocabulary = vocabulary;
     });
-  }
+  } */
 
   updateVocabulary(id: string): void {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.editVocabulary}/${id}`));
   }
 
   deleteVocabulary(id: string): void {
-    this.vocabularyService.deleteVocabulary(id).subscribe(() => {
-      this.getVocabulary(this.lessonID);
+     this.vocabularyService.deleteVocabulary(id).subscribe(() => {
+      //this.getVocabulary(this.lessonID);
     });
   }
 

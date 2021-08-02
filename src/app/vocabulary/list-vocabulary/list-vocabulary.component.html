@@ -1,35 +1,40 @@
-<h3 *ngIf="lesson">{{ lesson.title}}</h3>
-<button fd-button id="list-vocabulary-createAction" (click)=createVocabulary()>Create</button>
-<button fd-button id="list-vocabulary-closeLessonAction" (click)=closeLesson()>Close Lesson</button>
-<table *ngIf="lesson" fd-table>
-    <thead fd-table-header>
-        <tr fd-table-row>
-            <th fd-table-cell>{{lesson.language_a}}</th>
-            <th fd-table-cell>{{lesson.language_b}}</th>
-            <th fd-table-cell>Level</th>
-            <th fd-table-cell>Due Date</th>
-            <th fd-table-cell>Actions</th>
-        <tr>
-    </thead>
-    <tbody fd-table-body>
-        <tr *ngFor="let vocabulary of vocabulary; index as i" fd-table-row>
-            <td fd-table-cell id="list-vocabulary-language_a-{{i}}">{{ vocabulary.language_a }}</td>
-            <td fd-table-cell id="list-vocabulary-language_b-{{i}}">{{ vocabulary.language_b }}</td>
-            <td fd-table-cell id="list-vocabulary-level-{{i}}">{{ vocabulary.level}}</td>
-            <td fd-table-cell id="list-vocabulary-dueDate-{{i}}">{{ vocabulary.dueDate | date:'shortDate' }}</td>
-            <td fd-table-cell>
-                <fd-split-button id="list-vocabulary-editAction-{{i}}" (primaryButtonClicked)="updateVocabulary(vocabulary.id)" [mainActionTitle]="'Edit'">
-                    <fd-menu>
-                        <li fd-menu-item>
-                            <div fd-menu-interactive>
-                                <span fd-menu-title id="list-vocabulary-deleteAction-{{i}}" (click)="deleteVocabulary(vocabulary.id)">
-                                    Delete
-                                </span>
-                            </div>
-                        </li>
-                    </fd-menu>
-                </fd-split-button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div *ngIf="lesson$ | async as lesson">
+    <h3>{{ lesson.title}}</h3>
+
+    <button fd-button id="list-vocabulary-createAction" (click)=createVocabulary()>Create</button>
+    <button fd-button id="list-vocabulary-closeLessonAction" (click)=closeLesson()>Close Lesson</button>
+    <table fd-table>
+        <thead fd-table-header>
+            <tr fd-table-row>
+                <th fd-table-cell>{{lesson.language_a}}</th>
+                <th fd-table-cell>{{lesson.language_b}}</th>
+                <th fd-table-cell>Level</th>
+                <th fd-table-cell>Due Date</th>
+                <th fd-table-cell>Actions</th>
+            <tr>
+        </thead>
+        <tbody *ngIf="vocabulary$ | async as vocabulary" fd-table-body>
+            <tr *ngFor="let vocabulary of vocabulary; index as i" fd-table-row>
+                <td fd-table-cell id="list-vocabulary-language_a-{{i}}">{{ vocabulary.language_a }}</td>
+                <td fd-table-cell id="list-vocabulary-language_b-{{i}}">{{ vocabulary.language_b }}</td>
+                <td fd-table-cell id="list-vocabulary-level-{{i}}">{{ vocabulary.level}}</td>
+                <td fd-table-cell id="list-vocabulary-dueDate-{{i}}">{{ vocabulary.dueDate | date:'shortDate' }}</td>
+                <td fd-table-cell>
+                    <fd-split-button id="list-vocabulary-editAction-{{i}}"
+                        (primaryButtonClicked)="updateVocabulary(vocabulary.id)" [mainActionTitle]="'Edit'">
+                        <fd-menu>
+                            <li fd-menu-item>
+                                <div fd-menu-interactive>
+                                    <span fd-menu-title id="list-vocabulary-deleteAction-{{i}}"
+                                        (click)="deleteVocabulary(vocabulary.id)">
+                                        Delete
+                                    </span>
+                                </div>
+                            </li>
+                        </fd-menu>
+                    </fd-split-button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

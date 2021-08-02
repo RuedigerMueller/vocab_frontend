@@ -22,6 +22,8 @@ import { ListVocabularyComponent } from './vocabulary/list-vocabulary/list-vocab
 import { QuizComponent } from './vocabulary/quiz/quiz.component';
 import { SignupComponent } from './signup/signup.component';
 import { EMailValidatorDirective } from './validators/eMailValidator';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import { EMailValidatorDirective } from './validators/eMailValidator';
     LinkModule,
     MessageToastModule,
     TitleModule,
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

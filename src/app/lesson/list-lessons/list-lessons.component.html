@@ -1,55 +1,57 @@
-<button fd-button id="list-lessons-createAction" (click)='createLesson()'>Create</button>
+<div *ngIf="lessons$ | async as lessons">
+    <button fd-button id="list-lessons-createAction" (click)='createLesson()'>Create</button>
 
-<table fd-table>
-    <thead fd-table-header>
-        <tr fd-table-row>
-            <th fd-table-cell>Title</th>
-            <th fd-table-cell>Learned Language</th>
-            <th fd-table-cell>Known Language</th>
-            <th fd-table-cell>#Vocabularies</th>
-            <th fd-table-cell>#Due Vocabularies</th>
-            <th fd-table-cell>Actions</th>
-        <tr>
-    </thead>
-    <tbody fd-table-body>
-        <tr *ngFor="let lesson of lessons; index as i" fd-table-row>
-            <td fd-table-cell id="list-lessons-title-{{i}}"> {{ lesson.title }}</td>
-            <td fd-table-cell id="list-lessons-language_a-{{i}}"> {{ lesson.language_a }}</td>
-            <td fd-table-cell id="list-lessons-language_b-{{i}}"> {{ lesson.language_b }}</td>
-            <td fd-table-cell id="list-lessons-numberVocables-{{i}}"> {{ lesson.numberVocables}}</td>
-            <td fd-table-cell id="list-lessons-numberDueVocables-{{i}}"> {{ lesson.numberDueVocables }}</td>
-            <td fd-table-cell>
-                <fd-split-button id="list-lessons-quizAction-{{i}}" (primaryButtonClicked)="lessonQuiz(lesson.id)"
-                    [mainActionTitle]="'Quiz'">
-                    <fd-menu>
-                        <li fd-menu-item>
-                            <div fd-menu-interactive>
-                                <span fd-menu-title id="list-lessons-editAction-{{i}}"
-                                    (click)="updateLesson(lesson.id)">
-                                    Edit
-                                </span>
-                            </div>
-                        </li>
-                        <li fd-menu-item>
-                            <div fd-menu-interactive>
-                                <span fd-menu-title id="list-lessons-deleteAction-{{i}}"
-                                    (click)="deleteLesson(lesson.id)">
-                                    Delete
-                                </span>
-                            </div>
-                        </li>
-                        <li fd-menu-item>
-                            <div fd-menu-interactive>
-                                <span fd-menu-title id="list-lessons-vocabularyAction-{{i}}"
-                                    (click)="lessonVocabulary(lesson.id)">
-                                    Vocabulary
-                                </span>
-                            </div>
-                        </li>
-                    </fd-menu>
+    <table fd-table>
+        <thead fd-table-header>
+            <tr fd-table-row>
+                <th fd-table-cell>Title</th>
+                <th fd-table-cell>Learned Language</th>
+                <th fd-table-cell>Known Language</th>
+                <th fd-table-cell>#Vocabularies</th>
+                <th fd-table-cell>#Due Vocabularies</th>
+                <th fd-table-cell>Actions</th>
+            <tr>
+        </thead>
+        <tbody fd-table-body>
+            <tr *ngFor="let lesson of lessons; index as i" fd-table-row>
+                <td fd-table-cell id="list-lessons-title-{{i}}"> {{ lesson.title }}</td>
+                <td fd-table-cell id="list-lessons-language_a-{{i}}"> {{ lesson.language_a }}</td>
+                <td fd-table-cell id="list-lessons-language_b-{{i}}"> {{ lesson.language_b }}</td>
+                <td fd-table-cell id="list-lessons-numberVocables-{{i}}"> {{ lesson.numberVocables}}</td>
+                <td fd-table-cell id="list-lessons-numberDueVocables-{{i}}"> {{ lesson.numberDueVocables }}</td>
+                <td fd-table-cell>
+                    <fd-split-button id="list-lessons-quizAction-{{i}}" (primaryButtonClicked)="lessonQuiz(lesson.id)"
+                        [mainActionTitle]="'Quiz'">
+                        <fd-menu>
+                            <li fd-menu-item>
+                                <div fd-menu-interactive>
+                                    <span fd-menu-title id="list-lessons-editAction-{{i}}"
+                                        (click)="updateLesson(lesson.id)">
+                                        Edit
+                                    </span>
+                                </div>
+                            </li>
+                            <li fd-menu-item>
+                                <div fd-menu-interactive>
+                                    <span fd-menu-title id="list-lessons-deleteAction-{{i}}"
+                                        (click)="deleteLesson(lesson.id)">
+                                        Delete
+                                    </span>
+                                </div>
+                            </li>
+                            <li fd-menu-item>
+                                <div fd-menu-interactive>
+                                    <span fd-menu-title id="list-lessons-vocabularyAction-{{i}}"
+                                        (click)="lessonVocabulary(lesson.id)">
+                                        Vocabulary
+                                    </span>
+                                </div>
+                            </li>
+                        </fd-menu>
 
-                </fd-split-button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                    </fd-split-button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

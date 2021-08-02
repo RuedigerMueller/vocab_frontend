@@ -3,6 +3,7 @@ import { Lesson } from '../../models/lesson.model.';
 import { LessonService } from '../../services/lesson.service';
 import { Router } from '@angular/router';
 import { frontend } from 'src/app/resource.identifiers';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list-lessons',
@@ -11,18 +12,20 @@ import { frontend } from 'src/app/resource.identifiers';
 })
 export class ListLessonsComponent implements OnInit {
   lessons: ReadonlyArray<Lesson>;
+  lessons$: Observable<ReadonlyArray<Lesson>>;
 
   constructor(private lessonService: LessonService, private ngZone: NgZone, private router: Router) { }
 
   ngOnInit(): void {
-    this.getLessons();
+    this.lessons$ = this.lessonService.getLessons();
+    //this.getLessons();
   }
 
-  getLessons(): void {
+  /* getLessons(): void {
     this.lessonService.getLessons().subscribe((lessons: Lesson[]) => {
       this.lessons = lessons;
     });
-  }
+  } */
 
   createLesson() {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${frontend.createLesson}`));
@@ -33,9 +36,9 @@ export class ListLessonsComponent implements OnInit {
   }
 
   deleteLesson(id: string): void {
-    this.lessonService.deleteLesson(id).subscribe(() => {
+    /* this.lessonService.deleteLesson(id).subscribe(() => {
       this.getLessons();
-    });
+    }); */
   }
 
   lessonVocabulary(id: string): void {
