@@ -15,3 +15,34 @@ export const loadVocabularyFailure = createAction(
     '[Vocabulary] Load vocabulary failure',
     props<{ error: string }>()
 );
+
+export const updateVocabulary = createAction(
+    '[Vocabulary] Update vocabulary',
+    props<{ vocabularyID: number, vocabulary: Vocabulary}>()
+);
+
+export const updateVocabularySuccess = createAction(
+    '[Vocabulary] Update vocabulary success',
+    props<{ vocabulary: Vocabulary }>()
+);
+
+export const updateVocabularyFailure = createAction(
+    '[Vocabulary] Update vocabulary failure',
+    props<{ error: string }>()
+);
+
+export const deleteVocabulary = createAction(
+    '[Vocabulary] Delete vocabulary',
+    props<{ vocabularyID: number }>()
+);
+
+export const deleteVocabularySuccess = createAction(
+    '[Vocabulary] Delete vocabulary success',
+    props<{ vocabularyID: number }>()
+);
+
+export const deleteVocabularyFailure = createAction(
+    '[Vocabulary] Delete vocabulary failure',
+    props<{ error: string }>()
+);
+

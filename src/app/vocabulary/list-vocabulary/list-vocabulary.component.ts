@@ -9,7 +9,6 @@ import { getError, getVocabulary, State } from '../state/vocabulary.reducer';
 import * as VocabularyActions from '../state/vocabulary.actions';
 import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
 
-
 @Component({
   selector: 'app-list-vocabulary',
   templateUrl: './list-vocabulary.component.html',
@@ -46,14 +45,12 @@ export class ListVocabularyComponent implements OnInit {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.addVocabulary}`));
   }
 
-  updateVocabulary(id: string): void {
+  updateVocabulary(id: number): void {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.editVocabulary}/${id}`));
   }
 
-  deleteVocabulary(id: string): void {
-     // this.vocabularyService.deleteVocabulary(id).subscribe(() => {
-     // this.getVocabulary(this.lessonID);
-     // });
+  deleteVocabulary(id: number): void {
+     this.store.dispatch(VocabularyActions.deleteVocabulary({vocabularyID: id }));
   }
 
   closeLesson(): void {

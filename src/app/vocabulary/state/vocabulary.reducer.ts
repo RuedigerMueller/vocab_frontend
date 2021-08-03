@@ -50,5 +50,49 @@ export const vocabularyReducer = createReducer<VocabularyState>(
             vocabulary: [],
             error: action.error
         };
-    })
+    }),
+    on(VocabularyActions.updateVocabulary, (state): VocabularyState => {
+        return {
+            ...state,
+        };
+    }),
+    on(VocabularyActions.updateVocabularySuccess, (state, action): VocabularyState => {
+        const updatedVocabulary = state.vocabulary.map(
+            vocabulary => action.vocabulary.id === vocabulary.id ? action.vocabulary : vocabulary);
+
+        return {
+            ...state,
+            vocabulary: updatedVocabulary,
+            error: ''
+        };
+    }),
+    on(VocabularyActions.updateVocabularyFailure, (state, action): VocabularyState => {
+        return {
+            ...state,
+            vocabulary: [],
+            error: action.error
+        };
+    }),
+    on(VocabularyActions.deleteVocabulary, (state): VocabularyState => {
+        return {
+            ...state,
+        };
+    }),
+    on(VocabularyActions.deleteVocabularySuccess, (state, action): VocabularyState => {
+        const updatedVocabulary = state.vocabulary.filter(
+            vocabulary => action.vocabularyID !== vocabulary.id);
+
+        return {
+            ...state,
+            vocabulary: updatedVocabulary,
+            error: ''
+        };
+    }),
+    on(VocabularyActions.deleteVocabularyFailure, (state, action): VocabularyState => {
+        return {
+            ...state,
+            vocabulary: [],
+            error: action.error
+        };
+    }),
 );
