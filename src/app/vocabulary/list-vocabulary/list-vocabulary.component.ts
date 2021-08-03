@@ -1,11 +1,13 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LessonService } from 'src/app/services/lesson.service';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
-import { VocabularyService } from '../../services/vocabulary.service';
 import { Vocabulary } from '../../models/vocabulary.model';
 import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { getError, getVocabulary, State } from '../state/vocabulary.reducer';
+import * as VocabularyActions from '../state/vocabulary.actions';
+import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
 
 
 @Component({
@@ -14,16 +16,17 @@ import { Observable } from 'rxjs';
   styleUrls: ['./list-vocabulary.component.scss']
 })
 export class ListVocabularyComponent implements OnInit {
-  //vocabulary: ReadonlyArray<Vocabulary>;
+
   vocabulary$: Observable<ReadonlyArray<Vocabulary>>;
+  errorMessage$: Observable<string>;
 
   lessonID: string;
   lesson: Lesson;
   lesson$: Observable<Lesson>;
+  lessons$: Observable<ReadonlyArray<Lesson>>;
 
   constructor(
-    private vocabularyService: VocabularyService,
-    private lessonService: LessonService,
+    private store: Store<State>,
     private ngZone: NgZone,
     private router: Router,
     private route: ActivatedRoute
@@ -31,41 +34,29 @@ export class ListVocabularyComponent implements OnInit {
 
   ngOnInit(): void {
     this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
-    //this.getLesson(this.lessonID);
-    //this.getVocabulary(this.lessonID);
-    this.lesson$ = this.lessonService.getLesson(this.lessonID);
-    this.vocabulary$ = this.vocabularyService.getLessonVocabulary(this.lessonID);
+    this.lesson$ = this.store.select(selectLessonByID(parseInt(this.lessonID, 10)));
+
+    this.vocabulary$ = this.store.select(getVocabulary);
+    this.errorMessage$ = this.store.select(getError);
+
+    this.store.dispatch(VocabularyActions.loadVocabulary( { lessonID: this.lessonID }));
   }
 
   createVocabulary(): void {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.addVocabulary}`));
   }
 
-  /* getLesson(id: string): void  {
-    this.lessonService.getLesson(id).subscribe((lesson: Lesson) => {
-      this.lesson = lesson;
-    });
-  } */
-
-  /* getVocabulary(id: string): void {
-    this.vocabularyService.getLessonVocabulary(id).subscribe((vocabulary: Vocabulary[]) => {
-      this.vocabulary = vocabulary;
-    });
-  } */
-
   updateVocabulary(id: string): void {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.editVocabulary}/${id}`));
   }
 
   deleteVocabulary(id: string): void {
-     this.vocabularyService.deleteVocabulary(id).subscribe(() => {
+     //this.vocabularyService.deleteVocabulary(id).subscribe(() => {
       //this.getVocabulary(this.lessonID);
-    });
+    //});
   }
 
   closeLesson(): void {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
   }
 }
-
-

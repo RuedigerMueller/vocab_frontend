@@ -24,6 +24,10 @@ import { SignupComponent } from './signup/signup.component';
 import { EMailValidatorDirective } from './validators/eMailValidator';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { LessonModule } from './lesson/lesson.module';
+import { VocabularyModule } from './vocabulary/vocabulary.module';
 
 @NgModule({
   declarations: [
@@ -61,7 +65,11 @@ import { environment } from '../environments/environment';
     LinkModule,
     MessageToastModule,
     TitleModule,
+    LessonModule,
+    VocabularyModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
