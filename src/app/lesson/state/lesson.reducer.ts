@@ -10,21 +10,11 @@ export interface State extends AppState.State {
 
 export interface LessonState {
     lessons: Lesson[];
-    activeLesson: Lesson;
     error: string;
 }
 
 const initialState: LessonState = {
     lessons: [],
-    activeLesson: {
-        id: -1,
-        user: '',
-        title: '',
-        language_a: '',
-        language_b: '',
-        numberVocables: 0,
-        numberDueVocables: 0,
-    },
     error: ''
 };
 
@@ -68,10 +58,48 @@ export const lessonReducer = createReducer<LessonState>(
             error: action.error
         };
     }),
-    on(LessonActions.updateActiveLesson, (state, action): LessonState => {
+    on(LessonActions.updateLesson, (state): LessonState => {
         return {
             ...state,
-            activeLesson: action.activeLesson
         };
-    })
+    }),
+    on(LessonActions.updateLessonSuccess, (state, action): LessonState => {
+        const updatedLessons = state.lessons.map(
+            lesson => action.lessonID === lesson.id ? action.lesson : lesson);
+
+        return {
+            ...state,
+            lessons: updatedLessons,
+            error: ''
+        };
+    }),
+    on(LessonActions.updateLessonFailure, (state, action): LessonState => {
+        return {
+            ...state,
+            lessons: [],
+            error: action.error
+        };
+    }),
+    on(LessonActions.deleteLesson, (state): LessonState => {
+        return {
+            ...state,
+        };
+    }),
+    on(LessonActions.deleteLessonSuccess, (state, action): LessonState => {
+        const updatedLessons = state.lessons.filter(
+            lesson => action.lessonID !== lesson.id);
+
+        return {
+            ...state,
+            lessons: updatedLessons,
+            error: ''
+        };
+    }),
+    on(LessonActions.deleteLessonFailure, (state, action): LessonState => {
+        return {
+            ...state,
+            lessons: [],
+            error: action.error
+        };
+    }),
 );

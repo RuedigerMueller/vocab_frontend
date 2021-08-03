@@ -29,7 +29,7 @@ export class AddVocabularyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const lessonID: string = this.route.snapshot.paramMap.get(`${frontend.lessonID}`);
+    const lessonID: number = parseInt(this.route.snapshot.paramMap.get(`${frontend.lessonID}`), 10);
 
     this.lessonService.getLesson(lessonID).subscribe((lesson: Lesson) => {
       this.lesson = lesson;

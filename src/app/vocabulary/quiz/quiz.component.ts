@@ -15,7 +15,7 @@ import { VocabularyService } from '../../services/vocabulary.service';
 export class QuizComponent implements OnInit {
   dueVocabulary: ReadonlyArray<Vocabulary>;
   vocabulary: Vocabulary;
-  lessonID: string;
+  lessonID: number;
   lesson: Lesson;
   questionedVocabulary: number;
   numberDueVocabularies: number;
@@ -45,7 +45,7 @@ export class QuizComponent implements OnInit {
   @ViewChild('quizLearnedLanguage') quizLearnedLanguageTextArea: FormControlComponent;
 
   ngOnInit(): void {
-    this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
+    this.lessonID = parseInt(this.route.snapshot.paramMap.get(frontend.lessonID), 10);
     this.getLesson(this.lessonID);
     this.getDueVocabulary(this.lessonID);
     this.numberKnownVocabularies = 0;
@@ -57,13 +57,13 @@ export class QuizComponent implements OnInit {
    // this.changeDetector.detectChanges();
   } */
 
-  getLesson(lessonID: string): void {
+  getLesson(lessonID: number): void {
     this.lessonService.getLesson(lessonID).subscribe((lesson: Lesson) => {
       this.lesson = lesson;
     });
   }
 
-  getDueVocabulary(lessonID: string): void {
+  getDueVocabulary(lessonID: number): void {
     this.vocabularyService.getDueLessonVocabulary(lessonID).subscribe((vocabulary: Vocabulary[]) => {
       this.dueVocabulary = this.shuffle(vocabulary);
       this.numberDueVocabularies = this.dueVocabulary.length;
@@ -154,10 +154,10 @@ export class QuizComponent implements OnInit {
     // Update backend
     if (this.entryFieldState === 'success') {
       this.numberKnownVocabularies++;
-      this.vocabularyService.vocabularyKnown(this.vocabulary.id.toString()).subscribe(() => { });
+      this.vocabularyService.vocabularyKnown(this.vocabulary.id).subscribe(() => { });
     } else {
       this.numberUnknownVocabularies++;
-      this.vocabularyService.vocabularyUnknown(this.vocabulary.id.toString()).subscribe(() => { });
+      this.vocabularyService.vocabularyUnknown(this.vocabulary.id).subscribe(() => { });
     }
 
     // Reset states and buttons for next vocabulary

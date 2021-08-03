@@ -1,6 +1,6 @@
 <!-- Form -->
 <h3>Edit Lesson</h3>
-<form *ngIf="editLessonForm" [formGroup]="editLessonForm" (ngSubmit)="submitForm()" novalidate>
+<form *ngIf="lesson$ | async as lesson" [formGroup]="editLessonForm" (ngSubmit)="submitForm(lesson)" novalidate>
     <div fd-form-item>
         <label fd-form-label for="edit-lesson-title">Title</label>
         <input fd-form-control autofocus type="text" formControlName="title" maxlength="20" value="{{ lesson.title }}" id="edit-lesson-title">

@@ -20,7 +20,7 @@ export class ListVocabularyComponent implements OnInit {
   vocabulary$: Observable<ReadonlyArray<Vocabulary>>;
   errorMessage$: Observable<string>;
 
-  lessonID: string;
+  lessonID: number;
   lesson: Lesson;
   lesson$: Observable<Lesson>;
   lessons$: Observable<ReadonlyArray<Lesson>>;
@@ -33,8 +33,8 @@ export class ListVocabularyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.lessonID = this.route.snapshot.paramMap.get(frontend.lessonID);
-    this.lesson$ = this.store.select(selectLessonByID(parseInt(this.lessonID, 10)));
+    this.lessonID = parseInt(this.route.snapshot.paramMap.get(frontend.lessonID), 10);
+    this.lesson$ = this.store.select(selectLessonByID(this.lessonID));
 
     this.vocabulary$ = this.store.select(getVocabulary);
     this.errorMessage$ = this.store.select(getError);
@@ -51,9 +51,9 @@ export class ListVocabularyComponent implements OnInit {
   }
 
   deleteVocabulary(id: string): void {
-     //this.vocabularyService.deleteVocabulary(id).subscribe(() => {
-      //this.getVocabulary(this.lessonID);
-    //});
+     // this.vocabularyService.deleteVocabulary(id).subscribe(() => {
+     // this.getVocabulary(this.lessonID);
+     // });
   }
 
   closeLesson(): void {

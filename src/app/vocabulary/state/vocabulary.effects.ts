@@ -13,7 +13,7 @@ export class VocabularyEffects {
         return this.actions$
             .pipe(
                 ofType(VocabularyActions.loadVocabulary),
-                mergeMap(action => this.vocabularyService.getLessonVocabulary(action.lessonID.toString())
+                mergeMap(action => this.vocabularyService.getLessonVocabulary(action.lessonID)
                     .pipe(
                         map(vocabulary => VocabularyActions.loadVocabularySuccess({ vocabulary })),
                         catchError(error => of(VocabularyActions.loadVocabularyFailure({ error })))

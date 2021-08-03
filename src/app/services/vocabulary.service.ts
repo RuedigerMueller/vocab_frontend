@@ -25,7 +25,7 @@ export class VocabularyService {
         catchError(this.errorHandler)
       );
   }
-  getLessonVocabulary(lessonID: string): Observable<Vocabulary[]>{
+  getLessonVocabulary(lessonID: number): Observable<Vocabulary[]>{
     return this.http.get<Vocabulary[]>(`${baseURL}/${backend.lessons}/${lessonID}/${backend.vocabulary}`)
       .pipe(
         retry(1),
@@ -33,7 +33,7 @@ export class VocabularyService {
       );
   }
 
-  getVocabulary(vocabularyID: string): Observable<Vocabulary>{
+  getVocabulary(vocabularyID: number): Observable<Vocabulary>{
     return this.http.get<Vocabulary>(`${baseURL}/${backend.vocabulary}/${vocabularyID}`)
       .pipe(
         retry(1),
@@ -41,7 +41,7 @@ export class VocabularyService {
       );
   }
 
-  getDueLessonVocabulary(lessonID: string): Observable<Vocabulary[]> {
+  getDueLessonVocabulary(lessonID: number): Observable<Vocabulary[]> {
     return this.http.get<Vocabulary[]>(`${baseURL}/${backend.lessons}/${lessonID}/${backend.dueLessonVocabulary}`)
       .pipe(
         retry(1),
@@ -49,7 +49,7 @@ export class VocabularyService {
       );
   }
 
-  updateVocabulary(id: string, vocabulary: Vocabulary): Observable<Vocabulary> {
+  updateVocabulary(id: number, vocabulary: Vocabulary): Observable<Vocabulary> {
     return this.http.patch<Vocabulary>(`${baseURL}/${backend.vocabulary}/${id}`, JSON.stringify(vocabulary), this.httpOptions)
       .pipe(
         retry(1),
@@ -57,7 +57,7 @@ export class VocabularyService {
       );
   }
 
-  deleteVocabulary(id: string): Observable<void> {
+  deleteVocabulary(id: number): Observable<void> {
     return this.http.delete<void>(`${baseURL}/${backend.vocabulary}/${id}`)
       .pipe(
         retry(1),
@@ -65,7 +65,7 @@ export class VocabularyService {
       );
   }
 
-  vocabularyKnown(id: string): Observable<void> {
+  vocabularyKnown(id: number): Observable<void> {
     return this.http.put<void>(`${baseURL}/${backend.vocabulary}/${backend.vocabularyKnown}/${id}`, '')
     .pipe(
       retry(1),
@@ -73,7 +73,7 @@ export class VocabularyService {
     );
   }
 
-  vocabularyUnknown(id: string): Observable<void> {
+  vocabularyUnknown(id: number): Observable<void> {
     return this.http.put<void>(`${baseURL}/${backend.vocabulary}/${backend.vocabularyUnknown}/${id}`, '')
     .pipe(
       retry(1),

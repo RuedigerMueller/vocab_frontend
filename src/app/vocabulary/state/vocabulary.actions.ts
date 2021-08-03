@@ -3,7 +3,7 @@ import { Vocabulary } from 'src/app/models/vocabulary.model';
 
 export const loadVocabulary = createAction(
     '[Vocabulary] Load vocabulary',
-    props<{ lessonID: string }>()
+    props<{ lessonID: number }>()
 );
 
 export const loadVocabularySuccess = createAction(

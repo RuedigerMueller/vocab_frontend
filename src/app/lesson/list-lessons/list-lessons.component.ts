@@ -13,7 +13,6 @@ import * as LessonActions from '../state/lesson.actions';
   styleUrls: ['./list-lessons.component.scss']
 })
 export class ListLessonsComponent implements OnInit {
-  lessons: ReadonlyArray<Lesson>;
   lessons$: Observable<ReadonlyArray<Lesson>>;
   errorMessage$: Observable<string>;
 
@@ -30,14 +29,12 @@ export class ListLessonsComponent implements OnInit {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${frontend.createLesson}`));
   }
 
-  updateLesson(id: string): void {
+  updateLesson(id: number): void {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${id}/${frontend.editLesson}`));
   }
 
-  deleteLesson(id: string): void {
-    /* this.lessonService.deleteLesson(id).subscribe(() => {
-      this.getLessons();
-    }); */
+  deleteLesson(id: number): void {
+    this.store.dispatch(LessonActions.deleteLesson({ lessonID : id }));
   }
 
   lessonVocabulary(id: string): void {

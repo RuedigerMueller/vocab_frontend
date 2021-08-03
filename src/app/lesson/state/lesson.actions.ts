@@ -15,7 +15,32 @@ export const loadLessonFailure = createAction(
     props<{ error: string }>()
 );
 
-export const updateActiveLesson = createAction(
-    '[Lesson] Update active less',
-    props<{ activeLesson: Lesson }>()
+export const updateLesson = createAction(
+    '[Lesson] Update lesson',
+    props<{ lessonID: number, lesson: Lesson }>()
+);
+
+export const updateLessonSuccess = createAction(
+    '[Lesson] Update lessons success',
+    props<{ lessonID: number, lesson: Lesson }>()
+);
+
+export const updateLessonFailure = createAction(
+    '[Lesson] Update lesson failure',
+    props<{ error: string }>()
+);
+
+export const deleteLesson = createAction(
+    '[Lesson] Detete lesson',
+    props<{ lessonID: number }>()
+);
+
+export const deleteLessonSuccess = createAction(
+    '[Lesson] Detete lessons success',
+    props<{ lessonID: number }>()
+);
+
+export const deleteLessonFailure = createAction(
+    '[Lesson] Detete lesson failure',
+    props<{ error: string }>()
 );

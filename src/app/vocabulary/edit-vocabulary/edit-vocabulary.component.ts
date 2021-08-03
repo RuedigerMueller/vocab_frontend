@@ -27,8 +27,8 @@ export class EditVocabularyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const vocabularyID: string = this.route.snapshot.paramMap.get('vocabularyID');
-    const lessonID: string = this.route.snapshot.paramMap.get('lessonID');
+    const vocabularyID: number = parseInt(this.route.snapshot.paramMap.get('vocabularyID'), 10);
+    const lessonID: number = parseInt(this.route.snapshot.paramMap.get('lessonID'), 10);
 
     this.lessonService.getLesson(lessonID).subscribe((lesson: Lesson) => {
       this.lesson = lesson;
@@ -47,7 +47,7 @@ export class EditVocabularyComponent implements OnInit {
   submitForm(): void {
     const updatedVocabulary: Vocabulary = this.editVocabularyForm.value;
     updatedVocabulary.level = this.vocabulary.level;
-    this.vocabularyService.updateVocabulary(this.vocabulary.id.toString(), this.editVocabularyForm.value).subscribe(res => {
+    this.vocabularyService.updateVocabulary(this.vocabulary.id, this.editVocabularyForm.value).subscribe(res => {
       this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lesson.id}/${frontend.vocabulary}`));
     });
   }

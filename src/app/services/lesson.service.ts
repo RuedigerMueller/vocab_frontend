@@ -35,7 +35,7 @@ export class LessonService {
       );
   }
 
-  getLesson(id: string): Observable<Lesson> {
+  getLesson(id: number): Observable<Lesson> {
     return this.http.get<Lesson>(`${baseURL}/${backend.lessons}/${id}`, this.httpOptions)
       .pipe(
         retry(1),
@@ -43,7 +43,7 @@ export class LessonService {
       );
   }
 
-  updateLesson(id: string, lesson: Lesson): Observable<Lesson> {
+  updateLesson(id: number, lesson: Lesson): Observable<Lesson> {
     return this.http.patch<Lesson>(`${baseURL}/${backend.lessons}/${id}`, JSON.stringify(lesson), this.httpOptions)
       .pipe(
         retry(1),
@@ -51,7 +51,7 @@ export class LessonService {
       );
   }
 
-  deleteLesson(id: string): Observable<void> {
+  deleteLesson(id: number): Observable<void> {
     return this.http.delete<void>(`${baseURL}/${backend.lessons}/${id}`, this.httpOptions)
       .pipe(
         retry(1),
