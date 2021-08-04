@@ -58,6 +58,24 @@ export const lessonReducer = createReducer<LessonState>(
             error: action.error
         };
     }),
+    on(LessonActions.createLesson, (state): LessonState => {
+        return {
+            ...state,
+        };
+    }),
+    on(LessonActions.createLessonSuccess, (state, action): LessonState => {
+        return {
+            ...state,
+            lessons: [... state.lessons, action.lesson],
+            error: ''
+        };
+    }),
+    on(LessonActions.createLessonFailure, (state, action): LessonState => {
+        return {
+            ...state,
+            error: action.error
+        };
+    }),
     on(LessonActions.updateLesson, (state): LessonState => {
         return {
             ...state,
@@ -76,7 +94,6 @@ export const lessonReducer = createReducer<LessonState>(
     on(LessonActions.updateLessonFailure, (state, action): LessonState => {
         return {
             ...state,
-            lessons: [],
             error: action.error
         };
     }),
@@ -98,7 +115,6 @@ export const lessonReducer = createReducer<LessonState>(
     on(LessonActions.deleteLessonFailure, (state, action): LessonState => {
         return {
             ...state,
-            lessons: [],
             error: action.error
         };
     }),

@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component,  NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ButtonComponent, DialogService, FormControlComponent, InputGroupTextareaDirective } from '@fundamental-ngx/core';
+import { ButtonComponent, DialogService, FormControlComponent } from '@fundamental-ngx/core';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { LessonService } from 'src/app/services/lesson.service';

@@ -1,11 +1,15 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Lesson } from 'src/app/models/lesson.model.';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { frontend } from 'src/app/resource.identifiers';
-import { LessonService } from 'src/app/services/lesson.service';
 import { Vocabulary } from '../../models/vocabulary.model';
-import { VocabularyService } from '../../services/vocabulary.service';
+import { selectVocabularyByID, State } from '../state/vocabulary.reducer';
+import * as VocabularyActions from '../state/vocabulary.actions';
+import { Lesson } from 'src/app/models/lesson.model.';
+import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
 
 @Component({
   selector: 'app-edit-vocabulary',
@@ -13,13 +17,13 @@ import { VocabularyService } from '../../services/vocabulary.service';
   styleUrls: ['./edit-vocabulary.component.scss']
 })
 export class EditVocabularyComponent implements OnInit {
-  vocabulary: Vocabulary;
-  lesson: Lesson;
+  vocabulary$: Observable<Vocabulary>;
+  lesson$: Observable<Lesson>;
+  lessonID: number;
   editVocabularyForm: FormGroup;
 
   constructor(
-    private vocabularyService: VocabularyService,
-    private lessonService: LessonService,
+    private store: Store<State>,
     public fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router,
@@ -28,31 +32,56 @@ export class EditVocabularyComponent implements OnInit {
 
   ngOnInit(): void {
     const vocabularyID: number = parseInt(this.route.snapshot.paramMap.get('vocabularyID'), 10);
-    const lessonID: number = parseInt(this.route.snapshot.paramMap.get('lessonID'), 10);
+    this.lessonID = parseInt(this.route.snapshot.paramMap.get('lessonID'), 10);
 
-    this.lessonService.getLesson(lessonID).subscribe((lesson: Lesson) => {
-      this.lesson = lesson;
-    });
+    this.vocabulary$ = this.store.select(selectVocabularyByID(vocabularyID))
+      .pipe(
+        tap(currentVocabulary => this.displayVocabulary(currentVocabulary))
+      );
 
-    this.vocabularyService.getVocabulary(vocabularyID).subscribe((vocabulary: Vocabulary) => {
-      this.vocabulary = vocabulary;
+    this.lesson$ = this.store.select(selectLessonByID(this.lessonID));
 
-      this.editVocabularyForm = this.fb.group({
-        language_a: this.vocabulary.language_a,
-        language_b: this.vocabulary.language_b,
-      });
+    this.editVocabularyForm = this.fb.group({
+      language_a: [''],
+      language_b: [''],
     });
   }
 
-  submitForm(): void {
-    const updatedVocabulary: Vocabulary = this.editVocabularyForm.value;
-    updatedVocabulary.level = this.vocabulary.level;
-    this.vocabularyService.updateVocabulary(this.vocabulary.id, this.editVocabularyForm.value).subscribe(res => {
-      this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lesson.id}/${frontend.vocabulary}`));
-    });
+  submitForm(originalVocabulary: Vocabulary): void {
+    if (this.editVocabularyForm.valid) {
+      if (this.editVocabularyForm.dirty) {
+        const vocabulary = { ...originalVocabulary, ...this.editVocabularyForm.value };
+        this.store.dispatch(VocabularyActions.updateVocabulary({
+          vocabularyID: vocabulary.id,
+          vocabulary
+        }));
+        this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
+      }
+    }
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.vocabulary}`));
   }
 
   cancel(): void {
-    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lesson.id}/${frontend.vocabulary}`));
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${this.lessonID}/${frontend.vocabulary}`));
+  }
+
+  displayVocabulary(vocabulary: Vocabulary | null): void {
+    if (vocabulary) {
+      // Reset the form back to pristine
+      this.editVocabularyForm.reset();
+
+      /* // Display the appropriate page title
+      if (lesson.id === -1) {
+        this.pageTitle = 'Add Product';
+      } else {
+        this.pageTitle = `Edit Product: ${product.productName}`;
+      } */
+
+      // Update the data on the form
+      this.editVocabularyForm.patchValue({
+        language_a: vocabulary.language_a,
+        language_b: vocabulary.language_b
+      });
+    }
   }
 }

@@ -1,6 +1,6 @@
 <!-- Form -->
 <h3>Add Vocabulary</h3>
-<form *ngIf="addVocabularyForm && lesson" [formGroup]="addVocabularyForm" (ngSubmit)="submitForm()" novalidate>
+<form *ngIf="lesson$ | async as lesson" [formGroup]="addVocabularyForm" (ngSubmit)="submitForm()" novalidate>
     <div fd-form-item>
         <label fd-form-label for="add-vocabulary-language_a">{{lesson.language_a}}</label>
         <input fd-form-control autofocus #addVocabularyLanguageA type="text" formControlName="language_a" maxlength="20" id="add-vocabulary-language_a">

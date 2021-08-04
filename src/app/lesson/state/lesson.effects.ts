@@ -15,9 +15,23 @@ export class LessonEffects {
                 ofType(LessonActions.loadLessons),
                 mergeMap(() => this.lessonService.getLessons()
                     .pipe(
-                        map(lessons => LessonActions.loadLessonSuccess( { lessons })),
+                        map(lessons => LessonActions.loadLessonSuccess({ lessons })),
                         catchError(error => of(LessonActions.loadLessonFailure({ error })))
                     ))
+            );
+    });
+
+    createLesson$ = createEffect(() => {
+        return this.actions$
+            .pipe(
+                ofType(LessonActions.createLesson),
+                concatMap(action =>
+                    this.lessonService.createLesson(action.lesson)
+                        .pipe(
+                            map(() => LessonActions.createLessonSuccess({ lesson: action.lesson })),
+                            catchError(error => of(LessonActions.createLessonFailure({ error })))
+                        )
+                )
             );
     });
 
@@ -27,11 +41,14 @@ export class LessonEffects {
                 ofType(LessonActions.updateLesson),
                 concatMap(action =>
                     this.lessonService.updateLesson(action.lessonID, action.lesson)
-                      .pipe(
-                        map(lesson => LessonActions.updateLessonSuccess({ lessonID: action.lessonID, lesson })),
-                        catchError(error => of(LessonActions.updateLessonFailure({ error })))
-                      )
-                  )
+                        .pipe(
+                            map(() => LessonActions.updateLessonSuccess({
+                                lessonID: action.lessonID,
+                                lesson: action.lesson
+                            })),
+                            catchError(error => of(LessonActions.updateLessonFailure({ error })))
+                        )
+                )
             );
     });
 
@@ -41,11 +58,11 @@ export class LessonEffects {
                 ofType(LessonActions.deleteLesson),
                 mergeMap(action =>
                     this.lessonService.deleteLesson(action.lessonID)
-                      .pipe(
-                        map(() => LessonActions.deleteLessonSuccess({ lessonID: action.lessonID })),
-                        catchError(error => of(LessonActions.deleteLessonFailure({ error })))
-                      )
-                  )
+                        .pipe(
+                            map(() => LessonActions.deleteLessonSuccess({ lessonID: action.lessonID })),
+                            catchError(error => of(LessonActions.deleteLessonFailure({ error })))
+                        )
+                )
             );
     });
 }

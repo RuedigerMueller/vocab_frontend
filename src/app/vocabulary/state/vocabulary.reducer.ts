@@ -25,6 +25,13 @@ export const getVocabulary = createSelector(
     state => state.vocabulary
 );
 
+export const selectVocabularyByID = (id: number) =>
+    createSelector(
+        getVocabulary,
+        (lessonVocabulary: Vocabulary[]) =>
+            lessonVocabulary.find(vocabulary => vocabulary.id === id)
+    );
+
 export const getError = createSelector(
     getVocabularyFeatureState,
     state => state.error
@@ -51,6 +58,24 @@ export const vocabularyReducer = createReducer<VocabularyState>(
             error: action.error
         };
     }),
+    on(VocabularyActions.createVocabulary, (state): VocabularyState => {
+        return {
+            ...state,
+        };
+    }),
+    on(VocabularyActions.createVocabularySuccess, (state, action): VocabularyState => {
+        return {
+            ...state,
+            vocabulary: [... state.vocabulary, action.vocabulary],
+            error: ''
+        };
+    }),
+    on(VocabularyActions.createVocabularyFailure, (state, action): VocabularyState => {
+        return {
+            ...state,
+            error: action.error
+        };
+    }),
     on(VocabularyActions.updateVocabulary, (state): VocabularyState => {
         return {
             ...state,
@@ -58,7 +83,7 @@ export const vocabularyReducer = createReducer<VocabularyState>(
     }),
     on(VocabularyActions.updateVocabularySuccess, (state, action): VocabularyState => {
         const updatedVocabulary = state.vocabulary.map(
-            vocabulary => action.vocabulary.id === vocabulary.id ? action.vocabulary : vocabulary);
+            vocabulary => action.vocabularyID === vocabulary.id ? action.vocabulary : vocabulary);
 
         return {
             ...state,

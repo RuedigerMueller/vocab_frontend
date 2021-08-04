@@ -21,6 +21,20 @@ export class VocabularyEffects {
             );
     });
 
+    createVocabulary$ = createEffect(() => {
+        return this.actions$
+            .pipe(
+                ofType(VocabularyActions.createVocabulary),
+                concatMap(action =>
+                    this.vocabularyService.createVocabulary(action.vocabulary)
+                        .pipe(
+                            map(() => VocabularyActions.createVocabularySuccess({ vocabulary: action.vocabulary })),
+                            catchError(error => of(VocabularyActions.createVocabularyFailure({ error })))
+                        )
+                )
+            );
+    });
+
     updateVocabulary$ = createEffect(() => {
         return this.actions$
             .pipe(
@@ -28,7 +42,10 @@ export class VocabularyEffects {
                 concatMap(action =>
                     this.vocabularyService.updateVocabulary(action.vocabularyID, action.vocabulary)
                       .pipe(
-                        map(vocabulary => VocabularyActions.updateVocabularySuccess({ vocabulary })),
+                        map(() => VocabularyActions.updateVocabularySuccess({
+                            vocabularyID: action.vocabularyID,
+                            vocabulary: action.vocabulary
+                        })),
                         catchError(error => of(VocabularyActions.updateVocabularyFailure({ error })))
                       )
                   )

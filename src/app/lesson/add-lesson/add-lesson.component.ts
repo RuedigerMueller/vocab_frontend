@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { frontend } from 'src/app/resource.identifiers';
 import { Store } from '@ngrx/store';
 import { State } from '../state/lesson.reducer';
+import { createLesson } from '../state/lesson.actions';
 
 @Component({
   selector: 'app-add-lesson',
@@ -19,7 +20,6 @@ export class AddLessonComponent implements OnInit {
     public fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router,
-    // private lessonService: LessonService
   ) { }
 
   ngOnInit(): void {
@@ -31,9 +31,8 @@ export class AddLessonComponent implements OnInit {
   }
 
   submitForm() {
-    /* this.lessonService.createLesson(this.lessonForm.value).subscribe(res => {
-      this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
-    }); */
+    this.store.dispatch(createLesson({lesson: this.lessonForm.value}))
+    this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
   }
 
   cancel(): void {
