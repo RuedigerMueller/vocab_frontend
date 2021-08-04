@@ -4,12 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
+import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { Vocabulary } from '../../models/vocabulary.model';
-import { selectVocabularyByID, State } from '../state/vocabulary.reducer';
 import * as VocabularyActions from '../state/vocabulary.actions';
-import { Lesson } from 'src/app/models/lesson.model.';
-import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
+import { selectVocabularyByID, State } from '../state/vocabulary.reducer';
 
 @Component({
   selector: 'app-edit-vocabulary',

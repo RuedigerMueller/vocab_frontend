@@ -148,7 +148,7 @@ describe('AddLessonComponent', () => {
     it('lesson title should have autofocus', () => {
       const inputDE: DebugElement = fixture.debugElement.query(By.css('#add-lesson-title'));
       const inputElement: HTMLInputElement = inputDE.nativeElement;
-      expect (inputElement.autofocus).toBeTrue();
+      expect(inputElement.autofocus).toBeTrue();
     });
 
     it('should only have one autofocus element', () => {

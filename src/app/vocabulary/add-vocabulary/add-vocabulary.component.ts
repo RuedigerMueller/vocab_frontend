@@ -1,17 +1,15 @@
-import { Component, OnInit, NgZone, ViewChild, Input, ElementRef } from '@angular/core';
-import { VocabularyService } from '../../services/vocabulary.service';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Vocabulary } from '../../models/vocabulary.model';
-import { Lesson } from 'src/app/models/lesson.model.';
-import { LessonService } from 'src/app/services/lesson.service';
-import { frontend } from 'src/app/resource.identifiers';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControlComponent } from '@fundamental-ngx/core';
 import { Store } from '@ngrx/store';
-import { State } from '../state/vocabulary.reducer';
 import { Observable } from 'rxjs';
 import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
+import { Lesson } from 'src/app/models/lesson.model.';
+import { frontend } from 'src/app/resource.identifiers';
+import { Vocabulary } from '../../models/vocabulary.model';
 import { createVocabulary } from '../state/vocabulary.actions';
+import { State } from '../state/vocabulary.reducer';
 
 @Component({
   selector: 'app-add-vocabulary',

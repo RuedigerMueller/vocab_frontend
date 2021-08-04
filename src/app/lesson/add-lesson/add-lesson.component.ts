@@ -1,7 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-// import { LessonService } from '../../services/lesson.service';
 import { frontend } from 'src/app/resource.identifiers';
 import { Store } from '@ngrx/store';
 import { State } from '../state/lesson.reducer';
@@ -31,7 +30,7 @@ export class AddLessonComponent implements OnInit {
   }
 
   submitForm() {
-    this.store.dispatch(createLesson({lesson: this.lessonForm.value}))
+    this.store.dispatch(createLesson({lesson: this.lessonForm.value}));
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
   }
 

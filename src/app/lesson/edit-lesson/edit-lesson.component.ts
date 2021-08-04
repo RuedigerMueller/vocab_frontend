@@ -1,13 +1,13 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Lesson } from '../../models/lesson.model.';
-import { frontend } from 'src/app/resource.identifiers';
-import { Observable } from 'rxjs';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectLessonByID, State } from '../state/lesson.reducer';
+import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { frontend } from 'src/app/resource.identifiers';
+import { Lesson } from '../../models/lesson.model.';
 import * as LessonActions from '../state/lesson.actions';
+import { selectLessonByID, State } from '../state/lesson.reducer';
 
 @Component({
   selector: 'app-edit-lesson',
