@@ -70,7 +70,7 @@ describe('AddLessonComponent', () => {
     });
   });
 
-  describe('should render UI elements', () => {
+  xdescribe('should render UI elements', () => {
     it('should have the required labels', () => {
       let success = true;
 
@@ -114,7 +114,7 @@ describe('AddLessonComponent', () => {
     });
   });
 
-  describe('should have required actions', () => {
+  xdescribe('should have required actions', () => {
     it('should have button "Create"', () => {
       const button: HTMLButtonElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
       expect(button.textContent).toContain('Create');
@@ -126,7 +126,7 @@ describe('AddLessonComponent', () => {
     });
   });
 
-  describe('should route correctly on actions', () => {
+  xdescribe('should route correctly on actions', () => {
     it('should navigate to list-lessons component when clicking "Create"', fakeAsync(() => {
       const createButton: HTMLButtonElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
       createButton.click();
@@ -144,7 +144,7 @@ describe('AddLessonComponent', () => {
     }));
   });
 
-  describe('should support keyboard navigation', () => {
+  xdescribe('should support keyboard navigation', () => {
     it('lesson title should have autofocus', () => {
       const inputDE: DebugElement = fixture.debugElement.query(By.css('#add-lesson-title'));
       const inputElement: HTMLInputElement = inputDE.nativeElement;
