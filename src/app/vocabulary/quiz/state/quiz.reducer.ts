@@ -23,6 +23,7 @@ export interface QuizState {
     numberKnownVocabularies: number;
     numberUnknownVocabularies: number;
     currentVocabulary: Vocabulary;
+    continueQuiz: boolean;
     UIElementState: QuizUIElementState;
     error: string;
 }
@@ -43,6 +44,7 @@ const initialState: QuizState = {
     numberKnownVocabularies: 0,
     numberUnknownVocabularies: 0,
     currentVocabulary: {} as Vocabulary,
+    continueQuiz: true,
     UIElementState: initialUIElementState,
     error: ''
 };
@@ -89,13 +91,9 @@ export const getNumberDueVocabularies = createSelector(
     state => Object.keys(state.vocabulary).length
 );
 
-export const quizComplete = createSelector(
+export const continueQuiz = createSelector(
     getQuizFeatureState,
-    (state) => {
-        console.log(state.questionedVocabulary);
-        console.log(Object.keys(state.vocabulary).length);
-        return state.questionedVocabulary >= Object.keys(state.vocabulary).length;
-    }
+    state => state.continueQuiz
 );
 
 export const quizReducer = createReducer<QuizState>(
@@ -156,6 +154,7 @@ export const quizReducer = createReducer<QuizState>(
                 state.questionedVocabulary <= Object.keys(state.vocabulary).length  ?
                     state.questionedVocabulary + 1 :
                     state.questionedVocabulary,
+            continueQuiz: state.questionedVocabulary < Object.keys(state.vocabulary).length,
             UIElementState: initialUIElementState
         };
     }),
@@ -166,6 +165,8 @@ export const quizReducer = createReducer<QuizState>(
         };
     })
 );
+
+
 
 function shuffle(vocabulary: Vocabulary[]): Vocabulary[] {
     const shuffledVocabulary: Vocabulary[] = {...vocabulary};

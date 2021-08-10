@@ -2,6 +2,7 @@
     <div *ngIf="questionedVocabulary$ | async as questionedVocabulary">
         <div *ngIf="UIElementState$ | async as UIELementState">
             <div *ngIf="currentVocabulary$ | async as currentVocabulary">
+                <div *ngIf="continueQuiz$ | async as continueQuiz">
                 <fd-layout-grid>
                     <div fdLayoutGridCol="4"></div>
                     <div fdLayoutGridCol="4">
@@ -42,8 +43,8 @@
                             <button *ngIf="UIELementState.displayInvalidateResponseButton" fd-button
                                 id="quiz-invalidResponse" (click)=invalidResponse()>Invalid
                                 response</button>
-                            <button *ngIf="UIELementState.displayNextButton" fd-button
-                                [fdType]="UIELementState.nextButtonType" #nextButton id="quiz-next"
+                            <button #nextButton *ngIf="UIELementState.displayNextButton" fd-button
+                                [fdType]="UIELementState.nextButtonType"  id="quiz-next"
                                 (click)=next()>Next</button>
                         </div>
                     </div>
@@ -92,6 +93,7 @@
                         </fd-dialog-footer>
                     </fd-dialog>
                 </ng-template>
+            </div>  
             </div>
         </div>
     </div>

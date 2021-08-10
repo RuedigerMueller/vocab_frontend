@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent, DialogService, FormControlComponent } from '@fundamental-ngx/core';
 import { Store } from '@ngrx/store';
@@ -14,8 +14,7 @@ import {
   getError, getNumberDueVocabularies, getNumberKnownVocabularies,
   getNumberQuestionedVocabularies, getNumberUnknownVocabularies,
   getUIElementState,
-  getVocabulary,
-  quizComplete, QuizUIElementState, State
+  continueQuiz, QuizUIElementState, State
 } from './state/quiz.reducer';
 
 @Component({
@@ -33,10 +32,10 @@ export class QuizComponent implements OnInit {
   currentVocabulary$: Observable<Vocabulary>;
   UIElementState$: Observable<QuizUIElementState>;
   errorMessage$: Observable<string>;
-  quizComplete$: Observable<boolean>;
+  continueQuiz$: Observable<boolean>;
   enteredResponse: string;
   currentVocabulary: Vocabulary;
-  responseSate: string;
+  responseState: string;
 
   constructor(
     private store: Store<State>,
@@ -44,7 +43,6 @@ export class QuizComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: DialogService,
-    // private changeDetector: ChangeDetectorRef,
   ) { }
 
 
@@ -65,63 +63,48 @@ export class QuizComponent implements OnInit {
      );
     this.UIElementState$ = this.store.select(getUIElementState)
       .pipe(
-        tap(UiElementState => this.responseSate = UiElementState.entryFieldState)
+        tap(UiElementState => this.responseState = UiElementState.entryFieldState),
+        /* tap(UiElementState => {
+          if (UiElementState.entryFieldState) {
+            this.nextButton.nativeElement.focus();
+          }
+        }),
+        tap(UiElementState => {
+          if (UiElementState.entryFieldState) {
+            this.quizLearnedLanguageTextArea.nativeElement.focus();
+          }
+        }) */
       );
 
-    this.quizComplete$ = this.store.select(quizComplete);
+    this.continueQuiz$ = this.store.select(continueQuiz)
+      .pipe(
+        tap(() => {
+          if (!continueQuiz) {
+            this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
+          }
+        })
+      );
 
     this.errorMessage$ = this.store.select(getError);
 
     this.store.dispatch(QuizActions.loadQuiz({ lessonID: this.lessonID }));
   }
 
-  /* ngAfterViewChecked(): void {
-   // this.setKeyboardFocus();
-   // this.changeDetector.detectChanges();
-  } */
-
-  setKeyboardFocus() {
-    /* if (this.displayNextButton) {
-      if (this.nextButton.elementRef) { this.nextButton.elementRef().nativeElement.focus(); }
-    }
-    if (this.displayCheckResponseButton) {
-      if (this.quizLearnedLanguageTextArea) { this.quizLearnedLanguageTextArea.elementRef().nativeElement.focus(); }
-    } */
-  }
-
   checkResponse(): void {
     this.store.dispatch(QuizActions.checkResponse({ response: this.enteredResponse }));
-
-    // this.changeDetector.detectChanges();
-    // this.setKeyboardFocus();
-  }
+}
 
   validResponse(): void {
     this.store.dispatch(QuizActions.validResponse());
-
-    // this.changeDetector.detectChanges();
-    // this.setKeyboardFocus();
   }
 
   invalidResponse(): void {
     this.store.dispatch(QuizActions.invalidResponse());
-
-    // this.changeDetector.detectChanges();
-    // this.setKeyboardFocus();
   }
 
   next(): void {
-    this.store.dispatch(QuizActions.next({vocabularyID: this.currentVocabulary.id, responseState: this.responseSate }));
+    this.store.dispatch(QuizActions.next({vocabularyID: this.currentVocabulary.id, responseState: this.responseState }));
     this.enteredResponse = '';
-
-    // this.changeDetector.detectChanges();
-    // this.setKeyboardFocus();
-
-    /* // In case we are not yet at the end of th quiz: move to next vocabulary; otherwise return to lesson list
-    if (this.questionedVocabulary >= this.numberDueVocabularies) {
-      // ToDo: Add quiz summary: known/unknown/total/percentage
-      this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
-    } */
   }
 
   cancel(dialog: TemplateRef<any>): void {
