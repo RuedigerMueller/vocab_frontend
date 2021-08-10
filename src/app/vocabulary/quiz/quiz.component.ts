@@ -1,11 +1,22 @@
-import { ChangeDetectorRef, Component,  NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent, DialogService, FormControlComponent } from '@fundamental-ngx/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
-import { LessonService } from 'src/app/services/lesson.service';
 import { Vocabulary } from '../../models/vocabulary.model';
-import { VocabularyService } from '../../services/vocabulary.service';
+import * as QuizActions from './state/quiz.actions';
+import {
+  getCurrentVocabulary,
+  getError, getNumberDueVocabularies, getNumberKnownVocabularies,
+  getNumberQuestionedVocabularies, getNumberUnknownVocabularies,
+  getUIElementState,
+  getVocabulary,
+  quizComplete, QuizUIElementState, State
+} from './state/quiz.reducer';
 
 @Component({
   selector: 'app-quiz',
@@ -13,31 +24,27 @@ import { VocabularyService } from '../../services/vocabulary.service';
   styleUrls: ['./quiz.component.scss']
 })
 export class QuizComponent implements OnInit {
-  dueVocabulary: ReadonlyArray<Vocabulary>;
-  vocabulary: Vocabulary;
   lessonID: number;
-  lesson: Lesson;
-  questionedVocabulary: number;
-  numberDueVocabularies: number;
-  numberKnownVocabularies: number;
-  numberUnknownVocabularies: number;
-  entryFieldState = '';
-  displayCheckResponseButton = true;
-  displayValidateResponseButton = false;
-  displayInvalidateResponseButton = false;
-  displayNextButton = false;
-  nextButtonType = '';
-  enteredResponse = '';
-  correctResponse = '';
+  lesson$: Observable<Lesson>;
+  numberDueVocabularies$: Observable<number>;
+  questionedVocabulary$: Observable<number>;
+  numberKnownVocabularies$: Observable<number>;
+  numberUnknownVocabularies$: Observable<number>;
+  currentVocabulary$: Observable<Vocabulary>;
+  UIElementState$: Observable<QuizUIElementState>;
+  errorMessage$: Observable<string>;
+  quizComplete$: Observable<boolean>;
+  enteredResponse: string;
+  currentVocabulary: Vocabulary;
+  responseSate: string;
 
   constructor(
-    private vocabularyService: VocabularyService,
-    private lessonService: LessonService,
+    private store: Store<State>,
     private ngZone: NgZone,
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: DialogService,
-    private changeDetector: ChangeDetectorRef,
+    // private changeDetector: ChangeDetectorRef,
   ) { }
 
 
@@ -46,10 +53,26 @@ export class QuizComponent implements OnInit {
 
   ngOnInit(): void {
     this.lessonID = parseInt(this.route.snapshot.paramMap.get(frontend.lessonID), 10);
-    this.getLesson(this.lessonID);
-    this.getDueVocabulary(this.lessonID);
-    this.numberKnownVocabularies = 0;
-    this.numberUnknownVocabularies = 0;
+
+    this.lesson$ = this.store.select(selectLessonByID(this.lessonID));
+    this.numberDueVocabularies$ = this.store.select(getNumberDueVocabularies);
+    this.questionedVocabulary$ = this.store.select(getNumberQuestionedVocabularies);
+    this.numberKnownVocabularies$ = this.store.select(getNumberKnownVocabularies);
+    this.numberUnknownVocabularies$ = this.store.select(getNumberUnknownVocabularies);
+    this.currentVocabulary$ = this.store.select(getCurrentVocabulary)
+      .pipe(
+        tap(currentVocabulary => this.currentVocabulary = currentVocabulary)
+     );
+    this.UIElementState$ = this.store.select(getUIElementState)
+      .pipe(
+        tap(UiElementState => this.responseSate = UiElementState.entryFieldState)
+      );
+
+    this.quizComplete$ = this.store.select(quizComplete);
+
+    this.errorMessage$ = this.store.select(getError);
+
+    this.store.dispatch(QuizActions.loadQuiz({ lessonID: this.lessonID }));
   }
 
   /* ngAfterViewChecked(): void {
@@ -57,130 +80,48 @@ export class QuizComponent implements OnInit {
    // this.changeDetector.detectChanges();
   } */
 
-  getLesson(lessonID: number): void {
-    this.lessonService.getLesson(lessonID).subscribe((lesson: Lesson) => {
-      this.lesson = lesson;
-    });
-  }
-
-  getDueVocabulary(lessonID: number): void {
-    this.vocabularyService.getDueLessonVocabulary(lessonID).subscribe((vocabulary: Vocabulary[]) => {
-      this.dueVocabulary = this.shuffle(vocabulary);
-      this.numberDueVocabularies = this.dueVocabulary.length;
-      this.questionedVocabulary = (this.numberDueVocabularies > 0) ? 1 : 0;
-      if (this.dueVocabulary[0]) {
-        this.vocabulary = this.dueVocabulary[0];
-      }
-    });
-  }
-
-  shuffle(vocabulary: Vocabulary[]): Vocabulary[] {
-    let currentIndex: number = vocabulary.length;
-    let temporaryValue: Vocabulary;
-    let randomIndex: number;
-
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-
-      // And swap it with the current element.
-      temporaryValue = vocabulary[currentIndex];
-      vocabulary[currentIndex] = vocabulary[randomIndex];
-      vocabulary[randomIndex] = temporaryValue;
-    }
-
-    return vocabulary;
-  }
-
   setKeyboardFocus() {
-    if (this.displayNextButton) {
+    /* if (this.displayNextButton) {
       if (this.nextButton.elementRef) { this.nextButton.elementRef().nativeElement.focus(); }
     }
     if (this.displayCheckResponseButton) {
       if (this.quizLearnedLanguageTextArea) { this.quizLearnedLanguageTextArea.elementRef().nativeElement.focus(); }
-    }
+    } */
   }
 
   checkResponse(): void {
-    this.correctResponse = this.vocabulary.language_b;
+    this.store.dispatch(QuizActions.checkResponse({ response: this.enteredResponse }));
 
-    if (this.enteredResponse.trim() === this.vocabulary.language_b) {
-      this.entryFieldState = 'success';
-      this.displayCheckResponseButton = false;
-      this.displayValidateResponseButton = false;
-      this.displayInvalidateResponseButton = false;
-      this.displayNextButton = true;
-      this.nextButtonType = 'positive';
-    } else {
-      this.entryFieldState = 'error';
-      this.displayCheckResponseButton = false;
-      this.displayValidateResponseButton = true;
-      this.displayInvalidateResponseButton = false;
-      this.displayNextButton = true;
-      this.nextButtonType = '';
-    }
-    this.changeDetector.detectChanges();
-    this.setKeyboardFocus();
+    // this.changeDetector.detectChanges();
+    // this.setKeyboardFocus();
   }
 
   validResponse(): void {
-    this.entryFieldState = 'success';
-    this.displayCheckResponseButton = false;
-    this.displayValidateResponseButton = false;
-    this.displayInvalidateResponseButton = true;
-    this.displayNextButton = true;
-    this.nextButtonType = '';
+    this.store.dispatch(QuizActions.validResponse());
 
-    this.changeDetector.detectChanges();
-    this.setKeyboardFocus();
+    // this.changeDetector.detectChanges();
+    // this.setKeyboardFocus();
   }
 
   invalidResponse(): void {
-    this.entryFieldState = 'error';
-    this.displayCheckResponseButton = false;
-    this.displayValidateResponseButton = true;
-    this.displayInvalidateResponseButton = false;
-    this.displayNextButton = true;
-    this.nextButtonType = '';
+    this.store.dispatch(QuizActions.invalidResponse());
 
-    this.changeDetector.detectChanges();
-    this.setKeyboardFocus();
+    // this.changeDetector.detectChanges();
+    // this.setKeyboardFocus();
   }
 
   next(): void {
-    // Update backend
-    if (this.entryFieldState === 'success') {
-      this.numberKnownVocabularies++;
-      this.vocabularyService.vocabularyKnown(this.vocabulary.id).subscribe(() => { });
-    } else {
-      this.numberUnknownVocabularies++;
-      this.vocabularyService.vocabularyUnknown(this.vocabulary.id).subscribe(() => { });
-    }
+    this.store.dispatch(QuizActions.next({vocabularyID: this.currentVocabulary.id, responseState: this.responseSate }));
+    this.enteredResponse = '';
 
-    // Reset states and buttons for next vocabulary
-    this.correctResponse = '';
-    this.entryFieldState = '';
-    this.displayCheckResponseButton = true;
-    this.displayValidateResponseButton = false;
-    this.displayInvalidateResponseButton = false;
-    this.displayNextButton = false;
-    this.nextButtonType = '';
+    // this.changeDetector.detectChanges();
+    // this.setKeyboardFocus();
 
-    this.changeDetector.detectChanges();
-    this.setKeyboardFocus();
-
-    // In case we are not yet at the end of th quiz: move to next vocabulary; otherwise return to lesson list
-    if (this.questionedVocabulary < this.numberDueVocabularies) {
-      this.enteredResponse = '';
-      this.vocabulary = this.dueVocabulary[this.questionedVocabulary];
-      this.questionedVocabulary += 1;
-    } else {
+    /* // In case we are not yet at the end of th quiz: move to next vocabulary; otherwise return to lesson list
+    if (this.questionedVocabulary >= this.numberDueVocabularies) {
       // ToDo: Add quiz summary: known/unknown/total/percentage
       this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
-    }
+    } */
   }
 
   cancel(dialog: TemplateRef<any>): void {

@@ -1,80 +1,105 @@
-<fd-layout-grid>
-    <div fdLayoutGridCol="4"></div>
-    <div fdLayoutGridCol="4">
-        <h4 *ngIf="numberDueVocabularies>0" style="text-align:center; vertical-align: bottom" fd-title id="quiz-progress">
-            {{questionedVocabulary}}/{{numberDueVocabularies}}</h4>
-    </div>
-    <div fdLayoutGridCol="4">
-        <p style="text-align:right"><button fd-button [glyph]="'sys-cancel'" id="quiz-cancel"
-                (click)=cancel(confirmationDialog)></button>
-        </p>
-    </div>
-</fd-layout-grid>
-<P></P>
-<fd-layout-grid *ngIf="vocabulary && lesson">
-    <div fdLayoutGridCol="4">
-        <div fd-form-item>
-            <label fd-form-header for="quiz-knownLanguageLabel">{{lesson.language_a}}</label>
-            <textarea fd-form-control id="quiz-knownLanguage" rows="10" readonly>{{vocabulary.language_a}}</textarea>
+<div *ngIf="lesson$ | async as lesson">
+    <div *ngIf="questionedVocabulary$ | async as questionedVocabulary">
+        <div *ngIf="UIElementState$ | async as UIELementState">
+            <div *ngIf="currentVocabulary$ | async as currentVocabulary">
+                <fd-layout-grid>
+                    <div fdLayoutGridCol="4"></div>
+                    <div fdLayoutGridCol="4">
+                        <h4 *ngIf="numberDueVocabularies$ | async as numberDueVocabularies"
+                            style="text-align:center; vertical-align: bottom" fd-title id="quiz-progress">
+                            {{questionedVocabulary}}/{{numberDueVocabularies}}
+                        </h4>
+                    </div>
+                    <div fdLayoutGridCol="4">
+                        <p style="text-align:right"><button fd-button [glyph]="'sys-cancel'" id="quiz-cancel"
+                                (click)=cancel(confirmationDialog)></button>
+                        </p>
+                    </div>
+                </fd-layout-grid>
+                <P></P>
+                <fd-layout-grid>
+                    <div fdLayoutGridCol="4">
+                        <div fd-form-item>
+                            <label fd-form-header for="quiz-knownLanguageLabel">{{lesson.language_a}}</label>
+                            <textarea fd-form-control id="quiz-knownLanguage" rows="10"
+                                readonly>{{currentVocabulary.language_a}}</textarea>
+                        </div>
+                    </div>
+                    <div fdLayoutGridCol="4">
+                        <div fd-form-item>
+                            <label fd-form-header for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
+                            <textarea fd-form-control autofocus #quizLearnedLanguage id="quiz-learnedLanguage" rows="10"
+                                [state]="UIELementState.entryFieldState" [(ngModel)]="enteredResponse"
+                                (keyup.enter)="checkResponse()"></textarea>
+                        </div>
+                        <div>
+                            <button *ngIf="UIELementState.displayCheckResponseButton" fd-button id="quiz-checkResponse"
+                                (click)="checkResponse()">Check
+                                response</button>
+                            <button *ngIf="UIELementState.displayValidateResponseButton" fd-button
+                                id="quiz-validResponse" (click)=validResponse()>Valid
+                                response</button>
+                            <button *ngIf="UIELementState.displayInvalidateResponseButton" fd-button
+                                id="quiz-invalidResponse" (click)=invalidResponse()>Invalid
+                                response</button>
+                            <button *ngIf="UIELementState.displayNextButton" fd-button
+                                [fdType]="UIELementState.nextButtonType" #nextButton id="quiz-next"
+                                (click)=next()>Next</button>
+                        </div>
+                    </div>
+                    <div fdLayoutGridCol="4">
+                        <div fd-form-item>
+                            <label fd-form-header for="quiz-correctResponseLabel">Correct Response</label>
+                            <div *ngIf="UIELementState.entryFieldState==''">
+                                <textarea fd-form-control id="quiz-correctResponse" rows="10" readonly>
+                                </textarea>
+                            </div>
+                            <div *ngIf="UIELementState.entryFieldState!=''">
+                                <textarea fd-form-control id="quiz-correctResponse" rows="10" readonly>
+                                    {{currentVocabulary.language_b}}
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                </fd-layout-grid>
+
+                <ng-template let-dialog let-dialogConfig="dialogConfig" #confirmationDialog>
+                    <fd-dialog [dialogConfig]="dialogConfig" [dialogRef]="dialog">
+                        <fd-dialog-header>
+                            <h1 fd-dialog-title>Leave quiz?</h1>
+                            <button fd-dialog-close-button id="quiz-closeConfirmLeaveQuiz"
+                                (click)="dialog.dismiss('No')"></button>
+                        </fd-dialog-header>
+
+                        <fd-dialog-body>
+                            Are you sure you want to end the quiz while there are still vocabularies due?
+                        </fd-dialog-body>
+
+                        <fd-dialog-footer>
+                            <fd-dialog-footer-button>
+                                <button fd-button id="quiz-confirmLeaveQuiz" fdType="emphasized"
+                                    fd-dialog-decisive-button [compact]="true" (click)="dialog.close('Yes')">
+                                    Yes
+                                </button>
+                            </fd-dialog-footer-button>
+
+                            <fd-dialog-footer-button>
+                                <button fd-button id="quiz-continueQuiz" fd-dialog-decisive-button [compact]="true"
+                                    (click)="dialog.dismiss('No')">
+                                    No
+                                </button>
+                            </fd-dialog-footer-button>
+                        </fd-dialog-footer>
+                    </fd-dialog>
+                </ng-template>
+            </div>
         </div>
     </div>
-    <div fdLayoutGridCol="4">
-        <div fd-form-item>
-            <label fd-form-header for="quiz-learnedLanguageLabel">{{lesson.language_b}}</label>
-            <textarea fd-form-control autofocus #quizLearnedLanguage id="quiz-learnedLanguage" rows="10"
-                [state]="entryFieldState" [(ngModel)]="enteredResponse" (keyup.enter)="checkResponse()"></textarea>
-        </div>
-        <div>
-            <button *ngIf="displayCheckResponseButton" fd-button id="quiz-checkResponse" (click)="checkResponse()">Check
-                response</button>
-            <button *ngIf="displayValidateResponseButton" fd-button id="quiz-validResponse"
-                (click)=validResponse()>Valid
-                response</button>
-            <button *ngIf="displayInvalidateResponseButton" fd-button id="quiz-invalidResponse"
-                (click)=invalidResponse()>Invalid
-                response</button>
-            <button *ngIf="displayNextButton" fd-button [fdType]="nextButtonType" #nextButton id="quiz-next"
-                (click)=next()>Next</button>
-        </div>
-    </div>
-    <div fdLayoutGridCol="4">
-        <div fd-form-item>
-            <label fd-form-header for="quiz-correctResponseLabel">Correct Response</label>
-            <textarea fd-form-control id="quiz-correctResponse" rows="10" readonly>{{correctResponse}}</textarea>
-        </div>
-    </div>
-</fd-layout-grid>
-<p *ngIf="!vocabulary">
-    <fd-message-strip [type]="'error'" [dismissible]="false" *ngIf="lesson">
-        No due vocabulary in lesson "{{lesson.title}}"
-    </fd-message-strip>
-</p>
-
-<ng-template let-dialog let-dialogConfig="dialogConfig" #confirmationDialog>
-    <fd-dialog [dialogConfig]="dialogConfig" [dialogRef]="dialog">
-        <fd-dialog-header>
-            <h1 fd-dialog-title>Leave quiz?</h1>
-            <button fd-dialog-close-button id="quiz-closeConfirmLeaveQuiz" (click)="dialog.dismiss('No')"></button>
-        </fd-dialog-header>
-
-        <fd-dialog-body>
-            Are you sure you want to end the quiz while there are still vocabularies due?
-        </fd-dialog-body>
-
-        <fd-dialog-footer>
-            <fd-dialog-footer-button>
-                <button fd-button id="quiz-confirmLeaveQuiz" fdType="emphasized" fd-dialog-decisive-button
-                    [compact]="true" (click)="dialog.close('Yes')">
-                    Yes
-                </button>
-            </fd-dialog-footer-button>
-
-            <fd-dialog-footer-button>
-                <button fd-button id="quiz-continueQuiz" fd-dialog-decisive-button [compact]="true"
-                    (click)="dialog.dismiss('No')">
-                    No
-                </button>
-            </fd-dialog-footer-button>
-        </fd-dialog-footer>
-    </fd-dialog>
-</ng-template>
+</div>
+<div *ngIf="errorMessage$ | async">
+    <p>
+        <fd-message-strip [type]="'error'" [dismissible]="false">
+            No due vocabulary in lesson 
+        </fd-message-strip>
+    </p>
+</div>

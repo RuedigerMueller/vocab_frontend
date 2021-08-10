@@ -25,17 +25,17 @@ export const getVocabulary = createSelector(
     state => state.vocabulary
 );
 
+export const getError = createSelector(
+    getVocabularyFeatureState,
+    state => state.error
+);
+
 export const selectVocabularyByID = (id: number) =>
     createSelector(
         getVocabulary,
         (lessonVocabulary: Vocabulary[]) =>
             lessonVocabulary.find(vocabulary => vocabulary.id === id)
     );
-
-export const getError = createSelector(
-    getVocabularyFeatureState,
-    state => state.error
-);
 
 export const vocabularyReducer = createReducer<VocabularyState>(
     initialState,

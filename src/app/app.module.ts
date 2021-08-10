@@ -28,6 +28,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { LessonModule } from './lesson/lesson.module';
 import { VocabularyModule } from './vocabulary/vocabulary.module';
+import { QuizModule } from './vocabulary/quiz/quiz.module';
 
 @NgModule({
   declarations: [
@@ -67,9 +68,10 @@ import { VocabularyModule } from './vocabulary/vocabulary.module';
     TitleModule,
     LessonModule,
     VocabularyModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    QuizModule,
     StoreModule.forRoot({}, {}),
     EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
