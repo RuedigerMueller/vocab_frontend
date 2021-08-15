@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -7,10 +6,8 @@ import { ButtonModule, MenuModule, SplitButtonComponent, SplitButtonModule, Tabl
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { routes } from 'src/app/app-routing.module';
-import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
-import { LessonService } from 'src/app/services/lesson.service';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import * as LessonActions from '../state/lesson.actions';
 import { State } from '../state/lesson.reducer';
@@ -19,7 +16,6 @@ import { ListLessonsComponent } from './list-lessons.component';
 describe('ListLessonsComponent', () => {
     const testLessonList: Lesson[] = lessonTestData;
 
-    let location: Location;
     let router: Router;
 
     let mockStore: MockStore<State>;
@@ -40,9 +36,6 @@ describe('ListLessonsComponent', () => {
     let fixture: ComponentFixture<ListLessonsComponent>;
 
     beforeEach(waitForAsync(() => {
-        const mockLessonService = jasmine.createSpyObj('LessonService', ['getLessons', 'deleteLesson']);
-        const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate']);
-
         TestBed.configureTestingModule({
             declarations: [ListLessonsComponent],
             imports: [
@@ -54,15 +47,12 @@ describe('ListLessonsComponent', () => {
             ],
             providers: [
                 provideMockStore({ initialState }),
-                { provide: LessonService, useValue: mockLessonService },
-                { provide: AuthGuardService, useValue: authGuardService },
             ]
         }).compileComponents();
     }));
 
     beforeEach(() => {
         router = TestBed.inject(Router);
-        location = TestBed.inject(Location);
         mockStore = TestBed.inject(MockStore);
         fixture = TestBed.createComponent(ListLessonsComponent);
         component = fixture.componentInstance;
