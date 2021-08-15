@@ -37,11 +37,11 @@ export class ListLessonsComponent implements OnInit {
     this.store.dispatch(LessonActions.deleteLesson({ lessonID : id }));
   }
 
-  lessonVocabulary(id: string): void {
+  lessonVocabulary(id: number): void {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${id}/${frontend.vocabulary}`));
   }
 
-  lessonQuiz(id: string): void {
+  lessonQuiz(id: number): void {
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}/${id}/${frontend.quiz}`));
   }
 }
