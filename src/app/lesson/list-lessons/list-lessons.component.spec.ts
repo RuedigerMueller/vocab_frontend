@@ -19,12 +19,6 @@ describe('ListLessonsComponent', () => {
     let router: Router;
 
     let mockStore: MockStore<State>;
-    const initialState = {
-        lesson: {
-            lessons: [],
-            error: ''
-        }
-    } as State;
     const loadedState = {
         lesson: {
             lessons: testLessonList,
@@ -46,7 +40,7 @@ describe('ListLessonsComponent', () => {
                 MenuModule
             ],
             providers: [
-                provideMockStore({ initialState }),
+                provideMockStore({ initialState: loadedState }),
             ]
         }).compileComponents();
     }));
@@ -65,6 +59,14 @@ describe('ListLessonsComponent', () => {
         });
 
         it('should dispatch a loadLessons action OnInit', () => {
+            const initialState = {
+                lesson: {
+                    lessons: [],
+                    error: ''
+                }
+            } as State;
+            mockStore.setState(initialState);
+
             component.ngOnInit();
 
             const expected = cold('a', { a: LessonActions.loadLessons() });
@@ -72,15 +74,21 @@ describe('ListLessonsComponent', () => {
         });
 
         it('should contain lesson data after loading', () => {
-            mockStore.setState(loadedState);
-
-            fixture.detectChanges();
-
             const expected = cold('a', { a: testLessonList });
             expect(component.lessons$).toBeObservable(expected);
         });
 
         it('should not have errors initially', () => {
+            const initialState = {
+                lesson: {
+                    lessons: [],
+                    error: ''
+                }
+            } as State;
+            mockStore.setState(initialState);
+
+            component.ngOnInit();
+
             const expected = cold('a', { a: '' });
             expect(component.errorMessage$).toBeObservable(expected);
         });
@@ -103,10 +111,6 @@ describe('ListLessonsComponent', () => {
 
     describe('should render UI elements', () => {
         it('should have the required column headings', () => {
-            mockStore.setState(loadedState);
-
-            fixture.detectChanges();
-
             const expectedColumns: ReadonlyArray<string> = ['Title', 'Learned Language', 'Known Language', '#Vocabularies', '#Due Vocabularies', 'Actions'];
             const tableHeaders: NodeListOf<HTMLLabelElement> = fixture.nativeElement.querySelectorAll('th');
             let success = true;
@@ -127,10 +131,6 @@ describe('ListLessonsComponent', () => {
         });
 
         it('should display a lesson as defined in second test data entry', () => {
-            mockStore.setState(loadedState);
-
-            fixture.detectChanges();
-
             const index = 1; // second element defined in testLessons
             const titleCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-title-${index}`);
             expect(titleCell.textContent).toContain(testLessonList[index].title, 'Lesson title is missing');
@@ -147,10 +147,6 @@ describe('ListLessonsComponent', () => {
 
     describe('should have required actions', () => {
         it('should have required buttons', () => {
-            mockStore.setState(loadedState);
-
-            fixture.detectChanges();
-
             const expectedActions: ReadonlyArray<string> = ['Create', 'Quiz'];
             const actions: NodeListOf<HTMLButtonElement> = fixture.nativeElement.querySelectorAll('button');
             let success = true;
@@ -171,10 +167,6 @@ describe('ListLessonsComponent', () => {
         });
 
         it('should have the required actions as part of the split button', () => {
-            mockStore.setState(loadedState);
-
-            fixture.detectChanges();
-
             const splitButtonComponent = fixture.debugElement.query(By.directive(SplitButtonComponent));
             const splitButtonComponentInstance: SplitButtonComponent = splitButtonComponent.injector.get(SplitButtonComponent);
             const expectedActions: ReadonlyArray<string> = ['Edit', 'Delete', 'Vocabulary'];
@@ -198,10 +190,7 @@ describe('ListLessonsComponent', () => {
 
     describe('should route correctly on actions', () => {
         it('should navigate to add-lesson component when clicking "Create"', () => {
-            mockStore.setState(loadedState);
             spyOn(router, 'navigateByUrl').and.stub();
-
-            fixture.detectChanges();
 
             component.createLesson();
 
@@ -209,39 +198,31 @@ describe('ListLessonsComponent', () => {
         });
 
         it('should navigate to edit-lesson component when clicking "Edit"', () => {
-            mockStore.setState(loadedState);
             spyOn(router, 'navigateByUrl').and.stub();
 
-            fixture.detectChanges();
             component.updateLesson(testLessonList[0].id);
             expect(router.navigateByUrl).toHaveBeenCalledWith(`/${frontend.lessons}/${testLessonList[0].id}/${frontend.editLesson}`);
         });
 
         it('should stay on list-lessons component when clicking "Delete"', () => {
-            mockStore.setState(loadedState);
             spyOn(router, 'navigateByUrl').and.stub();
 
-            fixture.detectChanges();
             component.deleteLesson(testLessonList[0].id);
 
             expect(router.navigateByUrl).toHaveBeenCalledTimes(0);
         });
 
         it('should navigate to listVocabularies component when clicking "Vocabulary"', () => {
-            mockStore.setState(loadedState);
             spyOn(router, 'navigateByUrl').and.stub();
 
-            fixture.detectChanges();
             component.lessonVocabulary(testLessonList[0].id);
 
             expect(router.navigateByUrl).toHaveBeenCalledWith(`/${frontend.lessons}/${testLessonList[0].id}/${frontend.vocabulary}`);
         });
 
         it('should navigate to quiz component when clicking "Quiz"', () => {
-            mockStore.setState(loadedState);
             spyOn(router, 'navigateByUrl').and.stub();
 
-            fixture.detectChanges();
             const splitButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-quizAction-0');
             const quizButton: HTMLButtonElement = splitButton.querySelectorAll('button')[0];
             quizButton.click();

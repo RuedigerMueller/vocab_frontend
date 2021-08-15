@@ -1,25 +1,24 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { cold } from 'jasmine-marbles';
 import { routes } from 'src/app/app-routing.module';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { State } from '../state/lesson.reducer';
-import { EditLessonComponent } from './edit-lesson.component';
+import { AddLessonComponent } from './add-lesson.component';
 
-describe('EditLessonComponent', () => {
+describe('AddLessonComponent', () => {
     const testLessonList: Lesson[] = lessonTestData;
-    const testEditLesson: Lesson = testLessonList[0];
 
     let router: Router;
 
     let mockStore: MockStore<State>;
+
     const loadedState = {
         lesson: {
             lessons: testLessonList,
@@ -27,12 +26,12 @@ describe('EditLessonComponent', () => {
         }
     } as State;
 
-    let component: EditLessonComponent;
-    let fixture: ComponentFixture<EditLessonComponent>;
+    let component: AddLessonComponent;
+    let fixture: ComponentFixture<AddLessonComponent>;
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [EditLessonComponent],
+            declarations: [AddLessonComponent],
             imports: [
                 ReactiveFormsModule,
                 RouterTestingModule.withRoutes(routes),
@@ -41,7 +40,6 @@ describe('EditLessonComponent', () => {
             ],
             providers: [
                 provideMockStore({ initialState: loadedState }),
-                { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: (id: number) => testEditLesson.id } } } },
             ]
         })
             .compileComponents();
@@ -50,27 +48,22 @@ describe('EditLessonComponent', () => {
     beforeEach(() => {
         router = TestBed.inject(Router);
         mockStore = TestBed.inject(MockStore);
-        fixture = TestBed.createComponent(EditLessonComponent);
+        fixture = TestBed.createComponent(AddLessonComponent);
         component = fixture.componentInstance;
-        fixture.detectChanges();
+        fixture.detectChanges()
     });
 
     describe('component', () => {
         it('should create', () => {
             expect(component).toBeTruthy();
         });
-
-
-        it('should contain lesson data after loading', () => {
-            const expected = cold('a', { a: testEditLesson });
-            expect(component.lesson$).toBeObservable(expected);
-        });
     });
 
     describe('should render UI elements', () => {
         it('should have the required labels', () => {
-            const expectedLabels: ReadonlyArray<string> = ['Title', 'Learned language', 'Known language'];
-            const labels: NodeListOf<HTMLLabelElement> = fixture.nativeElement.querySelectorAll('label');
+            const expectedLabels = ['Title', 'Learned language', 'Known language'];
+            const appElement: HTMLElement = fixture.nativeElement;
+            const labels: NodeListOf<HTMLLabelElement> = appElement.querySelectorAll('label');
             let success = true;
             for (const expectedLabel of expectedLabels) {
                 let found = false;
@@ -88,36 +81,33 @@ describe('EditLessonComponent', () => {
             expect(success).toBeTruthy('All expected labels rendered');
         });
 
-        it('should have input field filled', () => {
-            const inputTitle: any = fixture.debugElement.query(By.css('#edit-lesson-title')).nativeElement;
-            expect(inputTitle.value).toBe(testEditLesson.title, 'Lesson title missing');
-            const inputLanguageA: any = fixture.debugElement.query(By.css('#edit-lesson-language_a')).nativeElement;
-            expect(inputLanguageA.value).toContain(testEditLesson.language_a, 'Lesson languaga A missing');
-            const inputLanguageB: any = fixture.debugElement.query(By.css('#edit-lesson-language_b')).nativeElement;
-            expect(inputLanguageB.value).toContain(testEditLesson.language_b, 'Lesson language B missing');
+        it('should have empty input fields', () => {
+            const inputTitle: any = fixture.debugElement.query(By.css('#add-lesson-title')).nativeElement;
+            expect(inputTitle.value).toBe('', 'Lesson title missing');
+            const inputLanguageA: any = fixture.debugElement.query(By.css('#add-lesson-language_a')).nativeElement;
+            expect(inputLanguageA.value).toBe('', 'Lesson languaga A missing');
+            const inputLanguageB: any = fixture.debugElement.query(By.css('#add-lesson-language_b')).nativeElement;
+            expect(inputLanguageB.value).toBe('', 'Lesson language B missing');
         });
     });
 
     describe('should have required actions', () => {
-        it('should have button "Save"', () => {
-            const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-saveButton');
-            expect(button.textContent).toContain('Save');
+        it('should have button "Create"', () => {
+            const button: HTMLButtonElement = fixture.nativeElement.querySelector('#add-lesson-createButton');
+            expect(button.textContent).toContain('Create');
         });
 
         it('should have button "Cancel"', () => {
-            const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-lesson-cancelButton');
+            const button: HTMLButtonElement = fixture.nativeElement.querySelector('#add-lesson-cancelButton');
             expect(button.textContent).toContain('Cancel');
         });
     });
 
     describe('should route correctly on actions', () => {
-        it('should navigate to list-lessons component when clicking "Save"', () => {
+        it('should navigate to list-lessons component when clicking "Create"', () => {
             spyOn(router, 'navigateByUrl').and.stub();
 
-            component.editLessonForm.markAsDirty();
-            component.editLessonForm.markAsTouched();
-            component.submitForm(testEditLesson);
-
+            component.submitForm();
             expect(router.navigateByUrl).toHaveBeenCalledWith(`/${frontend.lessons}`);
         });
 
@@ -125,24 +115,7 @@ describe('EditLessonComponent', () => {
             spyOn(router, 'navigateByUrl').and.stub();
 
             component.cancel();
-
             expect(router.navigateByUrl).toHaveBeenCalledWith(`/${frontend.lessons}`);
-        });
-    });
-
-    describe('should support keyboard navigation', () => {
-        it('lesson title should have autofocus', () => {
-            const inputElement: any = fixture.debugElement.query(By.css('#edit-lesson-title')).nativeElement;
-            expect(inputElement.autofocus).toBeTrue();
-        });
-
-        it('should only have one autofocus element', () => {
-            const items: ReadonlyArray<HTMLElement> = fixture.nativeElement.getElementsByTagName('*');
-            let counter = 0;
-            for (let i = items.length; i--;) {
-                if (items[i].autofocus === true) { counter++; }
-            }
-            expect(counter).toEqual(1);
         });
     });
 });
