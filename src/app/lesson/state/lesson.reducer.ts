@@ -5,7 +5,7 @@ import * as LessonActions from '../state/lesson.actions';
 
 
 export interface State extends AppState.State {
-    lessons: LessonState;
+    lesson: LessonState;
 }
 
 export interface LessonState {

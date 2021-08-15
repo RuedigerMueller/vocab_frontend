@@ -30,7 +30,7 @@ describe('PageNotFoundComponent', () => {
   describe('should render UI elements', () => {
     it('should display "Page not found"', () => {
       const paragraph: HTMLParagraphElement = fixture.nativeElement.querySelector('p.fd-message-strip__text');
-      expect(paragraph.innerHTML).toContain('Page not found');
+      expect(paragraph.textContent).toContain('Page not found');
     });
   });
 });

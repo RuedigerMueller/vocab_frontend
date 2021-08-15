@@ -1,231 +1,112 @@
 import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ButtonModule, MenuModule, SplitButtonComponent, SplitButtonModule, TableModule } from '@fundamental-ngx/core';
-import { Observable, of } from 'rxjs';
+import { ButtonModule, MenuModule, SplitButtonModule, TableModule } from '@fundamental-ngx/core';
+import { MemoizedSelector } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { cold, getTestScheduler } from 'jasmine-marbles';
 import { routes } from 'src/app/app-routing.module';
 import { AuthGuardService } from 'src/app/helpers/auth-guard.service';
-import { frontend } from 'src/app/resource.identifiers';
+import { Lesson } from 'src/app/models/lesson.model.';
+import { LessonService } from 'src/app/services/lesson.service';
 import { lessonTestData } from 'test/lesson.testdata.spec';
-import { Lesson } from '../../models/lesson.model.';
-import { LessonService } from '../../services/lesson.service';
+import * as LessonActions from '../state/lesson.actions';
+import { getError, getLessons, State } from '../state/lesson.reducer';
 import { ListLessonsComponent } from './list-lessons.component';
 
 describe('ListLessonsComponent', () => {
-  let httpClient: HttpClient;
-  let httpTestingController: HttpTestingController;
-  let location: Location;
-  let router: Router;
+    const testLessonList: Lesson[] = lessonTestData;
 
-  let component: ListLessonsComponent;
-  let fixture: ComponentFixture<ListLessonsComponent>;
-  let debugElement: DebugElement;
+    let location: Location;
+    let router: Router;
+    let mockStore: MockStore<State>;
+    const initialState = {
+        lesson: {
+            lessons: [],
+            error: ''
+        }
+    } as State;
 
-  let getLessonsSpy: any;
-  let deleteLessonSpy: any;
-  let canActivateSpy: any;
+    let component: ListLessonsComponent;
+    let fixture: ComponentFixture<ListLessonsComponent>;
 
-  const testLessonList: ReadonlyArray<Lesson> = lessonTestData;
 
-  beforeEach(waitForAsync(() => {
-    const lessonService: any = jasmine.createSpyObj('LessonService', ['getLessons', 'deleteLesson']);
-    getLessonsSpy = lessonService.getLessons.and.returnValue(of(testLessonList));
-    deleteLessonSpy = lessonService.deleteLesson.and.returnValue(new Observable<void>());
+    beforeEach(waitForAsync(() => {
+        const mockLessonService = jasmine.createSpyObj('LessonService', ['getLessons', 'deleteLesson']);
+        const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate']);
 
-    const authGuardService: any = jasmine.createSpyObj('AuthGuardService', ['canActivate']);
-    canActivateSpy = authGuardService.canActivate.and.returnValue(true);
+        TestBed.configureTestingModule({
+            declarations: [ListLessonsComponent],
+            imports: [
+                RouterTestingModule.withRoutes(routes),
+                TableModule,
+                ButtonModule,
+                SplitButtonModule,
+                MenuModule
+            ],
+            providers: [
+                provideMockStore({ initialState }),
+                { provide: LessonService, useValue: mockLessonService },
+                { provide: AuthGuardService, useValue: authGuardService },
+            ]
+        }).compileComponents();
+    }));
 
-    TestBed.configureTestingModule({
-      declarations: [ListLessonsComponent],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule.withRoutes(routes),
-        TableModule,
-        ButtonModule,
-        SplitButtonModule,
-        MenuModule
-      ],
-      providers: [
-        { provide: LessonService, useValue: lessonService },
-        { provide: AuthGuardService, useValue: authGuardService },
-      ]
-    })
-      .compileComponents();
-
-    httpClient = TestBed.inject(HttpClient);
-    httpTestingController = TestBed.inject(HttpTestingController);
-  }));
-
-  beforeEach(() => {
-    router = TestBed.inject(Router);
-    location = TestBed.inject(Location);
-    fixture = TestBed.createComponent(ListLessonsComponent);
-    debugElement = fixture.debugElement;
-
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  describe('should create component', () => {
-    it('should create', () => {
-      expect(component).toBeTruthy();
+    beforeEach(() => {
+        router = TestBed.inject(Router);
+        location = TestBed.inject(Location);
+        mockStore = TestBed.inject(MockStore);
+        fixture = TestBed.createComponent(ListLessonsComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
     });
-  });
 
-  xdescribe('should render UI elements', () => {
-    it('should have the required column heading', () => {
-      let success = true;
-
-      const expectedColumns: ReadonlyArray<string> = ['Title', 'Learned Language', 'Known Language', '#Vocabularies', '#Due Vocabularies', 'Actions'];
-
-      const tableHeaders: NodeListOf<HTMLLabelElement> = fixture.nativeElement.querySelectorAll('th');
-
-      for (const column of expectedColumns) {
-        let found = false;
-        tableHeaders.forEach((header) => {
-          if (header.textContent === column) {
-            found = true;
-          }
+    describe('component', () => {
+        it('should create', () => {
+            expect(component).toBeTruthy();
         });
 
-        if (found === false) {
-          success = false;
-          expect(found).toBeTruthy(`Column ${column} not found`);
-        }
-      }
-      expect(success).toBeTruthy('All expected columns rendered');
-      expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
-    });
-  });
+        it('should dispatch a loadLessons action OnInit', () => {
+            component.ngOnInit();
 
-  xdescribe('should render UI elements', () => {
-    it('should display a lesson with a title as defined in second test data entry', () => {
-      const index = 1; // second element defined in testLessons
-      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-title-${index}`);
-      expect(tableCell.textContent).toContain(testLessonList[index].title);
-    });
-
-    it('should display a lesson with a language_a as defined in first test data entry', () => {
-      const index = 0; // first element defined in testLessons
-      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-language_a-${index}`);
-      expect(tableCell.textContent).toContain(testLessonList[index].language_a);
-    });
-
-    it('should display a lesson with a language_b as defined in third test data entry', () => {
-      const index = 2; // third element defined in testLessons
-      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-language_b-${index}`);
-      expect(tableCell.textContent).toContain(testLessonList[index].language_b);
-    });
-
-    it('should display a lesson with a numberVocables as defined in first test data entry', () => {
-      const index = 0; // first element defined in testLessons
-      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-numberVocables-${index}`);
-      expect(tableCell.textContent).toContain(testLessonList[index].numberVocables.toString());
-    });
-
-    it('should display a lesson with a numberDueVocables as defined in second test data entry', () => {
-      const index = 1; // second element defined in testLessons
-      const tableCell: HTMLTableCellElement = fixture.nativeElement.querySelector(`#list-lessons-numberDueVocables-${index}`);
-      expect(tableCell.textContent).toContain(testLessonList[index].numberDueVocables.toString());
-    });
-  });
-
-  xdescribe('should have required actions', () => {
-    it('should have required buttons', () => {
-      let success = true;
-
-      const expectedActions: ReadonlyArray<string> = ['Create', 'Quiz' ];
-
-      const actions: NodeListOf<HTMLButtonElement> = fixture.nativeElement.querySelectorAll('button');
-
-      for (const expectedAction of expectedActions) {
-        let found = false;
-        actions.forEach((action) => {
-          if (action.textContent.trim() === expectedAction) {
-            found = true;
-          }
+            const expected = cold('a', { a: LessonActions.loadLessons() });
+            expect(mockStore.scannedActions$).toBeObservable(expected);
         });
 
-        if (found === false) {
-          success = false;
-          expect(found).toBeTruthy(`Action ${expectedAction} not found`);
-        }
-      }
-      expect(success).toBeTruthy('All expected actions rendered');
-      expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
+        it('should contain lesson data after loading', () => {
+            const loadedState = {
+                lesson: {
+                    lessons: testLessonList,
+                    error: ''
+                }
+            } as State;
+            mockStore.setState(loadedState);
+
+            fixture.detectChanges();
+
+            const expected = cold('a', {a: testLessonList});
+            expect(component.lessons$).toBeObservable(expected);
+        });
+
+        it('should not have errors initially', () => {
+            const expected = cold('a', {a: ''});
+            expect(component.errorMessage$).toBeObservable(expected);
+        });
+
+        it('should have errors when an action reported an error', () => {
+            const errorState = {
+                lesson: {
+                    lessons: [],
+                    error: 'Error from action.'
+                }
+            } as State;
+            mockStore.setState(errorState);
+
+            fixture.detectChanges();
+
+            const expected = cold('a', {a: 'Error from action.'});
+            expect(component.errorMessage$).toBeObservable(expected);
+        });
     });
-
-    it('should have the required actions as part of the split button', fakeAsync(() => {
-      let success = true;
-
-      const splitButtonComponent = debugElement.query(By.directive(SplitButtonComponent));
-      const splitButtonComponentInstance: SplitButtonComponent = splitButtonComponent.injector.get(SplitButtonComponent);
-
-      const expectedActions: ReadonlyArray<string> = ['Edit', 'Delete', 'Vocabulary' ];
-
-      for (const expectedAction of expectedActions) {
-        let found = false;
-        for (const menuItem of splitButtonComponentInstance.menu.menuItems) {
-          if (menuItem.menuItemTitle.title.trim() === expectedAction) {
-            found = true;
-          }
-        }
-
-        if (found === false) {
-          success = false;
-          expect(found).toBeTruthy(`Action ${expectedAction} not found`);
-        }
-      }
-      expect(success).toBeTruthy('All expected actions rendered');
-      expect(getLessonsSpy.calls.any()).toBe(true, 'getLessons called');
-    }));
-  });
-
-  xdescribe('should route correctly on actions', () => {
-    it('should navigate to add-lesson component when clicking "Create"', fakeAsync(() => {
-      component.createLesson();
-      tick();
-
-      expect(location.path()).toBe(`/${frontend.lessons}/${frontend.createLesson}`, 'should nav to createLesson');
-    }));
-
-    xit('should navigate to edit-lesson component when clicking "Edit"', fakeAsync(() => {
-      /* component.updateLesson(component.lessons[0].id.toString());
-      tick();
-
-      expect(location.path()).toBe(`/${frontend.lessons}/${component.lessons[0].id}/${frontend.editLesson}`, 'should nav to editLesson for first lesson'); */
-    }));
-
-    xit('should stay on list-lessons component when clicking "Delete"', fakeAsync(() => {
-      /* const currentPath = location.path();
-
-      component.deleteLesson(component.lessons[0].id.toString());
-      tick();
-
-      expect(location.path()).toBe(currentPath); */
-    }));
-
-    xit('should navigate to listVocabularies component when clicking "Vocabulary"', fakeAsync(() => {
-      /* component.lessonVocabulary(component.lessons[0].id.toString());
-      tick();
-
-      expect(location.path()).toBe(`/${frontend.lessons}/${component.lessons[0].id}/${frontend.vocabulary}`, 'should nav to listVocabularies for first lesson'); */
-    }));
-
-    xit('should navigate to quiz component when clicking "Quiz"', fakeAsync(() => {
-      /* const splitButton: HTMLElement = fixture.nativeElement.querySelector('#list-lessons-quizAction-0');
-      const quizButton: HTMLButtonElement = splitButton.querySelectorAll('button')[0];
-
-      quizButton.click();
-      tick();
-
-      expect(location.path()).toBe(`/${frontend.lessons}/${component.lessons[0].id}/${frontend.quiz}`,
-        'should nav to quiz for first lesson'); */
-    }));
-  });
 });

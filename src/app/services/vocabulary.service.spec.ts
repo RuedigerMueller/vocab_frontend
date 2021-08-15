@@ -39,43 +39,39 @@ describe('VocabularyService', () => {
     requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  xit('should GET lesson vocabulary from backend lesson service', () => {
-    /* const expectedURL: string = backendURL + '/' + lessonURI + '/' + testLesson.id + '/' + vocabularyURI;
+  it('should GET lesson vocabulary from backend lesson service', () => {
+    vocabularyService.getLessonVocabulary(testLesson.id).subscribe();
+
+    const expectedURL: string = backendURL + '/' + lessonURI + '/' + testLesson.id + '/' + vocabularyURI;
     const expectedMethod = 'GET';
     const expectedPayload = null;
-
-    vocabularyService.getLessonVocabulary(testLesson.id.toString()).subscribe();
-
-    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload); */
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  xit('should GET a single vocabulary from backend vocabulary service', () => {
-    /* const expectedURL: string = backendURL + '/' + vocabularyURI + '/' + testVocabulary[0].id;
+  it('should GET a single vocabulary from backend vocabulary service', () => {
+    vocabularyService.getVocabulary(testVocabulary[0].id).subscribe();
+
+    const expectedURL: string = backendURL + '/' + vocabularyURI + '/' + testVocabulary[0].id;
     const expectedMethod = 'GET';
     const expectedPayload = null;
-
-    vocabularyService.getVocabulary(testVocabulary[0].id.toString()).subscribe();
-
-    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload); */
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  xit('should PATCH vocabulary with ID at backend vocabulary service', () => {
-    /* const expectedURL: string = backendURL + '/' + vocabularyURI + '/' + testVocabulary[0].id;
+  it('should PATCH vocabulary with ID at backend vocabulary service', () => {
+    vocabularyService.updateVocabulary(testVocabulary[0].id, testVocabulary[0]).subscribe();
+
+    const expectedURL: string = backendURL + '/' + vocabularyURI + '/' + testVocabulary[0].id;
     const expectedMethod = 'PATCH';
     const expectedPayload: string = JSON.stringify(testVocabulary[0]);
-
-    vocabularyService.updateVocabulary(testVocabulary[0].id.toString(), testVocabulary[0]).subscribe();
-
-    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload); */
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
-  xit('should DELETE vocabulary with ID at backend vocabulary service', () => {
-    /* const expectedURL: string = backendURL + '/' + vocabularyURI + '/' + testVocabulary[0].id;
+  it('should DELETE vocabulary with ID at backend vocabulary service', () => {
+    vocabularyService.deleteVocabulary(testVocabulary[0].id).subscribe();
+
+    const expectedURL: string = backendURL + '/' + vocabularyURI + '/' + testVocabulary[0].id;
     const expectedMethod = 'DELETE';
     const expectedPayload = null;
-
-    vocabularyService.deleteVocabulary(testVocabulary[0].id.toString()).subscribe();
-
-    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload); */
+    requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 });

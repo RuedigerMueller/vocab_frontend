@@ -28,22 +28,20 @@ describe('SignupService', () => {
   });
 
   it('should POST user data to backend sign-up service', () => {
+    signUpService.signup(userTestData[0]).subscribe();
+
     const expectedURL: string =  backendURL + '/' + usersURI;
     const expectedMethod = 'POST';
     const expectedPayload: string = JSON.stringify(userTestData[0]);
-
-    signUpService.signup(userTestData[0]).subscribe();
-
     requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 
   it('should GET information if an e-Mail address is taken from backend service', () => {
+    signUpService.checkEMailTaken(userTestData[0].email).subscribe();
+
     const expectedURL: string =  backendURL + '/' + usersURI + '?email=' + userTestData[0].email;
     const expectedMethod = 'GET';
     const expectedPayload = null;
-
-    signUpService.checkEMailTaken(userTestData[0].email).subscribe();
-
     requestCheck(httpTestingController, expectedURL, expectedMethod, expectedPayload);
   });
 });
