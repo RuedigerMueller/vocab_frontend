@@ -32,7 +32,7 @@ export class ListVocabularyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.lessonID = parseInt(this.route.snapshot.paramMap.get(frontend.lessonID), 10);
+    this.lessonID = parseInt(this.route.snapshot.paramMap.get('lessonID'), 10);
     this.lesson$ = this.store.select(selectLessonByID(this.lessonID));
 
     this.vocabulary$ = this.store.select(getVocabulary);

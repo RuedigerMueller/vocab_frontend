@@ -96,9 +96,9 @@ describe('ListVocabulariesComponent', () => {
             expect(mockStore.scannedActions$).toBeObservable(expected);
         });
 
-        xit('should contain lesson data after loading', () => {
+        it('should contain lesson data after loading', () => {
             const expected = cold('a', { a: testLesson });
-            expect(component.lessons$).toBeObservable(expected);
+            expect(component.lesson$).toBeObservable(expected);
         });
 
         it('should contain vocabulary data after loading', () => {

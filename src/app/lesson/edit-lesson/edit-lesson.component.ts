@@ -28,9 +28,9 @@ export class EditLessonComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id: number = parseInt(this.route.snapshot.paramMap.get(`${frontend.lessonID}`), 10);
+    const lessonID: number  = parseInt(this.route.snapshot.paramMap.get('lessonID'), 10);
 
-    this.lesson$ = this.store.select(selectLessonByID(id))
+    this.lesson$ = this.store.select(selectLessonByID(lessonID))
       .pipe(
         tap(currentLesson => this.displayLesson(currentLesson))
       );
