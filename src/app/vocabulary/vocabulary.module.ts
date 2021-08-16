@@ -11,7 +11,7 @@ import { vocabularyReducer } from './state/vocabulary.reducer';
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature('vocabulary', vocabularyReducer),
+    StoreModule.forFeature('lessonVocabulary', vocabularyReducer),
     EffectsModule.forFeature([VocabularyEffects])
   ]
 })

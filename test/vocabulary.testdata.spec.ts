@@ -22,7 +22,7 @@ function createVocabulary(
 
 const testLessons: Lesson[] = lessonTestData;
 
-export let vocabularyTestData: ReadonlyArray<Vocabulary> = [];
+export let vocabularyTestData: Vocabulary[] = [];
 
 vocabularyTestData = vocabularyTestData.concat(
   createVocabulary(2, 'house', 'Haus', 1, new Date(2020, 2, 29), testLessons[0].id),

@@ -5,7 +5,7 @@ import * as AppState from '../../state/app.state';
 import * as VocabularyActions from '../state/vocabulary.actions';
 
 export interface State extends AppState.State {
-    vocabulary: VocabularyState;
+    lessonVocabulary: VocabularyState;
 }
 
 export interface VocabularyState {
@@ -18,7 +18,7 @@ const initialState: VocabularyState = {
     error: ''
 };
 
-const getVocabularyFeatureState = createFeatureSelector<VocabularyState>('vocabulary');
+const getVocabularyFeatureState = createFeatureSelector<VocabularyState>('lessonVocabulary');
 
 export const getVocabulary = createSelector(
     getVocabularyFeatureState,
