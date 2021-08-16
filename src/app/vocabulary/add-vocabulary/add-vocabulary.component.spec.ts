@@ -1,11 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { cold } from 'jasmine-marbles';
 import { routes } from 'src/app/app-routing.module';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { Vocabulary } from 'src/app/models/vocabulary.model';
@@ -13,9 +12,9 @@ import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { State } from '../state/vocabulary.reducer';
-import { EditVocabularyComponent } from './edit-vocabulary.component';
+import { AddVocabularyComponent } from './add-vocabulary.component';
 
-describe('EditVocabulariesComponent', () => {
+describe('AddVocabulariesComponent', () => {
     const testLessonList: Lesson[] = lessonTestData;
     const testLesson: Lesson = testLessonList[0];
     const testVocabularyList: Vocabulary[] = vocabularyTestData;
@@ -35,12 +34,12 @@ describe('EditVocabulariesComponent', () => {
         }
     } as State;
 
-    let component: EditVocabularyComponent;
-    let fixture: ComponentFixture<EditVocabularyComponent>;
+    let component: AddVocabularyComponent;
+    let fixture: ComponentFixture<AddVocabularyComponent>;
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [EditVocabularyComponent],
+            declarations: [AddVocabularyComponent],
             imports: [
                 RouterTestingModule.withRoutes(routes),
                 ReactiveFormsModule,
@@ -68,7 +67,7 @@ describe('EditVocabulariesComponent', () => {
     beforeEach(() => {
         router = TestBed.inject(Router);
         mockStore = TestBed.inject(MockStore);
-        fixture = TestBed.createComponent(EditVocabularyComponent);
+        fixture = TestBed.createComponent(AddVocabularyComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
@@ -78,10 +77,6 @@ describe('EditVocabulariesComponent', () => {
             expect(component).toBeTruthy();
         });
 
-        it('should contain vocabulary data after loading', () => {
-            const expected = cold('a', { a: testVocabulary });
-            expect(component.vocabulary$).toBeObservable(expected);
-        });
     });
 
     describe('should render UI elements', () => {
@@ -105,52 +100,70 @@ describe('EditVocabulariesComponent', () => {
             expect(success).toBeTruthy('All expected labels rendered');
         });
 
-        it('should have required input field filled', () => {
-            const languageAInput: any = fixture.debugElement.query(By.css('#edit-vocabulary-language_a')).nativeElement;
-            expect(languageAInput.value).toContain(testVocabularyList[0].language_a, 'Language A is missing');
-            const languageBInput: any = fixture.debugElement.query(By.css('#edit-vocabulary-language_b')).nativeElement;
-            expect(languageBInput.value).toContain(testVocabularyList[0].language_b);
-        });
-    });
-
-    describe('should have required actions', () => {
-        it('should have button "Save"', () => {
-            const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-vocabulary-saveButton');
-            expect(button.textContent).toContain('Save');
+        it('should have required (empty) input fields', () => {
+            const languageAInput: any = fixture.debugElement.query(By.css('#add-vocabulary-language_a')).nativeElement;
+            expect(languageAInput.value).toBe('');
+            const languageBInput: any = fixture.debugElement.query(By.css('#add-vocabulary-language_b')).nativeElement;
+            expect(languageBInput.value).toBe('');
         });
 
-        it('should have button "Cancel"', () => {
-            const button: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-vocabulary-cancelButton');
-            expect(button.textContent).toContain('Cancel');
-        });
-    });
+        describe('should have required actions', () => {
+            it('should have button "Add"', () => {
+                const button: HTMLButtonElement = fixture.nativeElement.querySelector('#add-vocabulary-addButton');
+                expect(button.textContent).toContain('Add');
+            });
 
-    describe('should route correctly on actions', () => {
-        it('should navigate to list-lessons component when clicking "Save"', () => {
-            spyOn(router, 'navigateByUrl').and.stub();
-
-            const saveButton: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-vocabulary-saveButton');
-            saveButton.click();
-
-            expect(router.navigateByUrl).toHaveBeenCalledWith(`/${frontend.lessons}/${component.lessonID}/${frontend.vocabulary}`);
-
+            it('should have button "Cancel"', () => {
+                const button: HTMLButtonElement = fixture.nativeElement.querySelector('#add-vocabulary-cancelButton');
+                expect(button.textContent).toContain('Cancel');
+            });
         });
 
-        it('should navigate to list-lessons component when clicking "Cancel"', () => {
-            spyOn(router, 'navigateByUrl').and.stub();
+        describe('should route correctly on actions', () => {
+            it('should stay on add-vocabulary when clicking "Add"', () => {
+                spyOn(router, 'navigateByUrl').and.stub();
 
-            const cancelButton: HTMLButtonElement = fixture.nativeElement.querySelector('#edit-vocabulary-cancelButton');
-            cancelButton.click();
+                const addButton: HTMLButtonElement = fixture.nativeElement.querySelector('#add-vocabulary-addButton');
+                addButton.click();
 
-            expect(router.navigateByUrl).toHaveBeenCalledWith(`/${frontend.lessons}/${component.lessonID}/${frontend.vocabulary}`);
+                expect(router.navigateByUrl).toHaveBeenCalledTimes(0);
+            });
 
+            it('should navigate to list-vocabulary component when clicking "Cancel"', () => {
+                spyOn(router, 'navigateByUrl').and.stub();
+
+                const cancelButton: HTMLButtonElement = fixture.nativeElement.querySelector('#add-vocabulary-cancelButton');
+                cancelButton.click();
+
+                expect(router.navigateByUrl).toHaveBeenCalledWith(`/${frontend.lessons}/${component.lessonID}/${frontend.vocabulary}`);
+            });
         });
     });
 
     describe('should support keyboard navigation', () => {
-        it('languaga_a should have autofocus', () => {
-            const inputElement: HTMLInputElement = fixture.debugElement.query(By.css('#edit-vocabulary-language_a')).nativeElement;
+        it('language_a should have autofocus', () => {
+            const inputElement: HTMLInputElement = fixture.debugElement.query(By.css('#add-vocabulary-language_a')).nativeElement;
             expect(inputElement.autofocus).toBeTrue();
+        });
+
+        it('should have focus on add-vocabulary-language_a field after clicking "Add"', fakeAsync(() => {
+            const inputElement: HTMLLinkElement = fixture.debugElement.query(By.css('#add-vocabulary-language_a')).nativeElement;
+            spyOn(inputElement, 'focus');
+
+            const addButton: HTMLButtonElement = fixture.nativeElement.querySelector('#add-vocabulary-addButton');
+            addButton.click();
+            tick();
+
+            expect(inputElement.focus).toHaveBeenCalled();
+        }));
+
+        it('should only have one autofocus element', () => {
+            const items: ReadonlyArray<HTMLElement> = fixture.nativeElement.getElementsByTagName('*');
+            let counter = 0;
+            for (let i = items.length; i--;) {
+                if (items[i].autofocus === true) { counter++; }
+            }
+            expect(counter).toEqual(1);
         });
     });
 });
