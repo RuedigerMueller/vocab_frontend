@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent, ButtonModule, DialogModule, FormModule, LayoutGridModule, LayoutPanelModule, MessageStripModule, TitleModule } from '@fundamental-ngx/core';
+import { FormStates } from '@fundamental-ngx/core/lib/form/form-control/form-states';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { routes } from 'src/app/app-routing.module';
@@ -315,12 +316,12 @@ describe('QuizComponent', () => {
             const validResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-validResponse`);
             const invalidResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-invalidResponse`);
             const nextButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-next`);
-            // expect(component.entryFieldState).toEqual('success');
+            expect(learnedLanguageTextArea.className).toContain('is-success');
             expect(checkResponseButton).toBeNull();
             expect(validResponseButton).toBeNull();
             expect(invalidResponseButton).toBeNull();
             expect(nextButton).not.toBeNull();
-            // expect(nextButton.fdType).toEqual('positive');
+            expect(nextButton.className).toContain('positive');
         });
 
         it('should display the correct elements for incorrect answers', () => {
@@ -348,12 +349,12 @@ describe('QuizComponent', () => {
             const validResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-validResponse`);
             const invalidResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-invalidResponse`);
             const nextButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-next`);
-            // expect(component.entryFieldState).toEqual('error');
+            expect(learnedLanguageTextArea.className).toContain('is-error');
             expect(checkResponseButton).toBeNull();
             expect(validResponseButton).not.toBeNull();
             expect(invalidResponseButton).toBeNull();
             expect(nextButton).not.toBeNull();
-            // expect(nextButton.fdType).toEqual('');
+            expect(nextButton.className).toBe('fd-button');
         });
 
         it('should display the correct elements for corected incorrect answers', () => {
@@ -381,12 +382,12 @@ describe('QuizComponent', () => {
             const validResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-validResponse`);
             const invalidResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-invalidResponse`);
             const nextButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-next`);
-            // expect(component.entryFieldState).toEqual('success');
+            expect(learnedLanguageTextArea.className).toContain('is-success');
             expect(checkResponseButton).toBeNull();
             expect(validResponseButton).toBeNull();
             expect(invalidResponseButton).not.toBeNull();
             expect(nextButton).not.toBeNull();
-            // expect(component.nextButtonType).toEqual('');
+            expect(nextButton.className).toBe('fd-button');
         });
 
         it('should display the correct elements for invalided corrected answers', () => {
@@ -414,12 +415,12 @@ describe('QuizComponent', () => {
             const validResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-validResponse`);
             const invalidResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-invalidResponse`);
             const nextButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-next`);
-            // expect(component.entryFieldState).toEqual('error');
+            expect(learnedLanguageTextArea.className).toContain('is-error');
             expect(checkResponseButton).toBeNull();
             expect(validResponseButton).not.toBeNull();
             expect(invalidResponseButton).toBeNull();
             expect(nextButton).not.toBeNull();
-            // expect(component.nextButtonType).toEqual('');
+            expect(nextButton.className).toBe('fd-button');
         });
 
         it('should display the correct elements after clicking next', () => {
@@ -442,38 +443,23 @@ describe('QuizComponent', () => {
 
             fixture.detectChanges();
 
+            const correctResponseTextArea: HTMLTextAreaElement = fixture.nativeElement.querySelector(`#quiz-correctResponse`);
             const learnedLanguageTextArea: HTMLTextAreaElement = fixture.nativeElement.querySelector(`#quiz-learnedLanguage`);
             const checkResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-checkResponse`);
             const validResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-validResponse`);
             const invalidResponseButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-invalidResponse`);
             const nextButton: HTMLButtonElement = fixture.nativeElement.querySelector(`#quiz-next`);
-            // expect(component.correctResponse).toEqual('', 'correctResponse should be empty');
-            // expect(component.entryFieldState).toEqual('');
+            expect(correctResponseTextArea.textContent).toEqual('');
+            expect(learnedLanguageTextArea.className).toContain('ng-valid');
+            expect(learnedLanguageTextArea.textContent).toEqual('');
             expect(checkResponseButton).not.toBeNull();
             expect(validResponseButton).toBeNull();
             expect(invalidResponseButton).toBeNull();
             expect(nextButton).toBeNull();
-            // expect(component.nextButtonType).toEqual('');
-            // expect(component.enteredResponse).toEqual('', 'enteredResponse should be empty');
         });
     });
 
     describe('should route correctly on actions', () => {
-        xit('should return to the list-lessons component when closing the quiz', fakeAsync(() => {
-            spyOn(router, 'navigateByUrl').and.stub();
-
-            const cancelButton: HTMLButtonElement = fixture.nativeElement.querySelector('#quiz-cancel');
-            cancelButton.click();
-            tick();
-            fixture.detectChanges();
-            const confirmButton: HTMLButtonElement = fixture.nativeElement.querySelector('#quiz-confirmLeaveQuiz');
-            confirmButton.click();
-            tick();
-            fixture.detectChanges();
-
-            expect(router.navigateByUrl).toHaveBeenCalledWith(`/${frontend.lessons}`);
-        }));
-
         it('should return to the list-lessons component at the end of the quiz', () => {
             spyOn(router, 'navigateByUrl').and.stub();
             const quizEndState = {
