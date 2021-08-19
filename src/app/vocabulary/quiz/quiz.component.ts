@@ -78,8 +78,8 @@ export class QuizComponent implements OnInit {
 
     this.continueQuiz$ = this.store.select(continueQuiz)
       .pipe(
-        tap(() => {
-          if (!continueQuiz) {
+        tap((continueWithQuiz) => {
+          if (!continueWithQuiz) {
             this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
           }
         })
