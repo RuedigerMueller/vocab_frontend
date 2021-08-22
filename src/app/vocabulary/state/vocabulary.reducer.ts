@@ -13,7 +13,7 @@ export interface VocabularyState {
     error: string;
 }
 
-const initialState: VocabularyState = {
+export const initialState: VocabularyState = {
     vocabulary: [],
     error: ''
 };
@@ -79,7 +79,6 @@ export const vocabularyReducer = createReducer<VocabularyState>(
     on(fromActions.updateVocabularyFailure, (state, action): VocabularyState => {
         return {
             ...state,
-            vocabulary: [],
             error: action.error
         };
     }),
@@ -96,7 +95,6 @@ export const vocabularyReducer = createReducer<VocabularyState>(
     on(fromActions.deleteVocabularyFailure, (state, action): VocabularyState => {
         return {
             ...state,
-            vocabulary: [],
             error: action.error
         };
     }),
