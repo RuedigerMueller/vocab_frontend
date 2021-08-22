@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { frontend } from 'src/app/resource.identifiers';
 import { Lesson } from '../../models/lesson.model.';
-import * as LessonActions from '../state/lesson.actions';
-import { selectLessonByID, State } from '../state/lesson.reducer';
+import * as fromActions from '../state/lesson.actions';
+import * as fromReducer from '../state/lesson.reducer';
 
 @Component({
   selector: 'app-edit-lesson',
@@ -20,7 +20,7 @@ export class EditLessonComponent implements OnInit {
   lesson$: Observable<Lesson | null>;
 
   constructor(
-    private store: Store<State>,
+    private store: Store<fromReducer.State>,
     public fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router,
@@ -30,7 +30,7 @@ export class EditLessonComponent implements OnInit {
   ngOnInit(): void {
     const lessonID: number  = parseInt(this.route.snapshot.paramMap.get('lessonID'), 10);
 
-    this.lesson$ = this.store.select(selectLessonByID(lessonID))
+    this.lesson$ = this.store.select(fromReducer.selectLessonByID(lessonID))
       .pipe(
         tap(currentLesson => this.displayLesson(currentLesson))
       );
@@ -47,7 +47,7 @@ export class EditLessonComponent implements OnInit {
     if (this.editLessonForm.valid) {
       if (this.editLessonForm.dirty) {
         const lesson = { ...originalLesson, ...this.editLessonForm.value };
-        this.store.dispatch(LessonActions.updateLesson( { lessonID: lesson.id, lesson: this.editLessonForm.value }));
+        this.store.dispatch(fromActions.updateLesson( { lessonID: lesson.id, lesson: this.editLessonForm.value }));
         this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
       }
     }

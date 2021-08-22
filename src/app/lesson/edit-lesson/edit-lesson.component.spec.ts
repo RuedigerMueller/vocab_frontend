@@ -10,7 +10,7 @@ import { routes } from 'src/app/app-routing.module';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
-import { State } from '../state/lesson.reducer';
+import * as fromReducer from '../state/lesson.reducer';
 import { EditLessonComponent } from './edit-lesson.component';
 
 describe('EditLessonComponent', () => {
@@ -19,13 +19,13 @@ describe('EditLessonComponent', () => {
 
     let router: Router;
 
-    let mockStore: MockStore<State>;
+    let mockStore: MockStore<fromReducer.State>;
     const loadedState = {
         lesson: {
             lessons: testLessonList,
             error: ''
         }
-    } as State;
+    } as fromReducer.State;
 
     let component: EditLessonComponent;
     let fixture: ComponentFixture<EditLessonComponent>;

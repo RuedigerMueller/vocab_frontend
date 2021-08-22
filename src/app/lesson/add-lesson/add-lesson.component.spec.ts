@@ -9,7 +9,7 @@ import { routes } from 'src/app/app-routing.module';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
-import { State } from '../state/lesson.reducer';
+import * as fromReducer from '../state/lesson.reducer';
 import { AddLessonComponent } from './add-lesson.component';
 
 describe('AddLessonComponent', () => {
@@ -17,14 +17,14 @@ describe('AddLessonComponent', () => {
 
     let router: Router;
 
-    let mockStore: MockStore<State>;
+    let mockStore: MockStore<fromReducer.State>;
 
     const loadedState = {
         lesson: {
             lessons: testLessonList,
             error: ''
         }
-    } as State;
+    } as fromReducer.State;
 
     let component: AddLessonComponent;
     let fixture: ComponentFixture<AddLessonComponent>;
@@ -50,7 +50,7 @@ describe('AddLessonComponent', () => {
         mockStore = TestBed.inject(MockStore);
         fixture = TestBed.createComponent(AddLessonComponent);
         component = fixture.componentInstance;
-        fixture.detectChanges()
+        fixture.detectChanges();
     });
 
     describe('component', () => {

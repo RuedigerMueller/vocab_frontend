@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
 import { LessonService } from 'src/app/services/lesson.service';
-import * as LessonActions from '../state/lesson.actions';
+import * as fromActions from '../state/lesson.actions';
 
 @Injectable()
 export class LessonEffects {
@@ -12,11 +12,11 @@ export class LessonEffects {
     loadLessons$ = createEffect(() => {
         return this.actions$
             .pipe(
-                ofType(LessonActions.loadLessons),
+                ofType(fromActions.loadLessons),
                 mergeMap(() => this.lessonService.getLessons()
                     .pipe(
-                        map(lessons => LessonActions.loadLessonSuccess({ lessons })),
-                        catchError(error => of(LessonActions.loadLessonFailure({ error })))
+                        map(lessons => fromActions.loadLessonSuccess({ lessons })),
+                        catchError(error => of(fromActions.loadLessonFailure({ error })))
                     ))
             );
     });
@@ -24,12 +24,12 @@ export class LessonEffects {
     createLesson$ = createEffect(() => {
         return this.actions$
             .pipe(
-                ofType(LessonActions.createLesson),
+                ofType(fromActions.createLesson),
                 concatMap(action =>
                     this.lessonService.createLesson(action.lesson)
                         .pipe(
-                            map(() => LessonActions.createLessonSuccess({ lesson: action.lesson })),
-                            catchError(error => of(LessonActions.createLessonFailure({ error })))
+                            map(() => fromActions.createLessonSuccess({ lesson: action.lesson })),
+                            catchError(error => of(fromActions.createLessonFailure({ error })))
                         )
                 )
             );
@@ -38,15 +38,15 @@ export class LessonEffects {
     updateLesson$ = createEffect(() => {
         return this.actions$
             .pipe(
-                ofType(LessonActions.updateLesson),
+                ofType(fromActions.updateLesson),
                 concatMap(action =>
                     this.lessonService.updateLesson(action.lessonID, action.lesson)
                         .pipe(
-                            map(() => LessonActions.updateLessonSuccess({
+                            map(() => fromActions.updateLessonSuccess({
                                 lessonID: action.lessonID,
                                 lesson: action.lesson
                             })),
-                            catchError(error => of(LessonActions.updateLessonFailure({ error })))
+                            catchError(error => of(fromActions.updateLessonFailure({ error })))
                         )
                 )
             );
@@ -55,12 +55,12 @@ export class LessonEffects {
     deleteLesson$ = createEffect(() => {
         return this.actions$
             .pipe(
-                ofType(LessonActions.deleteLesson),
+                ofType(fromActions.deleteLesson),
                 mergeMap(action =>
                     this.lessonService.deleteLesson(action.lessonID)
                         .pipe(
-                            map(() => LessonActions.deleteLessonSuccess({ lessonID: action.lessonID })),
-                            catchError(error => of(LessonActions.deleteLessonFailure({ error })))
+                            map(() => fromActions.deleteLessonSuccess({ lessonID: action.lessonID })),
+                            catchError(error => of(fromActions.deleteLessonFailure({ error })))
                         )
                 )
             );

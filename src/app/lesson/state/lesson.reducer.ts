@@ -1,10 +1,10 @@
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 import { Lesson } from 'src/app/models/lesson.model.';
-import * as AppState from '../../state/app.state';
-import * as LessonActions from '../state/lesson.actions';
+import * as fromApp from '../../state/app.state';
+import * as fromActions from '../state/lesson.actions';
 
 
-export interface State extends AppState.State {
+export interface State extends fromApp.State {
     lesson: LessonState;
 }
 
@@ -13,7 +13,7 @@ export interface LessonState {
     error: string;
 }
 
-const initialState: LessonState = {
+export const initialState: LessonState = {
     lessons: [],
     error: ''
 };
@@ -39,49 +39,34 @@ export const getError = createSelector(
 
 export const lessonReducer = createReducer<LessonState>(
     initialState,
-    on(LessonActions.loadLessons, (state): LessonState => {
-        return {
-            ...state,
-        };
-    }),
-    on(LessonActions.loadLessonSuccess, (state, action): LessonState => {
+    on(fromActions.loadLessonSuccess, (state, action): LessonState => {
         return {
             ...state,
             lessons: action.lessons,
             error: ''
         };
     }),
-    on(LessonActions.loadLessonFailure, (state, action): LessonState => {
+    on(fromActions.loadLessonFailure, (state, action): LessonState => {
         return {
             ...state,
             lessons: [],
             error: action.error
         };
     }),
-    on(LessonActions.createLesson, (state): LessonState => {
-        return {
-            ...state,
-        };
-    }),
-    on(LessonActions.createLessonSuccess, (state, action): LessonState => {
+    on(fromActions.createLessonSuccess, (state, action): LessonState => {
         return {
             ...state,
             lessons: [... state.lessons, action.lesson],
             error: ''
         };
     }),
-    on(LessonActions.createLessonFailure, (state, action): LessonState => {
+    on(fromActions.createLessonFailure, (state, action): LessonState => {
         return {
             ...state,
             error: action.error
         };
     }),
-    on(LessonActions.updateLesson, (state): LessonState => {
-        return {
-            ...state,
-        };
-    }),
-    on(LessonActions.updateLessonSuccess, (state, action): LessonState => {
+    on(fromActions.updateLessonSuccess, (state, action): LessonState => {
         const updatedLessons = state.lessons.map(
             lesson => action.lessonID === lesson.id ? action.lesson : lesson);
 
@@ -91,18 +76,13 @@ export const lessonReducer = createReducer<LessonState>(
             error: ''
         };
     }),
-    on(LessonActions.updateLessonFailure, (state, action): LessonState => {
+    on(fromActions.updateLessonFailure, (state, action): LessonState => {
         return {
             ...state,
             error: action.error
         };
     }),
-    on(LessonActions.deleteLesson, (state): LessonState => {
-        return {
-            ...state,
-        };
-    }),
-    on(LessonActions.deleteLessonSuccess, (state, action): LessonState => {
+    on(fromActions.deleteLessonSuccess, (state, action): LessonState => {
         const updatedLessons = state.lessons.filter(
             lesson => action.lessonID !== lesson.id);
 
@@ -112,7 +92,7 @@ export const lessonReducer = createReducer<LessonState>(
             error: ''
         };
     }),
-    on(LessonActions.deleteLessonFailure, (state, action): LessonState => {
+    on(fromActions.deleteLessonFailure, (state, action): LessonState => {
         return {
             ...state,
             error: action.error

@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { frontend } from 'src/app/resource.identifiers';
 import { Store } from '@ngrx/store';
-import { State } from '../state/lesson.reducer';
-import { createLesson } from '../state/lesson.actions';
+import * as fromReducer from '../state/lesson.reducer';
+import * as fromActions from '../state/lesson.actions';
 
 @Component({
   selector: 'app-add-lesson',
@@ -15,7 +15,7 @@ export class AddLessonComponent implements OnInit {
   lessonForm: FormGroup;
 
   constructor(
-    private store: Store<State>,
+    private store: Store<fromReducer.State>,
     public fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router,
@@ -30,7 +30,7 @@ export class AddLessonComponent implements OnInit {
   }
 
   submitForm() {
-    this.store.dispatch(createLesson({lesson: this.lessonForm.value}));
+    this.store.dispatch(fromActions.createLesson({lesson: this.lessonForm.value}));
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
   }
 

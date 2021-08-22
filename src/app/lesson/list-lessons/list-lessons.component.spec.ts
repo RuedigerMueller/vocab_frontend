@@ -9,8 +9,8 @@ import { routes } from 'src/app/app-routing.module';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
-import * as LessonActions from '../state/lesson.actions';
-import { State } from '../state/lesson.reducer';
+import * as fromActions from '../state/lesson.actions';
+import * as fromReducer from '../state/lesson.reducer';
 import { ListLessonsComponent } from './list-lessons.component';
 
 describe('ListLessonsComponent', () => {
@@ -18,13 +18,13 @@ describe('ListLessonsComponent', () => {
 
     let router: Router;
 
-    let mockStore: MockStore<State>;
+    let mockStore: MockStore<fromReducer.State>;
     const loadedState = {
         lesson: {
             lessons: testLessonList,
             error: ''
         }
-    } as State;
+    } as fromReducer.State;
 
     let component: ListLessonsComponent;
     let fixture: ComponentFixture<ListLessonsComponent>;
@@ -64,12 +64,12 @@ describe('ListLessonsComponent', () => {
                     lessons: [],
                     error: ''
                 }
-            } as State;
+            } as fromReducer.State;
             mockStore.setState(initialState);
 
             component.ngOnInit();
 
-            const expected = cold('a', { a: LessonActions.loadLessons() });
+            const expected = cold('a', { a: fromActions.loadLessons() });
             expect(mockStore.scannedActions$).toBeObservable(expected);
         });
 
@@ -84,7 +84,7 @@ describe('ListLessonsComponent', () => {
                     lessons: [],
                     error: ''
                 }
-            } as State;
+            } as fromReducer.State;
             mockStore.setState(initialState);
 
             component.ngOnInit();
@@ -99,7 +99,7 @@ describe('ListLessonsComponent', () => {
                     lessons: [],
                     error: 'Error from action.'
                 }
-            } as State;
+            } as fromReducer.State;
             mockStore.setState(errorState);
 
             fixture.detectChanges();
