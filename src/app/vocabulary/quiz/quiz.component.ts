@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent, DialogService, FormControlComponent } from '@fundamental-ngx/core';
 import { Store } from '@ngrx/store';
@@ -8,14 +8,8 @@ import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { Vocabulary } from '../../models/vocabulary.model';
-import * as QuizActions from './state/quiz.actions';
-import {
-  getCurrentVocabulary,
-  getError, getNumberDueVocabularies, getNumberKnownVocabularies,
-  getNumberQuestionedVocabularies, getNumberUnknownVocabularies,
-  getUIElementState,
-  continueQuiz, QuizUIElementState, State
-} from './state/quiz.reducer';
+import * as fromActions from './state/quiz.actions';
+import * as fromReducer from './state/quiz.reducer';
 
 @Component({
   selector: 'app-quiz',
@@ -30,7 +24,7 @@ export class QuizComponent implements OnInit {
   numberKnownVocabularies$: Observable<number>;
   numberUnknownVocabularies$: Observable<number>;
   currentVocabulary$: Observable<Vocabulary>;
-  UIElementState$: Observable<QuizUIElementState>;
+  UIElementState$: Observable<fromReducer.QuizUIElementState>;
   errorMessage$: Observable<string>;
   continueQuiz$: Observable<boolean>;
   enteredResponse: string;
@@ -38,7 +32,7 @@ export class QuizComponent implements OnInit {
   responseState: string;
 
   constructor(
-    private store: Store<State>,
+    private store: Store<fromReducer.State>,
     private ngZone: NgZone,
     private router: Router,
     private route: ActivatedRoute,
@@ -53,15 +47,15 @@ export class QuizComponent implements OnInit {
     this.lessonID = parseInt(this.route.snapshot.paramMap.get(frontend.lessonID), 10);
 
     this.lesson$ = this.store.select(selectLessonByID(this.lessonID));
-    this.numberDueVocabularies$ = this.store.select(getNumberDueVocabularies);
-    this.questionedVocabulary$ = this.store.select(getNumberQuestionedVocabularies);
-    this.numberKnownVocabularies$ = this.store.select(getNumberKnownVocabularies);
-    this.numberUnknownVocabularies$ = this.store.select(getNumberUnknownVocabularies);
-    this.currentVocabulary$ = this.store.select(getCurrentVocabulary)
+    this.numberDueVocabularies$ = this.store.select(fromReducer.getNumberDueVocabularies);
+    this.questionedVocabulary$ = this.store.select(fromReducer.getNumberQuestionedVocabularies);
+    this.numberKnownVocabularies$ = this.store.select(fromReducer.getNumberKnownVocabularies);
+    this.numberUnknownVocabularies$ = this.store.select(fromReducer.getNumberUnknownVocabularies);
+    this.currentVocabulary$ = this.store.select(fromReducer.getCurrentVocabulary)
       .pipe(
         tap(currentVocabulary => this.currentVocabulary = currentVocabulary)
-     );
-    this.UIElementState$ = this.store.select(getUIElementState)
+      );
+    this.UIElementState$ = this.store.select(fromReducer.getUIElementState)
       .pipe(
         tap(UiElementState => this.responseState = UiElementState.entryFieldState),
         /* tap(UiElementState => {
@@ -76,7 +70,7 @@ export class QuizComponent implements OnInit {
         }) */
       );
 
-    this.continueQuiz$ = this.store.select(continueQuiz)
+    this.continueQuiz$ = this.store.select(fromReducer.continueQuiz)
       .pipe(
         tap((continueWithQuiz) => {
           if (!continueWithQuiz) {
@@ -85,25 +79,25 @@ export class QuizComponent implements OnInit {
         })
       );
 
-    this.errorMessage$ = this.store.select(getError);
+    this.errorMessage$ = this.store.select(fromReducer.getError);
 
-    this.store.dispatch(QuizActions.loadQuiz({ lessonID: this.lessonID }));
+    this.store.dispatch(fromActions.loadQuiz({ lessonID: this.lessonID }));
   }
 
   checkResponse(): void {
-    this.store.dispatch(QuizActions.checkResponse({ response: this.enteredResponse }));
-}
+    this.store.dispatch(fromActions.checkResponse({ response: this.enteredResponse }));
+  }
 
   validResponse(): void {
-    this.store.dispatch(QuizActions.validResponse());
+    this.store.dispatch(fromActions.validResponse());
   }
 
   invalidResponse(): void {
-    this.store.dispatch(QuizActions.invalidResponse());
+    this.store.dispatch(fromActions.invalidResponse());
   }
 
   next(): void {
-    this.store.dispatch(QuizActions.next({vocabularyID: this.currentVocabulary.id, responseState: this.responseState }));
+    this.store.dispatch(fromActions.next({ vocabularyID: this.currentVocabulary.id, responseState: this.responseState }));
     this.enteredResponse = '';
   }
 

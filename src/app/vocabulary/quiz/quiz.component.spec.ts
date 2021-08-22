@@ -1,10 +1,8 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ButtonComponent, ButtonModule, DialogModule, FormModule, LayoutGridModule, LayoutPanelModule, MessageStripModule, TitleModule } from '@fundamental-ngx/core';
-import { FormStates } from '@fundamental-ngx/core/lib/form/form-control/form-states';
+import { ButtonModule, DialogModule, FormModule, LayoutGridModule, LayoutPanelModule, MessageStripModule, TitleModule } from '@fundamental-ngx/core';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { routes } from 'src/app/app-routing.module';
@@ -14,8 +12,8 @@ import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
 import { QuizComponent } from './quiz.component';
-import * as QuizActions from './state/quiz.actions';
-import { QuizUIElementState, State } from './state/quiz.reducer';
+import * as fromActions from './state/quiz.actions';
+import * as fromReducer from './state/quiz.reducer';
 
 
 describe('QuizComponent', () => {
@@ -23,7 +21,7 @@ describe('QuizComponent', () => {
     const testLesson: Lesson = testLessonList[0];
     const testVocabularyList: Vocabulary[] = vocabularyTestData;
 
-    const initialUIElementState: QuizUIElementState = {
+    const initialUIElementState: fromReducer.QuizUIElementState = {
         entryFieldState: '',
         displayCheckResponseButton: true,
         displayValidateResponseButton: false,
@@ -48,7 +46,7 @@ describe('QuizComponent', () => {
             UIElementState: initialUIElementState,
             error: ''
         }
-    } as State;
+    } as fromReducer.State;
 
     const loadedState = {
         lesson: {
@@ -65,11 +63,11 @@ describe('QuizComponent', () => {
             UIElementState: initialUIElementState,
             error: ''
         }
-    } as State;
+    } as fromReducer.State;
 
     let router: Router;
 
-    let mockStore: MockStore<State>;
+    let mockStore: MockStore<fromReducer.State>;
 
     let component: QuizComponent;
     let fixture: ComponentFixture<QuizComponent>;
@@ -123,7 +121,7 @@ describe('QuizComponent', () => {
 
             component.ngOnInit();
 
-            const expected = cold('a', { a: QuizActions.loadQuiz({ lessonID: testLesson.id }) });
+            const expected = cold('a', { a: fromActions.loadQuiz({ lessonID: testLesson.id }) });
             expect(mockStore.scannedActions$).toBeObservable(expected);
         });
 
@@ -192,7 +190,7 @@ describe('QuizComponent', () => {
                     UIElementState: initialUIElementState,
                     error: 'Error from action.'
                 }
-            } as State;
+            } as fromReducer.State;
 
             mockStore.setState(errorState);
 
@@ -306,7 +304,7 @@ describe('QuizComponent', () => {
                         correctResponse: '',
                     }
                 }
-            } as State;
+            } as fromReducer.State;
             mockStore.setState(newState);
 
             fixture.detectChanges();
@@ -339,7 +337,7 @@ describe('QuizComponent', () => {
                         correctResponse: '',
                     }
                 }
-            } as State;
+            } as fromReducer.State;
             mockStore.setState(newState);
 
             fixture.detectChanges();
@@ -372,7 +370,7 @@ describe('QuizComponent', () => {
                         correctResponse: '',
                     }
                 }
-            } as State;
+            } as fromReducer.State;
             mockStore.setState(newState);
 
             fixture.detectChanges();
@@ -405,7 +403,7 @@ describe('QuizComponent', () => {
                         correctResponse: '',
                     }
                 }
-            } as State;
+            } as fromReducer.State;
             mockStore.setState(newState);
 
             fixture.detectChanges();
@@ -438,7 +436,7 @@ describe('QuizComponent', () => {
                         correctResponse: '',
                     }
                 }
-            } as State;
+            } as fromReducer.State;
             mockStore.setState(newState);
 
             fixture.detectChanges();
@@ -477,7 +475,7 @@ describe('QuizComponent', () => {
                     UIElementState: initialUIElementState,
                     error: ''
                 }
-            } as State;
+            } as fromReducer.State;
             mockStore.setState(quizEndState);
 
             fixture.detectChanges();
