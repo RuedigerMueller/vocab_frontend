@@ -12,7 +12,7 @@ import { Vocabulary } from 'src/app/models/vocabulary.model';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
-import { State } from '../state/vocabulary.reducer';
+import * as fromVocabularyReducer from '../state/vocabulary.reducer';
 import { EditVocabularyComponent } from './edit-vocabulary.component';
 
 describe('EditVocabulariesComponent', () => {
@@ -23,7 +23,7 @@ describe('EditVocabulariesComponent', () => {
 
     let router: Router;
 
-    let mockStore: MockStore<State>;
+    let mockStore: MockStore<fromVocabularyReducer.State>;
     const loadedState = {
         lesson: {
             lessons: testLessonList,
@@ -33,7 +33,7 @@ describe('EditVocabulariesComponent', () => {
             vocabulary: testVocabularyList,
             error: ''
         }
-    } as State;
+    } as fromVocabularyReducer.State;
 
     let component: EditVocabularyComponent;
     let fixture: ComponentFixture<EditVocabularyComponent>;

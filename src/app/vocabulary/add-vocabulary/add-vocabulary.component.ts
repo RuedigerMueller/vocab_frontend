@@ -8,8 +8,8 @@ import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { Vocabulary } from '../../models/vocabulary.model';
-import { createVocabulary } from '../state/vocabulary.actions';
-import { State } from '../state/vocabulary.reducer';
+import * as fromVocabularyActions from '../state/vocabulary.actions';
+import * as fromVocabularyReducer from '../state/vocabulary.reducer';
 
 @Component({
   selector: 'app-add-vocabulary',
@@ -24,7 +24,7 @@ export class AddVocabularyComponent implements OnInit {
   @ViewChild('addVocabularyLanguageA') addVocabularyLanguageAInput: FormControlComponent;
 
   constructor(
-    private store: Store<State>,
+    private store: Store<fromVocabularyReducer.State>,
     public fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router,
@@ -44,7 +44,7 @@ export class AddVocabularyComponent implements OnInit {
   submitForm(): void {
     const vocabulary: Vocabulary = this.addVocabularyForm.value;
     vocabulary.lesson = this.lessonID;
-    this.store.dispatch(createVocabulary({vocabulary}));
+    this.store.dispatch(fromVocabularyActions.createVocabulary({vocabulary}));
     this.addVocabularyForm = this.fb.group({
       language_a: [''],
       language_b: ['']

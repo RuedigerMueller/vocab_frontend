@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
 import { VocabularyService } from 'src/app/services/vocabulary.service';
-import * as VocabularyActions from '../state/vocabulary.actions';
+import * as fromActions from '../state/vocabulary.actions';
 
 @Injectable()
 export class VocabularyEffects {
@@ -12,11 +12,11 @@ export class VocabularyEffects {
     loadVocabulary$ = createEffect(() => {
         return this.actions$
             .pipe(
-                ofType(VocabularyActions.loadVocabulary),
+                ofType(fromActions.loadVocabulary),
                 mergeMap(action => this.vocabularyService.getLessonVocabulary(action.lessonID)
                     .pipe(
-                        map(vocabulary => VocabularyActions.loadVocabularySuccess({ vocabulary })),
-                        catchError(error => of(VocabularyActions.loadVocabularyFailure({ error })))
+                        map(vocabulary => fromActions.loadVocabularySuccess({ vocabulary })),
+                        catchError(error => of(fromActions.loadVocabularyFailure({ error })))
                     ))
             );
     });
@@ -24,12 +24,12 @@ export class VocabularyEffects {
     createVocabulary$ = createEffect(() => {
         return this.actions$
             .pipe(
-                ofType(VocabularyActions.createVocabulary),
+                ofType(fromActions.createVocabulary),
                 concatMap(action =>
                     this.vocabularyService.createVocabulary(action.vocabulary)
                         .pipe(
-                            map(() => VocabularyActions.createVocabularySuccess({ vocabulary: action.vocabulary })),
-                            catchError(error => of(VocabularyActions.createVocabularyFailure({ error })))
+                            map(() => fromActions.createVocabularySuccess({ vocabulary: action.vocabulary })),
+                            catchError(error => of(fromActions.createVocabularyFailure({ error })))
                         )
                 )
             );
@@ -38,15 +38,15 @@ export class VocabularyEffects {
     updateVocabulary$ = createEffect(() => {
         return this.actions$
             .pipe(
-                ofType(VocabularyActions.updateVocabulary),
+                ofType(fromActions.updateVocabulary),
                 concatMap(action =>
                     this.vocabularyService.updateVocabulary(action.vocabularyID, action.vocabulary)
                       .pipe(
-                        map(() => VocabularyActions.updateVocabularySuccess({
+                        map(() => fromActions.updateVocabularySuccess({
                             vocabularyID: action.vocabularyID,
                             vocabulary: action.vocabulary
                         })),
-                        catchError(error => of(VocabularyActions.updateVocabularyFailure({ error })))
+                        catchError(error => of(fromActions.updateVocabularyFailure({ error })))
                       )
                   )
             );
@@ -55,12 +55,12 @@ export class VocabularyEffects {
     deleteVocabulary$ = createEffect(() => {
         return this.actions$
             .pipe(
-                ofType(VocabularyActions.deleteVocabulary),
+                ofType(fromActions.deleteVocabulary),
                 mergeMap(action =>
                     this.vocabularyService.deleteVocabulary(action.vocabularyID)
                       .pipe(
-                        map(() => VocabularyActions.deleteVocabularySuccess({ vocabularyID: action.vocabularyID })),
-                        catchError(error => of(VocabularyActions.deleteVocabularyFailure({ error })))
+                        map(() => fromActions.deleteVocabularySuccess({ vocabularyID: action.vocabularyID })),
+                        catchError(error => of(fromActions.deleteVocabularyFailure({ error })))
                       )
                   )
             );

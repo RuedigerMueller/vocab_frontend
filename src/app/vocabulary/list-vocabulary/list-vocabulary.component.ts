@@ -5,9 +5,9 @@ import { frontend } from 'src/app/resource.identifiers';
 import { Vocabulary } from '../../models/vocabulary.model';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { getError, getVocabulary, State } from '../state/vocabulary.reducer';
-import * as VocabularyActions from '../state/vocabulary.actions';
-import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
+import * as fromVocabularyReducer from '../state/vocabulary.reducer';
+import * as fromVocabularyActions from '../state/vocabulary.actions';
+import * as fromLessonReducer from 'src/app/lesson/state/lesson.reducer';
 
 @Component({
   selector: 'app-list-vocabulary',
@@ -25,7 +25,7 @@ export class ListVocabularyComponent implements OnInit {
   lessons$: Observable<ReadonlyArray<Lesson>>;
 
   constructor(
-    private store: Store<State>,
+    private store: Store<fromVocabularyReducer.State>,
     private ngZone: NgZone,
     private router: Router,
     private route: ActivatedRoute
@@ -33,12 +33,12 @@ export class ListVocabularyComponent implements OnInit {
 
   ngOnInit(): void {
     this.lessonID = parseInt(this.route.snapshot.paramMap.get('lessonID'), 10);
-    this.lesson$ = this.store.select(selectLessonByID(this.lessonID));
+    this.lesson$ = this.store.select(fromLessonReducer.selectLessonByID(this.lessonID));
 
-    this.vocabulary$ = this.store.select(getVocabulary);
-    this.errorMessage$ = this.store.select(getError);
+    this.vocabulary$ = this.store.select(fromVocabularyReducer.getVocabulary);
+    this.errorMessage$ = this.store.select(fromVocabularyReducer.getError);
 
-    this.store.dispatch(VocabularyActions.loadVocabulary( { lessonID: this.lessonID }));
+    this.store.dispatch(fromVocabularyActions.loadVocabulary( { lessonID: this.lessonID }));
   }
 
   createVocabulary(): void {
@@ -50,7 +50,7 @@ export class ListVocabularyComponent implements OnInit {
   }
 
   deleteVocabulary(id: number): void {
-     this.store.dispatch(VocabularyActions.deleteVocabulary({vocabularyID: id }));
+     this.store.dispatch(fromVocabularyActions.deleteVocabulary({vocabularyID: id }));
   }
 
   closeLesson(): void {

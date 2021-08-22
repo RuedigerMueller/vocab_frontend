@@ -8,8 +8,8 @@ import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
 import { Lesson } from 'src/app/models/lesson.model.';
 import { frontend } from 'src/app/resource.identifiers';
 import { Vocabulary } from '../../models/vocabulary.model';
-import * as VocabularyActions from '../state/vocabulary.actions';
-import { selectVocabularyByID, State } from '../state/vocabulary.reducer';
+import * as fromVocabularyActions from '../state/vocabulary.actions';
+import * as fromVocabularyReducer from '../state/vocabulary.reducer';
 
 @Component({
   selector: 'app-edit-vocabulary',
@@ -23,7 +23,7 @@ export class EditVocabularyComponent implements OnInit {
   editVocabularyForm: FormGroup;
 
   constructor(
-    private store: Store<State>,
+    private store: Store<fromVocabularyReducer.State>,
     public fb: FormBuilder,
     private ngZone: NgZone,
     private router: Router,
@@ -34,7 +34,7 @@ export class EditVocabularyComponent implements OnInit {
     const vocabularyID: number = parseInt(this.route.snapshot.paramMap.get('vocabularyID'), 10);
     this.lessonID = parseInt(this.route.snapshot.paramMap.get('lessonID'), 10);
 
-    this.vocabulary$ = this.store.select(selectVocabularyByID(vocabularyID))
+    this.vocabulary$ = this.store.select(fromVocabularyReducer.selectVocabularyByID(vocabularyID))
       .pipe(
         tap(currentVocabulary => this.displayVocabulary(currentVocabulary))
       );
@@ -51,7 +51,7 @@ export class EditVocabularyComponent implements OnInit {
     if (this.editVocabularyForm.valid) {
       if (this.editVocabularyForm.dirty) {
         const vocabulary = { ...originalVocabulary, ...this.editVocabularyForm.value };
-        this.store.dispatch(VocabularyActions.updateVocabulary({
+        this.store.dispatch(fromVocabularyActions.updateVocabulary({
           vocabularyID: vocabulary.id,
           vocabulary
         }));

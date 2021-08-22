@@ -11,8 +11,8 @@ import { Vocabulary } from 'src/app/models/vocabulary.model';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
-import * as VocabularyActions from '../state/vocabulary.actions';
-import { State } from '../state/vocabulary.reducer';
+import * as fromVocabularyActions from '../state/vocabulary.actions';
+import * as fromVocabularyReducer from '../state/vocabulary.reducer';
 import { ListVocabularyComponent } from './list-vocabulary.component';
 
 describe('ListVocabulariesComponent', () => {
@@ -22,7 +22,7 @@ describe('ListVocabulariesComponent', () => {
 
     let router: Router;
 
-    let mockStore: MockStore<State>;
+    let mockStore: MockStore<fromVocabularyReducer.State>;
     const loadedState = {
         lesson: {
             lessons: testLessonList,
@@ -32,7 +32,7 @@ describe('ListVocabulariesComponent', () => {
             vocabulary: testVocabularyList,
             error: ''
         }
-    } as State;
+    } as fromVocabularyReducer.State;
 
     let component: ListVocabularyComponent;
     let fixture: ComponentFixture<ListVocabularyComponent>;
@@ -87,12 +87,12 @@ describe('ListVocabulariesComponent', () => {
                     vocabulary: [],
                     error: ''
                 }
-            } as State;
+            } as fromVocabularyReducer.State;
             mockStore.setState(initialState);
 
             component.ngOnInit();
 
-            const expected = cold('a', { a: VocabularyActions.loadVocabulary({ lessonID: testLesson.id }) });
+            const expected = cold('a', { a: fromVocabularyActions.loadVocabulary({ lessonID: testLesson.id }) });
             expect(mockStore.scannedActions$).toBeObservable(expected);
         });
 
@@ -116,7 +116,7 @@ describe('ListVocabulariesComponent', () => {
                     vocabulary: [],
                     error: ''
                 }
-            } as State;
+            } as fromVocabularyReducer.State;
             mockStore.setState(initialState);
 
             component.ngOnInit();
@@ -135,7 +135,7 @@ describe('ListVocabulariesComponent', () => {
                     vocabulary: [],
                     error: 'Error from action.'
                 }
-            } as State;
+            } as fromVocabularyReducer.State;
             mockStore.setState(errorState);
 
             fixture.detectChanges();

@@ -11,7 +11,7 @@ import { Vocabulary } from 'src/app/models/vocabulary.model';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
-import { State } from '../state/vocabulary.reducer';
+import * as fromVocabularyReducer from '../state/vocabulary.reducer';
 import { AddVocabularyComponent } from './add-vocabulary.component';
 
 describe('AddVocabulariesComponent', () => {
@@ -22,7 +22,7 @@ describe('AddVocabulariesComponent', () => {
 
     let router: Router;
 
-    let mockStore: MockStore<State>;
+    let mockStore: MockStore<fromVocabularyReducer.State>;
     const loadedState = {
         lesson: {
             lessons: testLessonList,
@@ -32,7 +32,7 @@ describe('AddVocabulariesComponent', () => {
             vocabulary: testVocabularyList,
             error: ''
         }
-    } as State;
+    } as fromVocabularyReducer.State;
 
     let component: AddVocabularyComponent;
     let fixture: ComponentFixture<AddVocabularyComponent>;
