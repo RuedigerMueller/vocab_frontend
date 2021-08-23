@@ -166,8 +166,6 @@ export const quizReducer = createReducer<QuizState>(
     })
 );
 
-
-
 function shuffle(vocabulary: Vocabulary[]): Vocabulary[] {
     const shuffledVocabulary: Vocabulary[] = {...vocabulary};
     let currentIndex: number = vocabulary.length;
