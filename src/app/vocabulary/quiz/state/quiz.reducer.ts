@@ -1,7 +1,7 @@
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 import { Vocabulary } from 'src/app/models/vocabulary.model';
 import * as AppState from '../../../state/app.state';
-import * as QuizActions from '../state/quiz.actions';
+import * as fromActions from '../state/quiz.actions';
 
 export interface State extends AppState.State {
     quiz: QuizState;
@@ -28,7 +28,7 @@ export interface QuizState {
     error: string;
 }
 
-const initialUIElementState: QuizUIElementState = {
+export const initialUIElementState: QuizUIElementState = {
     entryFieldState: '',
     displayCheckResponseButton: true,
     displayValidateResponseButton: false,
@@ -38,14 +38,14 @@ const initialUIElementState: QuizUIElementState = {
     correctResponse: '',
 };
 
-const initialState: QuizState = {
+export const initialState: QuizState = {
     vocabulary: [],
     questionedVocabulary: 0,
     numberKnownVocabularies: 0,
     numberUnknownVocabularies: 0,
     currentVocabulary: {} as Vocabulary,
     continueQuiz: true,
-    UIElementState: initialUIElementState,
+    UIElementState: { ...initialUIElementState },
     error: ''
 };
 
@@ -98,7 +98,7 @@ export const continueQuiz = createSelector(
 
 export const quizReducer = createReducer<QuizState>(
     initialState,
-    on(QuizActions.loadQuizSuccess, (state, action): QuizState => {
+    on(fromActions.loadQuizSuccess, (state, action): QuizState => {
         const shuffeledVocabulary: Vocabulary[] = shuffle(action.vocabulary);
         return {
             ...state,
@@ -110,7 +110,7 @@ export const quizReducer = createReducer<QuizState>(
             error: ''
         };
     }),
-    on(QuizActions.loadQuizFailure, (state, action): QuizState => {
+    on(fromActions.loadQuizFailure, (state, action): QuizState => {
         return {
             ...state,
             vocabulary: [],
@@ -121,25 +121,25 @@ export const quizReducer = createReducer<QuizState>(
             error: action.error
         };
     }),
-    on(QuizActions.checkResponse, (state, action): QuizState => {
+    on(fromActions.checkResponse, (state, action): QuizState => {
         return {
             ...state,
             UIElementState: updateUIState(state.currentVocabulary, action.response, state.UIElementState)
         };
     }),
-    on(QuizActions.validResponse, (state): QuizState => {
+    on(fromActions.validResponse, (state): QuizState => {
         return {
             ...state,
             UIElementState: setUIStateValid(state.UIElementState)
         };
     }),
-    on(QuizActions.invalidResponse, (state): QuizState => {
+    on(fromActions.invalidResponse, (state): QuizState => {
         return {
             ...state,
             UIElementState: setUIStateInvalid(state.UIElementState)
         };
     }),
-    on(QuizActions.nextSuccess, (state): QuizState => {
+    on(fromActions.nextSuccess, (state): QuizState => {
         return {
             ...state,
             numberKnownVocabularies:
@@ -151,14 +151,14 @@ export const quizReducer = createReducer<QuizState>(
                     state.vocabulary[state.questionedVocabulary] :
                     {} as Vocabulary,
             questionedVocabulary:
-                state.questionedVocabulary <= Object.keys(state.vocabulary).length  ?
+                state.questionedVocabulary < Object.keys(state.vocabulary).length  ?
                     state.questionedVocabulary + 1 :
                     state.questionedVocabulary,
             continueQuiz: state.questionedVocabulary < Object.keys(state.vocabulary).length,
-            UIElementState: initialUIElementState
+            UIElementState: { ...initialUIElementState }
         };
     }),
-    on(QuizActions.nextFailure, (state, action): QuizState => {
+    on(fromActions.nextFailure, (state, action): QuizState => {
         return {
             ...state,
             error: action.error
@@ -203,7 +203,7 @@ function updateUIState(vocabulary: Vocabulary, response: string, originalUIEleme
         UIElementState.displayNextButton = true;
         UIElementState.nextButtonType = '';
     }
-    return UIElementState;
+    return {...UIElementState };
 }
 
 function setUIStateValid(originalUIElementState: QuizUIElementState): QuizUIElementState {
@@ -216,7 +216,7 @@ function setUIStateValid(originalUIElementState: QuizUIElementState): QuizUIElem
     UIElementState.displayNextButton = true;
     UIElementState.nextButtonType = '';
 
-    return UIElementState;
+    return {...UIElementState };
 }
 
 function setUIStateInvalid(originalUIElementState: QuizUIElementState): QuizUIElementState {
@@ -229,5 +229,5 @@ function setUIStateInvalid(originalUIElementState: QuizUIElementState): QuizUIEl
     UIElementState.displayNextButton = true;
     UIElementState.nextButtonType = '';
 
-    return UIElementState;
+    return {...UIElementState };
 }

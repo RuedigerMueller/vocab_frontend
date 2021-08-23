@@ -42,13 +42,3 @@ export const nextFailure = createAction(
     '[Quiz] Next failure',
     props<{ error: string }>()
 );
-
-export const updateBackendKnown = createAction(
-    '[Quiz] Update Backend with known vocabulary',
-    props<{ vocabularyID: number }>()
-);
-
-export const updateBackendUnknown = createAction(
-    '[Quiz] Update Backend with unknown vocabulary',
-    props<{ vocabularyID: number }>()
-);

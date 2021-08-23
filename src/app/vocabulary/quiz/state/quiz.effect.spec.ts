@@ -70,13 +70,14 @@ describe('QuizEffects', () => {
     });
 
     describe('next$', () => {
-        it('should inform backend about known vocabulary and return a "[Quiz] Next success" action and  on success', () => {
+        it('should inform backend about known vocabulary and return a "[Quiz] Next success" action on success', () => {
             const questionedVocabulary = testVocabularyList[0];
             actions$ = of({
                 type: fromActions.next.type,
                 vocabularyID: questionedVocabulary.id,
                 responseState: 'success'
             });
+            vocabularyServiceSpy.vocabularyKnown.and.returnValue(of());
 
             quizEffects.next$.subscribe(action => {
                 expect(action).toEqual({
@@ -94,6 +95,7 @@ describe('QuizEffects', () => {
                 vocabularyID: questionedVocabulary.id,
                 responseState: 'error'
             });
+            vocabularyServiceSpy.vocabularyUnknown.and.returnValue(of());
 
             quizEffects.next$.subscribe(action => {
                 expect(action).toEqual({

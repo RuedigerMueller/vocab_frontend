@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
+import { mergeMap, map, catchError } from 'rxjs/operators';
 import { VocabularyService } from 'src/app/services/vocabulary.service';
-import * as QuizActions from '../state/quiz.actions';
+import * as fromActions from '../state/quiz.actions';
 
 @Injectable()
 export class QuizEffects {
@@ -12,11 +12,11 @@ export class QuizEffects {
     loadQuiz$ = createEffect(() => {
         return this.actions$
             .pipe(
-                ofType(QuizActions.loadQuiz),
+                ofType(fromActions.loadQuiz),
                 mergeMap(action => this.vocabularyService.getDueLessonVocabulary(action.lessonID)
                     .pipe(
-                        map(vocabulary => QuizActions.loadQuizSuccess({ vocabulary })),
-                        catchError(error => of(QuizActions.loadQuizFailure({ error })))
+                        map(vocabulary => fromActions.loadQuizSuccess({ vocabulary })),
+                        catchError(error => of(fromActions.loadQuizFailure({ error })))
                     )
                 )
             );
@@ -25,14 +25,14 @@ export class QuizEffects {
     next$ = createEffect(() => {
         return this.actions$
             .pipe(
-                ofType(QuizActions.next),
+                ofType(fromActions.next),
                 mergeMap(action => (action.responseState === 'success' ?
                     this.vocabularyService.vocabularyKnown(action.vocabularyID) :
                     this.vocabularyService.vocabularyUnknown(action.vocabularyID)
                 )
                     .pipe(
-                        map(() => QuizActions.nextSuccess()),
-                        catchError(error => of(QuizActions.nextFailure({ error })))
+                        map(() => fromActions.nextSuccess()),
+                        catchError(error => of(fromActions.nextFailure({ error })))
                     )
                 )
             );
