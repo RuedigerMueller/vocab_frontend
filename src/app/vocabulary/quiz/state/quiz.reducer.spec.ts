@@ -252,6 +252,21 @@ describe('QuizReducer', () => {
             expect(state).not.toBe(expectedState);
         });
     });
+
+    describe(fromActions.clearState.type, () => {
+        it('should reset the state to the initial state', () => {
+            const startState = { ...loadedState };
+
+            const action = fromActions.clearState();
+            const state = fromReducer.quizReducer(startState, action);
+
+            const expectedState = {
+                ...fromReducer.initialState
+            };
+            expect(state).toEqual(expectedState);
+            expect(state).not.toBe(expectedState);
+        });
+    });
 });
 
 describe('QuizSelectors', () => {

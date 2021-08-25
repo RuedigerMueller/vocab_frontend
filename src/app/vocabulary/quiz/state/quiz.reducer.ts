@@ -107,6 +107,7 @@ export const quizReducer = createReducer<QuizState>(
             numberKnownVocabularies: 0,
             numberUnknownVocabularies: 0,
             currentVocabulary: shuffeledVocabulary[0] ? shuffeledVocabulary[0] : {} as Vocabulary,
+            continueQuiz: action.vocabulary.length > 0,
             error: ''
         };
     }),
@@ -162,6 +163,11 @@ export const quizReducer = createReducer<QuizState>(
         return {
             ...state,
             error: action.error
+        };
+    }),
+    on(fromActions.clearState, (state): QuizState => {
+        return {
+            ...initialState
         };
     })
 );

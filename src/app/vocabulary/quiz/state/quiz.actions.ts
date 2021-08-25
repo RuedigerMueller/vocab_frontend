@@ -42,3 +42,7 @@ export const nextFailure = createAction(
     '[Quiz] Next failure',
     props<{ error: string }>()
 );
+
+export const clearState = createAction(
+    '[Quiz] Clear state'
+);
