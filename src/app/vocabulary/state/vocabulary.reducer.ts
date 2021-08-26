@@ -56,7 +56,7 @@ export const vocabularyReducer = createReducer<VocabularyState>(
     on(fromActions.createVocabularySuccess, (state, action): VocabularyState => {
         return {
             ...state,
-            vocabulary: [... state.vocabulary, action.vocabulary],
+            vocabulary: [...state.vocabulary, action.vocabulary],
             error: ''
         };
     }),
@@ -100,7 +100,9 @@ export const vocabularyReducer = createReducer<VocabularyState>(
     }),
     on(fromActions.clearState, (state): VocabularyState => {
         return {
-            ...initialState
+            ...state,
+            vocabulary: [],
+            error: ''
         };
     })
 );

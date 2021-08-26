@@ -147,12 +147,12 @@ export const quizReducer = createReducer<QuizState>(
                 state.UIElementState.entryFieldState === 'success' ? state.numberKnownVocabularies + 1 : state.numberKnownVocabularies,
             numberUnknownVocabularies:
                 state.UIElementState.entryFieldState === 'error' ? state.numberUnknownVocabularies + 1 : state.numberUnknownVocabularies,
-             currentVocabulary:
+            currentVocabulary:
                 state.questionedVocabulary < Object.keys(state.vocabulary).length ?
                     state.vocabulary[state.questionedVocabulary] :
                     {} as Vocabulary,
             questionedVocabulary:
-                state.questionedVocabulary < Object.keys(state.vocabulary).length  ?
+                state.questionedVocabulary < Object.keys(state.vocabulary).length ?
                     state.questionedVocabulary + 1 :
                     state.questionedVocabulary,
             continueQuiz: state.questionedVocabulary < Object.keys(state.vocabulary).length,
@@ -167,13 +167,29 @@ export const quizReducer = createReducer<QuizState>(
     }),
     on(fromActions.clearState, (state): QuizState => {
         return {
-            ...initialState
+            ...state,
+            vocabulary: [],
+            questionedVocabulary: 0,
+            numberKnownVocabularies: 0,
+            numberUnknownVocabularies: 0,
+            currentVocabulary: {} as Vocabulary,
+            continueQuiz: true,
+            UIElementState: {
+                entryFieldState: '',
+                displayCheckResponseButton: true,
+                displayValidateResponseButton: false,
+                displayInvalidateResponseButton: false,
+                displayNextButton: false,
+                nextButtonType: '',
+                correctResponse: '',
+            },
+            error: ''
         };
     })
 );
 
 function shuffle(vocabulary: Vocabulary[]): Vocabulary[] {
-    const shuffledVocabulary: Vocabulary[] = {...vocabulary};
+    const shuffledVocabulary: Vocabulary[] = { ...vocabulary };
     let currentIndex: number = vocabulary.length;
     let randomIndex: number;
 
@@ -193,7 +209,7 @@ function shuffle(vocabulary: Vocabulary[]): Vocabulary[] {
 }
 
 function updateUIState(vocabulary: Vocabulary, response: string, originalUIElementState: QuizUIElementState): QuizUIElementState {
-    const UIElementState: QuizUIElementState =  {...originalUIElementState };
+    const UIElementState: QuizUIElementState = { ...originalUIElementState };
     if (response === vocabulary.language_b) {
         UIElementState.entryFieldState = 'success';
         UIElementState.displayCheckResponseButton = false;
@@ -209,11 +225,11 @@ function updateUIState(vocabulary: Vocabulary, response: string, originalUIEleme
         UIElementState.displayNextButton = true;
         UIElementState.nextButtonType = '';
     }
-    return {...UIElementState };
+    return { ...UIElementState };
 }
 
 function setUIStateValid(originalUIElementState: QuizUIElementState): QuizUIElementState {
-    const UIElementState: QuizUIElementState =  {...originalUIElementState };
+    const UIElementState: QuizUIElementState = { ...originalUIElementState };
 
     UIElementState.entryFieldState = 'success';
     UIElementState.displayCheckResponseButton = false;
@@ -222,11 +238,11 @@ function setUIStateValid(originalUIElementState: QuizUIElementState): QuizUIElem
     UIElementState.displayNextButton = true;
     UIElementState.nextButtonType = '';
 
-    return {...UIElementState };
+    return { ...UIElementState };
 }
 
 function setUIStateInvalid(originalUIElementState: QuizUIElementState): QuizUIElementState {
-    const UIElementState: QuizUIElementState =  {...originalUIElementState };
+    const UIElementState: QuizUIElementState = { ...originalUIElementState };
 
     UIElementState.entryFieldState = 'error';
     UIElementState.displayCheckResponseButton = false;
@@ -235,5 +251,5 @@ function setUIStateInvalid(originalUIElementState: QuizUIElementState): QuizUIEl
     UIElementState.displayNextButton = true;
     UIElementState.nextButtonType = '';
 
-    return {...UIElementState };
+    return { ...UIElementState };
 }

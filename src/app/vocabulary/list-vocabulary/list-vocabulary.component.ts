@@ -54,7 +54,7 @@ export class ListVocabularyComponent implements OnInit {
   }
 
   closeLesson(): void {
-    this.store.dispatch(fromVocabularyActions.clearState());
+    // this.store.dispatch(fromVocabularyActions.clearState());
     this.ngZone.run(() => this.router.navigateByUrl(`/${frontend.lessons}`));
   }
 }

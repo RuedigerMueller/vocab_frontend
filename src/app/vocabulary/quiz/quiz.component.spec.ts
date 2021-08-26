@@ -200,7 +200,7 @@ describe('QuizComponent', () => {
             expect(component.errorMessage$).toBeObservable(expected);
         });
 
-        it('should clear the state when closing the lesson', () => {
+        xit('should clear the state when closing the lesson', () => {
             const newState = {
                 ...loadedState,
                 quiz: {
