@@ -61,3 +61,6 @@ export const deleteVocabularyFailure = createAction(
     props<{ error: string }>()
 );
 
+export const clearState = createAction(
+    '[Vocabulary] Clear state'
+);

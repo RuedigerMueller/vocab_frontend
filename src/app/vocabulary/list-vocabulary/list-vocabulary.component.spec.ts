@@ -143,6 +143,13 @@ describe('ListVocabulariesComponent', () => {
             const expected = cold('a', { a: 'Error from action.' });
             expect(component.errorMessage$).toBeObservable(expected);
         });
+
+        it('should clear the state when closing the lesson', () => {
+            component.closeLesson();
+
+            const expected = cold('a', { a: fromVocabularyActions.clearState() });
+            expect(mockStore.scannedActions$).toBeObservable(expected);
+        });
     });
 
     describe('should render UI elements', () => {

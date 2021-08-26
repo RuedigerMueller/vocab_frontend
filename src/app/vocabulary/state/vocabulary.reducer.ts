@@ -98,4 +98,9 @@ export const vocabularyReducer = createReducer<VocabularyState>(
             error: action.error
         };
     }),
+    on(fromActions.clearState, (state): VocabularyState => {
+        return {
+            ...initialState
+        };
+    })
 );

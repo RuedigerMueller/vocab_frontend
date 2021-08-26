@@ -199,6 +199,21 @@ describe('QuizComponent', () => {
             const expected = cold('a', { a: 'Error from action.' });
             expect(component.errorMessage$).toBeObservable(expected);
         });
+
+        it('should clear the state when closing the lesson', () => {
+            const newState = {
+                ...loadedState,
+                quiz: {
+                    continueQuiz: false
+                }
+            } as fromReducer.State;
+            mockStore.setState(newState);
+
+            fixture.detectChanges();
+
+            const expected = cold('a', { a: fromActions.clearState() });
+            expect(mockStore.scannedActions$).toBeObservable(expected);
+        });
     });
 
     describe('should render UI elements', () => {
