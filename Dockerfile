@@ -1,7 +1,4 @@
 FROM node:14.15.3-alpine as builder
-RUN apk add chromium
-ENV CHROME_BIN=/usr/bin/chromium-browser
-
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
@@ -17,6 +14,8 @@ WORKDIR /app-ui
 COPY . .
 RUN npm run build
 
+RUN apk add chromium
+ENV CHROME_BIN=/usr/bin/chromium-browser
 RUN npm run test
 
 FROM nginx:alpine

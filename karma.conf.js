@@ -32,7 +32,7 @@ module.exports = function (config) {
     //     flags: ['--no-sandbox']
     //   }
     // },
-    browsers: ['Chrome', 'ChromeHeadless'],
+    browsers: ['ChromeHeadless'],
     customLaunchers: {
       ChromeHeadless: {
         base: 'Chrome',
