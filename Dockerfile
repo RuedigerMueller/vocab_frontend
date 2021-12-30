@@ -13,7 +13,7 @@ WORKDIR /app-ui
 # Copy coding and build
 COPY . .
 RUN npm run build
-
+ENV CHROME_BIN="/usr/bin/google-chrome"
 RUN npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
 
 
