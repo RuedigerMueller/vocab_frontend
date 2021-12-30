@@ -13,8 +13,10 @@ WORKDIR /app-ui
 # Copy coding and build
 COPY . .
 RUN npm run build
-ENV CHROME_BIN="/usr/bin/google-chrome"
-RUN npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+
+#ENV CHROME_BIN="/usr/bin/google-chrome"
+RUN echo $(which chrome)
+RUN CHROME_BIN=$(which chrome) npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
 
 
 FROM nginx:alpine
