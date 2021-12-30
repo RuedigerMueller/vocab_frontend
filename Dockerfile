@@ -14,7 +14,7 @@ WORKDIR /app-ui
 COPY . .
 RUN npm run build
 
-#RUN npm run test
+RUN npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
 
 
 FROM nginx:alpine
