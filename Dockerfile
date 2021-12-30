@@ -1,10 +1,11 @@
 FROM node:14.15.3-alpine as builder
 WORKDIR /app-ui
 COPY . .
-RUN npm install && mkdir /app-ui && mv ./node_modules ./app-ui
+# RUN npm install && mkdir /app-ui && mv ./node_modules ./app-ui
 
+#mkdir /app-ui &&  \
+    
 RUN npm install &&  \
-    #mkdir /app-ui &&  \
     mv ./node_modules ./app-ui && \
     npm run build &&  \
     npm run test
