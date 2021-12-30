@@ -1,3 +1,4 @@
+#Obsolete - was used with CircleCI build
 FROM node:14.15.3-alpine as builder
 
 # Install app dependencies
