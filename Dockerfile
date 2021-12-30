@@ -1,4 +1,4 @@
-FROM node:14.15.3-alpine as nodebuild
+FROM node:14.15.3-alpine as builder
 WORKDIR /app-ui
 COPY . .
 RUN npm install && mkdir /app-ui && mv ./node_modules ./app-ui
