@@ -32,7 +32,7 @@ module.exports = function (config) {
     //     flags: ['--no-sandbox']
     //   }
     // },
-    browsers: ['ChromeHeadless'],
+    browsers: ['Chrome', 'ChromeHeadless'],
     customLaunchers: {
       ChromeHeadless: {
         base: 'Chrome',
@@ -45,7 +45,7 @@ module.exports = function (config) {
       }
     },
     
-    singleRun: false,
+    singleRun: true,
     restartOnFileChange: true
   });
 };
