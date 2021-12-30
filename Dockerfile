@@ -1,4 +1,7 @@
 FROM node:14.15.3-alpine as builder
+RUN apk add chromium
+ENV CHROME_BIN=/usr/bin/chromium-browser
+
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
@@ -14,10 +17,7 @@ WORKDIR /app-ui
 COPY . .
 RUN npm run build
 
-#ENV CHROME_BIN="/usr/bin/google-chrome"
-RUN echo $(which chrome)
-RUN CHROME_BIN=$(which chrome) npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-
+RUN npm run test
 
 FROM nginx:alpine
 # Copy a default nginx.conf -> can be overwritten via ConfigMap
