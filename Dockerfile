@@ -1,18 +1,19 @@
 FROM node:14.15.3-alpine as builder
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+
+# If you are building your code for production
+# RUN npm ci --only=production
+RUN npm install && mkdir /app-ui && mv ./node_modules ./app-ui
+
 WORKDIR /app-ui
+
+# Copy coding and build
 COPY . .
-# RUN npm install && mkdir /app-ui && mv ./node_modules ./app-ui
-
-#mkdir /app-ui &&  \
-    
-#RUN npm install &&  \
-#    mv ./node_modules ./app-ui && \
-#    npm run build &&  \
-#    npm run test
-
-RUN npm install
-RUN mv ./node_modules ./app-ui
 RUN npm run build
+
 RUN npm run test
 
 
