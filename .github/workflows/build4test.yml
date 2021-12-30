@@ -1,7 +1,7 @@
 name: Build and deploy for manual test
 
 on:
-  workflow_dispatch
+  push
 
 jobs: 
   build_docker_image:
@@ -9,9 +9,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-            
-      # - name: Setup Chrome
-      #   uses: browser-actions/setup-chrome@latest
       
       - name: Setup Docker Buildx
         id: buildx
