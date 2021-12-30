@@ -1,0 +1,56 @@
+name: Promote tested build to production
+
+on:
+  workflow_dispatch
+
+jobs:
+  promoto_to_Heroku:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Pull image from Docker Hub, tag it as released and deploy & release on Heroku prod space
+        run: |
+            docker pull ruedigermueller/vocab_frontend:undertest
+            docker tag ruedigermueller/vocab_frontend:undertest ruedigermueller/vocab_frontend:released
+            docker push ruedigermueller/vocab_frontend:released
+            echo ${{ secrets.HEROKU_API_KEY }} | docker login -u=_ --password-stdin registry.heroku.com
+            docker tag ruedigermueller/vocab_frontend:released registry.heroku.com/vocabfeprod/web
+            docker push registry.heroku.com/vocabfeprod/web
+            HEROKU_API_KEY=${{ secrets.HEROKU_API_KEY }} heroku container:release web --app vocabfeprod
+  promote_to_SAP_BTP:
+    runs-on: ubuntu-latest
+    steps: 
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install Cloud Foundry CLI
+      run: |
+            sudo curl -v -L -o cf-cli_amd64.deb 'https://packages.cloudfoundry.org/stable?release=debian64&source=github&version=v7'
+            sudo dpkg -i cf-cli_amd64.deb
+    - name: Deploy to Cloud Foundry in dark mode
+      run: |
+            cf -v
+            cf api https://api.cf.eu10.hana.ondemand.com
+            cf auth "${{ secrets.SCP_USER }}" "${{ secrets.SCP_PASSWORD }}"
+            cf target -o "${{ secrets.SCP_ORG }}" -s "${{ secrets.SCP_SPACE }}"
+            cf push vocab_frontend_green --no-start
+            cf bind-service vocab_frontend_green vocab_db
+            cf set-env vocab_frontend_green JWT_SECRET "${{ secrets.JWT_SECRET }}"
+            cf start vocab_frontend_green
+    - name: Re-route trafic to updated app
+      run: |
+            cf map-route vocab_frontend_green cfapps.eu10.hana.ondemand.com --hostname vocab_frontend
+    - name: Unmap route to blue app and delete it
+      run: |
+            cf unmap-route vocab_frontend_blue cfapps.eu10.hana.ondemand.com --hostname vocab_frontend
+            cf stop vocab_frontend_blue
+            cf delete vocab_frontend_blue -f
+      continue-on-error: true
+    - name: Rename green app and delete temporary route
+      run: |   
+            cf rename vocab_frontend_green vocab_frontend_blue
+            cf delete-route cfapps.eu10.hana.ondemand.com --hostname vocab_frontend_green -f
+      
