@@ -5,10 +5,15 @@ COPY . .
 
 #mkdir /app-ui &&  \
     
-RUN npm install &&  \
-    mv ./node_modules ./app-ui && \
-    npm run build &&  \
-    npm run test
+#RUN npm install &&  \
+#    mv ./node_modules ./app-ui && \
+#    npm run build &&  \
+#    npm run test
+
+RUN npm install
+RUN mv ./node_modules ./app-ui
+RUN npm run build
+RUN npm run test
 
 
 FROM nginx:alpine
