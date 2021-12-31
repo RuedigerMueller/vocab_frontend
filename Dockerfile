@@ -1,4 +1,4 @@
-FROM node:14.15.3-alpine as builder
+FROM node:14.17.0-alpine as builder
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
