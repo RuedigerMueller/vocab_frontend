@@ -24,7 +24,7 @@
     "@angular/platform-browser": "^11.2.14",
     "@angular/platform-browser-dynamic": "^11.2.14",
     "@angular/router": "^11.2.14",
-    "@fundamental-ngx/core": "^0.25.5",
+    "@fundamental-ngx/core": "^0.26.0",
     "@ngrx/effects": "^11.1.1",
     "@ngrx/store": "^11.1.1",
     "@ngrx/store-devtools": "^12.5.1",
