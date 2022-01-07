@@ -14,11 +14,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Pull image from Docker Hub, tag it as released and deploy & release on Heroku prod space
         run: |
-            docker pull ruedigermueller/vocab_frontend:undertest
-            docker tag ruedigermueller/vocab_frontend:undertest ruedigermueller/vocab_frontend:released
-            docker push ruedigermueller/vocab_frontend:released
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/vocab_frontend:undertest
+            docker tag ${{ secrets.DOCKERHUB_USERNAME }}/vocab_frontend:undertest ${{ secrets.DOCKERHUB_USERNAME }}/vocab_frontend:released
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/vocab_frontend:released
             echo ${{ secrets.HEROKU_API_KEY }} | docker login -u=_ --password-stdin registry.heroku.com
-            docker tag ruedigermueller/vocab_frontend:released registry.heroku.com/vocabfeprod/web
+            docker tag ${{ secrets.DOCKERHUB_USERNAME }}/vocab_frontend:released registry.heroku.com/vocabfeprod/web
             docker push registry.heroku.com/vocabfeprod/web
             HEROKU_API_KEY=${{ secrets.HEROKU_API_KEY }} heroku container:release web --app vocabfeprod
   promote_to_SAP_BTP:
