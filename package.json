@@ -8,7 +8,7 @@
     "postbuild": "cp ./.nginx/*.* ./dist/frontend/",
     "start-dev": "ng serve",
     "start": "node server.js",
-    "test": "ng test",
+    "test": "ng test -- --no-watch --browsers=ChromeHeadless",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

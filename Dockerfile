@@ -16,7 +16,7 @@ RUN npm run build
 
 RUN apk add chromium
 ENV CHROME_BIN=/usr/bin/chromium-browser
-RUN npm run test -- --no-watch --browsers=ChromeHeadless
+RUN npm run test
 
 FROM nginx:alpine
 # Copy a default nginx.conf -> can be overwritten via ConfigMap
