@@ -1,7 +1,7 @@
-/.angular/cache
 node_modules
 coverage
 dist
 .DS_Store
 src/.DS_Store
-src/app/.DS_Store
+src/app/.DS_Store  
+/.angular/cache
