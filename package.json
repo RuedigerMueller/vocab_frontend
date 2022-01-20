@@ -9,6 +9,7 @@
     "start-dev": "ng serve",
     "start": "node server.js",
     "test": "ng test -- --no-watch --browsers=ChromeHeadless",
+    "test-dev": "ng test -- --watch --browsers=Chrome",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

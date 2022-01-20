@@ -123,6 +123,8 @@ describe('QuizComponent', () => {
 
             const expected = cold('a', { a: fromActions.loadQuiz({ lessonID: testLesson.id }) });
             expect(mockStore.scannedActions$).toBeObservable(expected);
+            // expectObservable(mockStore.scannedActions$).toBe(expected);
+
         });
 
         it('should contain lesson data after loading', () => {
