@@ -2,10 +2,9 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { frontend } from 'src/app/resource.identifiers';
-import { Lesson } from '../../models/lesson.model.';
+import { Lesson } from '../../models/lesson.model';
 import * as fromActions from '../state/lesson.actions';
 import * as fromReducer from '../state/lesson.reducer';
 

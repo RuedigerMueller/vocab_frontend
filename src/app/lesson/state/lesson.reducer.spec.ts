@@ -1,4 +1,4 @@
-import { Lesson } from 'src/app/models/lesson.model.';
+import { Lesson } from 'src/app/models/lesson.model';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import * as fromActions from '../state/lesson.actions';
 import * as fromReducer from '../state/lesson.reducer';

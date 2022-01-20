@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { catchError, map, mergeMap, of } from 'rxjs';
 import { VocabularyService } from 'src/app/services/vocabulary.service';
 import * as fromActions from '../state/quiz.actions';
 

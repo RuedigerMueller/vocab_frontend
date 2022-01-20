@@ -1,5 +1,5 @@
 import { lessonTestData } from './lesson.testdata.spec';
-import { Lesson } from 'src/app/models/lesson.model.';
+import { Lesson } from 'src/app/models/lesson.model';
 import { Vocabulary } from 'src/app/models/vocabulary.model';
 
 function createVocabulary(

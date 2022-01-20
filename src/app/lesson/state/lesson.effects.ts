@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, of } from 'rxjs';
 import { LessonService } from 'src/app/services/lesson.service';
 import * as fromActions from '../state/lesson.actions';
 

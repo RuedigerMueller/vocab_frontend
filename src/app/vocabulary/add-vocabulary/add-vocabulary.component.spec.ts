@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonModule, FormModule } from '@fundamental-ngx/core';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { routes } from 'src/app/app-routing.module';
-import { Lesson } from 'src/app/models/lesson.model.';
+import { Lesson } from 'src/app/models/lesson.model';
 import { Vocabulary } from 'src/app/models/vocabulary.model';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
