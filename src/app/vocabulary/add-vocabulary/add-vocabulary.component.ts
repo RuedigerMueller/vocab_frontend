@@ -5,7 +5,7 @@ import { FormControlComponent } from '@fundamental-ngx/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
-import { Lesson } from 'src/app/models/lesson.model.';
+import { Lesson } from 'src/app/models/lesson.model';
 import { frontend } from 'src/app/resource.identifiers';
 import { Vocabulary } from '../../models/vocabulary.model';
 import * as fromVocabularyActions from '../state/vocabulary.actions';

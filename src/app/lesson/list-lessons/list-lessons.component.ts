@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { Lesson } from '../../models/lesson.model.';
+import { Lesson } from '../../models/lesson.model';
 import { Router } from '@angular/router';
 import { frontend } from 'src/app/resource.identifiers';
 import { Observable } from 'rxjs';

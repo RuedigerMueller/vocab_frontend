@@ -2,10 +2,9 @@ import { Component, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent, DialogService, FormControlComponent } from '@fundamental-ngx/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { selectLessonByID } from 'src/app/lesson/state/lesson.reducer';
-import { Lesson } from 'src/app/models/lesson.model.';
+import { Lesson } from 'src/app/models/lesson.model';
 import { frontend } from 'src/app/resource.identifiers';
 import { Vocabulary } from '../../models/vocabulary.model';
 import * as fromActions from './state/quiz.actions';

@@ -2,7 +2,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
-import { Lesson } from 'src/app/models/lesson.model.';
+import { Lesson } from 'src/app/models/lesson.model';
 import { Vocabulary } from 'src/app/models/vocabulary.model';
 import { VocabularyService } from 'src/app/services/vocabulary.service';
 import { lessonTestData } from 'test/lesson.testdata.spec';

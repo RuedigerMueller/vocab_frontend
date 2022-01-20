@@ -1,9 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, Observable, retry, throwError } from 'rxjs';
 import { AuthService } from '../helpers/auth.service';
-import { Lesson } from '../models/lesson.model.';
+import { Lesson } from '../models/lesson.model';
 import { backend, baseURL } from '../resource.identifiers';
 
 @Injectable({

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { requestCheck } from 'test/helpers.spec';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';
-import { Lesson } from '../models/lesson.model.';
+import { Lesson } from '../models/lesson.model';
 import { backend, baseURL } from '../resource.identifiers';
 import { VocabularyService } from './vocabulary.service';
 

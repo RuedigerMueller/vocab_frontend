@@ -1,4 +1,4 @@
-import { Lesson } from 'src/app/models/lesson.model.';
+import { Lesson } from 'src/app/models/lesson.model';
 import { Vocabulary } from 'src/app/models/vocabulary.model';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import { vocabularyTestData } from 'test/vocabulary.testdata.spec';

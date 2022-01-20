@@ -1,5 +1,5 @@
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
-import { Lesson } from 'src/app/models/lesson.model.';
+import { Lesson } from 'src/app/models/lesson.model';
 import * as fromApp from '../../state/app.state';
 import * as fromActions from '../state/lesson.actions';
 

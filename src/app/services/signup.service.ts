@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map, retry } from 'rxjs/operators';
+import { catchError, map, Observable, retry, throwError } from 'rxjs';
 import { User } from '../models/user.model';
 import { backend, baseURL } from '../resource.identifiers';
 

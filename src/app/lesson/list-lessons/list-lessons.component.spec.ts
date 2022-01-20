@@ -6,7 +6,7 @@ import { ButtonModule, MenuModule, SplitButtonComponent, SplitButtonModule, Tabl
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 import { routes } from 'src/app/app-routing.module';
-import { Lesson } from 'src/app/models/lesson.model.';
+import { Lesson } from 'src/app/models/lesson.model';
 import { frontend } from 'src/app/resource.identifiers';
 import { lessonTestData } from 'test/lesson.testdata.spec';
 import * as fromActions from '../state/lesson.actions';
