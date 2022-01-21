@@ -1,4 +1,4 @@
-name: Build and deploy for manual test
+name: Build, push and deploy for manual test
 
 on:
   push:
